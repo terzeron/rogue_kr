@@ -11,6 +11,7 @@
 
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * wear:
@@ -26,16 +27,16 @@ wear()
 	return;
     if (cur_armor != NULL)
     {
-	addmsg("you are already wearing some");
+	addmsg(msg_get("MSG_ARMOR_ALREADY_WEARING"));
 	if (!terse)
-	    addmsg(".  You'll have to take it off first");
+	    addmsg(msg_get("MSG_ARMOR_MUST_TAKE_OFF"));
 	endmsg();
 	after = FALSE;
 	return;
     }
     if (obj->o_type != ARMOR)
     {
-	msg("you can't wear that");
+	msg(msg_get("MSG_ARMOR_CANT_WEAR"));
 	return;
     }
     waste_time();
@@ -43,8 +44,8 @@ wear()
     sp = inv_name(obj, TRUE);
     cur_armor = obj;
     if (!terse)
-	addmsg("you are now ");
-    msg("wearing %s", sp);
+	addmsg(msg_get("MSG_ARMOR_YOU_ARE_NOW"));
+    msg(msg_get("MSG_ARMOR_WEARING"), sp);
 }
 
 /*
@@ -60,19 +61,19 @@ take_off()
     {
 	after = FALSE;
 	if (terse)
-		msg("not wearing armor");
+		msg(msg_get("MSG_ARMOR_NOT_WEARING_TERSE"));
 	else
-		msg("you aren't wearing any armor");
+		msg(msg_get("MSG_ARMOR_NOT_WEARING_VERBOSE"));
 	return;
     }
     if (!dropcheck(cur_armor))
 	return;
     cur_armor = NULL;
     if (terse)
-	addmsg("was");
+	addmsg(msg_get("MSG_ARMOR_WAS_LOWERCASE"));
     else
-	addmsg("you used to be");
-    msg(" wearing %c) %s", obj->o_packch, inv_name(obj, TRUE));
+	addmsg(msg_get("MSG_ARMOR_USED_TO_BE"));
+    msg(msg_get("MSG_ARMOR_WEARING_ITEM"), obj->o_packch, inv_name(obj, TRUE));
 }
 
 /*

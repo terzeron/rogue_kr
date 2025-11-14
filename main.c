@@ -8,12 +8,15 @@
  * @(#)main.c	4.22 (Berkeley) 02/05/99
  */
 
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
 #include <time.h>
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
+#include "utils.h"
 
 /*
  * main:
@@ -25,7 +28,11 @@ main(int argc, char **argv, char **envp)
     char *env;
     int lowtime;
 
+    setlocale(LC_ALL, "");
     md_init();
+
+    /* Initialize internationalization */
+    i18n_init();
 
 #ifdef MASTER
     /*
@@ -106,10 +113,10 @@ main(int argc, char **argv, char **envp)
 	    my_exit(1);
 #ifdef MASTER
     if (wizard)
-	printf("Hello %s, welcome to dungeon #%d", whoami, dnum);
+	printf(msg_get("MSG_HELLO_WIZARD"), whoami, dnum);
     else
 #endif
-	printf("Hello %s, just a moment while I dig the dungeon...", whoami);
+	printf(msg_get("MSG_HELLO_DIGGING"), whoami);
     fflush(stdout);
 
     initscr();				/* Start up cursor package */
@@ -126,7 +133,7 @@ main(int argc, char **argv, char **envp)
      */
     if (LINES < NUMLINES || COLS < NUMCOLS)
     {
-	printf("\nSorry, the screen must be at least %dx%d\n", NUMLINES, NUMCOLS);
+	printf(msg_get("MSG_SCREEN_TOO_SMALL"), NUMLINES, NUMCOLS);
 	endwin();
 	my_exit(1);
     }
@@ -152,6 +159,7 @@ main(int argc, char **argv, char **envp)
     return(0);
 }
 
+
 /*
  * endit:
  *	Exit the program abnormally.
@@ -176,30 +184,6 @@ fatal(char *s)
     refresh();
     endwin();
     my_exit(0);
-}
-
-/*
- * rnd:
- *	Pick a very random number.
- */
-int
-rnd(int range)
-{
-    return range == 0 ? 0 : abs((int) RN) % range;
-}
-
-/*
- * roll:
- *	Roll a number of dice
- */
-int 
-roll(int number, int sides)
-{
-    int dtotal = 0;
-
-    while (number--)
-	dtotal += rnd(sides)+1;
-    return dtotal;
 }
 
 /*
@@ -299,12 +283,12 @@ quit(int sig)
     if (!q_comm)
 	mpos = 0;
     getyx(curscr, oy, ox);
-    msg("really quit?");
-    if (readchar() == 'y')
+    msg(msg_get("MSG_REALLY_QUIT"));
+    if (readchar() == msg_get("MSG_YES_KEY")[0])
     {
 	signal(SIGINT, leave);
 	clear();
-	mvprintw(LINES - 2, 0, "You quit with %d gold pieces", purse);
+	mvprintw(LINES - 2, 0, msg_get("MSG_QUIT_WITH_GOLD"), purse);
 	move(LINES - 1, 0);
 	refresh();
 	score(purse, 1, 0);
@@ -393,4 +377,5 @@ my_exit(int st)
     resetltchars();
     exit(st);
 }
+
 

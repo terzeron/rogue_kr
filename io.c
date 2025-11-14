@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * msg:
@@ -21,9 +22,13 @@ static int newpos = 0;
 
 /* VARARGS1 */
 int
-msg(char *fmt, ...)
+msg(const char *fmt, ...)
 {
     va_list args;
+
+    /* Safety check for test environment - if stdscr is not initialized, do nothing */
+    if (stdscr == NULL)
+        return ~ESCAPE;
 
     /*
      * if the string is "", just clear the line
@@ -50,7 +55,7 @@ msg(char *fmt, ...)
  */
 /* VARARGS1 */
 void
-addmsg(char *fmt, ...)
+addmsg(const char *fmt, ...)
 {
     va_list args;
 
@@ -74,7 +79,7 @@ endmsg()
     if (mpos)
     {
 	look(FALSE);
-	mvaddstr(0, mpos, "--More--");
+	mvaddstr(0, mpos, msg_get("MSG_MORE"));
 	refresh();
 	if (!msg_esc)
 	    wait_for(' ');
@@ -111,7 +116,7 @@ endmsg()
  *	Perform an add onto the message buffer
  */
 void
-doadd(char *fmt, va_list args)
+doadd(const char *fmt, va_list args)
 {
     static char buf[MAXSTR];
 
@@ -181,8 +186,16 @@ status()
     static int s_exp = 0;
     static char *state_name[] =
     {
-	"", "Hungry", "Weak", "Faint"
+	"", NULL, NULL, NULL
     };
+
+    /* Initialize state names with translated strings if not done yet */
+    if (state_name[1] == NULL)
+    {
+	state_name[1] = (char *)msg_get("MSG_HUNGRY");
+	state_name[2] = (char *)msg_get("MSG_WEAK");
+	state_name[3] = (char *)msg_get("MSG_FAINT");
+    }
 
     /*
      * If nothing has changed since the last status, don't
@@ -220,18 +233,24 @@ status()
     if (stat_msg)
     {
 	move(0, 0);
-        msg("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%ld  %s",
-	    level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-	    max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
+        msg("%s: %d  %s: %-5d  %s: %*d(%*d)  %s: %2d(%d)  %s: %-2d  %s: %d/%ld  %s",
+	    msg_get("MSG_LEVEL"), level, msg_get("MSG_GOLD"), purse,
+	    msg_get("MSG_HP"), hpwidth, pstats.s_hpt, hpwidth, max_hp,
+	    msg_get("MSG_STR"), pstats.s_str, max_stats.s_str,
+	    msg_get("MSG_ARM"), 10 - s_arm,
+	    msg_get("MSG_EXP"), pstats.s_lvl, pstats.s_exp,
 	    state_name[hungry_state]);
     }
     else
     {
 	move(STATLINE, 0);
-                
-        printw("Level: %d  Gold: %-5d  Hp: %*d(%*d)  Str: %2d(%d)  Arm: %-2d  Exp: %d/%d  %s",
-	    level, purse, hpwidth, pstats.s_hpt, hpwidth, max_hp, pstats.s_str,
-	    max_stats.s_str, 10 - s_arm, pstats.s_lvl, pstats.s_exp,
+
+        printw("%s: %d  %s: %-5d  %s: %*d(%*d)  %s: %2d(%d)  %s: %-2d  %s: %d/%d  %s",
+	    msg_get("MSG_LEVEL"), level, msg_get("MSG_GOLD"), purse,
+	    msg_get("MSG_HP"), hpwidth, pstats.s_hpt, hpwidth, max_hp,
+	    msg_get("MSG_STR"), pstats.s_str, max_stats.s_str,
+	    msg_get("MSG_ARM"), 10 - s_arm,
+	    msg_get("MSG_EXP"), pstats.s_lvl, pstats.s_exp,
 	    state_name[hungry_state]);
     }
 
@@ -261,7 +280,7 @@ wait_for(int ch)
  *	Function used to display a window and wait before returning
  */
 void
-show_win(char *message)
+show_win(const char *message)
 {
     WINDOW *win;
 

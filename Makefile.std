@@ -40,7 +40,7 @@ FEATURES = -DALLSCORES -DSCOREFILE=\"$(SCOREFILE)\" -DLOCKFILE=\"$(LOCKFILE)\"
 CPPFLAGS =
 CFLAGS   = -O3
 LDFLAGS  =
-LIBS     = -lcurses
+LIBS     = -lcursesw
 RM       = rm -f
 MAKEFILE = -f Makefile.std
 SCOREFILE= $(PROGRAM).scr
@@ -52,20 +52,20 @@ EXE      =
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(FEATURES) /c $*.c
-    
+
 .c.o:
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(FEATURES) -c $*.c
-    
+
 $(PROGRAM): $(HDRS) $(OBJS) fixdocs
 	$(CC) $(LDFLAGS) $(OBJS) $(LIBS) $(OUTFLAG)$@$(EXE)
- 
+
 clean:
 	$(RM) $(OBJS1)
 	$(RM) $(OBJS2)
 	$(RM) core a.exe a.out a.exe.stackdump $(PROGRAM) $(PROGRAM).exe $(PROGRAM).lck
-	$(RM) $(PROGRAM).tar $(PROGRAM).tar.gz $(PROGRAM).zip 
+	$(RM) $(PROGRAM).tar $(PROGRAM).tar.gz $(PROGRAM).zip
 	$(RM) $(DISTNAME)/*
-    
+
 dist.src:
 	$(MAKE) $(MAKEFILE) clean
 	mkdir $(DISTNAME)
@@ -75,10 +75,10 @@ dist.src:
 	rm -fr $(DISTNAME)
 
 findpw: findpw.c xcrypt.o mdport.o xcrypt.o
-	$(CC) -s -o findpw findpw.c xcrypt.o mdport.o -lcurses
+	$(CC) -s -o findpw findpw.c xcrypt.o mdport.o -lcursesw
 
 scedit: scedit.o scmisc.o vers.o mdport.o xcrypt.o
-	$(CC) -s -o scedit vers.o scedit.o scmisc.o mdport.o xcrypt.o -lcurses
+	$(CC) -s -o scedit vers.o scedit.o scmisc.o mdport.o xcrypt.o -lcursesw
 
 scmisc.o scedit.o:
 	$(CC) -O -c $(SF) $*.c
@@ -115,16 +115,16 @@ dist.linux:
 	$(MAKE) $(MAKEFILE) $(PROGRAM)
 	tar cf $(DISTNAME)-linux.tar $(PROGRAM) LICENSE.TXT $(DOCS)
 	gzip -f $(DISTNAME)-linux.tar
-	
+
 dist.interix:
 	@$(MAKE) $(MAKEFILE) clean
 	@$(MAKE) $(MAKEFILE) CFLAGS="-ansi" $(PROGRAM)
 	tar cf $(DISTNAME)-interix.tar $(PROGRAM) LICENSE.TXT $(DOCS)
 	gzip -f $(DISTNAME)-interix.tar
-	
+
 dist.cygwin:
 	@$(MAKE) $(MAKEFILE) --no-print-directory clean
-	@$(MAKE) $(MAKEFILE) CPPFLAGS="-I/usr/include/ncurses" --no-print-directory $(PROGRAM)
+	@$(MAKE) $(MAKEFILE) CPPFLAGS="-I/usr/include/ncursesw" --no-print-directory $(PROGRAM)
 	tar cf $(DISTNAME)-cygwin.tar $(PROGRAM).exe LICENSE.TXT $(DOCS)
 	gzip -f $(DISTNAME)-cygwin.tar
 
@@ -136,7 +136,7 @@ dist.mingw32:
 	@$(MAKE) $(MAKEFILE) --no-print-directory CPPFLAGS="-I../pdcurses" LIBS="../pdcurses/pdcurses.a" $(PROGRAM)
 	cmd /c del $(DISTNAME)-mingw32.zip
 	zip $(DISTNAME)-mingw32.zip $(PROGRAM).exe LICENSE.TXT $(DOCS)
-	
+
 dist.djgpp:
 	@$(MAKE) $(MAKEFILE) --no-print-directory clean
 	@$(MAKE) $(MAKEFILE) --no-print-directory LDFLAGS="-L$(DJDIR)/LIB" \

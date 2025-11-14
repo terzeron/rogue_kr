@@ -15,29 +15,30 @@
 #include <string.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 #define	EQSTR(a, b)	(strcmp(a, b) == 0)
 
 char *h_names[] = {		/* strings for hitting */
-	" scored an excellent hit on ",
-	" hit ",
-	" have injured ",
-	" swing and hit ",
-	" scored an excellent hit on ",
-	" hit ",
-	" has injured ",
-	" swings and hits "
+	"MSG_HIT_MONSTER_1",
+	"MSG_HIT_MONSTER_2",
+	"MSG_HIT_MONSTER_3",
+	"MSG_HIT_MONSTER_4",
+	"MSG_MONSTER_HIT_1",
+	"MSG_MONSTER_HIT_2",
+	"MSG_MONSTER_HIT_3",
+	"MSG_MONSTER_HIT_4"
 };
 
 char *m_names[] = {		/* strings for missing */
-	" miss",
-	" swing and miss",
-	" barely miss",
-	" don't hit",
-	" misses",
-	" swings and misses",
-	" barely misses",
-	" doesn't hit",
+	"MSG_MISS_MONSTER_1",
+	"MSG_MISS_MONSTER_2",
+	"MSG_MISS_MONSTER_3",
+	"MSG_MISS_MONSTER_4",
+	"MSG_MONSTER_MISS_1",
+	"MSG_MONSTER_MISS_2",
+	"MSG_MONSTER_MISS_3",
+	"MSG_MONSTER_MISS_4"
 };
 
 /*
@@ -65,7 +66,8 @@ fight(coord *mp, THING *weap, bool thrown)
 {
     register THING *tp;
     register bool did_hit = TRUE;
-    register char *mname, ch;
+    register const char *mname;
+    register char ch;
 
     /*
      * Find the monster we want to fight
@@ -116,12 +118,12 @@ fight(coord *mp, THING *weap, bool thrown)
 	    player.t_flags &= ~CANHUH;
 	    endmsg();
 	    has_hit = FALSE;
-	    msg("your hands stop glowing %s", pick_color("red"));
+	    msg(msg_get("MSG_HANDS_STOP_GLOWING"), pick_color("red"));
 	}
 	if (tp->t_stats.s_hpt <= 0)
 	    killed(tp, TRUE);
 	else if (did_hit && !on(player, ISBLIND))
-	    msg("%s appears confused", mname);
+	    msg(msg_get("MSG_APPEARS_CONFUSED"), mname);
 	did_hit = TRUE;
     }
     else
@@ -139,7 +141,7 @@ fight(coord *mp, THING *weap, bool thrown)
 int
 attack(THING *mp)
 {
-    register char *mname;
+    register const char *mname;
     register int oldhp;
 
     /*
@@ -167,7 +169,7 @@ attack(THING *mp)
 	if (mp->t_type != 'I')
 	{
 	    if (has_hit)
-		addmsg(".  ");
+		addmsg(msg_get("MSG_PERIOD"));
 	    hit(mname, (char *) NULL, FALSE);
 	}
 	else
@@ -199,9 +201,9 @@ attack(THING *mp)
 		    player.t_flags &= ~ISRUN;
 		    if (!no_command)
 		    {
-			addmsg("you are frozen");
+			addmsg(msg_get("MSG_YOU_ARE_FROZEN"));
 			if (!terse)
-			    addmsg(" by the %s", mname);
+			    addmsg(msg_get("MSG_BY_THE"), mname);
 			endmsg();
 		    }
 		    no_command += rnd(2) + 2;
@@ -217,16 +219,16 @@ attack(THING *mp)
 			{
 			    chg_str(-1);
 			    if (!terse)
-				msg("you feel a bite in your leg and now feel weaker");
+				msg(msg_get("MSG_BITE_LEG_WEAKER"));
 			    else
-				msg("a bite has weakened you");
+				msg(msg_get("MSG_BITE_WEAKENED"));
 			}
 			else if (!to_death)
 			{
 			    if (!terse)
-				msg("a bite momentarily weakens you");
+				msg(msg_get("MSG_BITE_MOMENTARILY"));
 			    else
-				msg("bite has no effect");
+				msg(msg_get("MSG_BITE_NO_EFFECT"));
 			}
 		    }
 		when 'W':
@@ -260,14 +262,17 @@ attack(THING *mp)
 			    pstats.s_hpt = 1;
 			if (max_hp <= 0)
 			    death(mp->t_type);
-			msg("you suddenly feel weaker");
+			msg(msg_get("MSG_SUDDENLY_WEAKER"));
 		    }
 		when 'F':
 		    /*
 		     * Venus Flytrap stops the poor guy from moving
 		     */
 		    player.t_flags |= ISHELD;
-		    sprintf(monsters['F'-'A'].m_stats.s_dmg,"%dx1", ++vf_hit);
+            char *dst = monsters['F'-'A'].m_stats.s_dmg;
+            if (vf_hit < 0)
+                vf_hit = 0;
+            snprintf(dst, sizeof monsters['F'-'A'].m_stats.s_dmg, "%dx1", vf_hit);
 		    if (--pstats.s_hpt <= 0)
 			death('F');
 		when 'L':
@@ -286,7 +291,7 @@ attack(THING *mp)
 		    remove_mon(&mp->t_pos, mp, FALSE);
                     mp=NULL;
 		    if (purse != lastpurse)
-			msg("your purse feels lighter");
+			msg(msg_get("MSG_PURSE_LIGHTER"));
 		}
 		when 'N':
 		{
@@ -308,7 +313,7 @@ attack(THING *mp)
 			remove_mon(&mp->t_pos, moat(mp->t_pos.y, mp->t_pos.x), FALSE);
                         mp=NULL;
 			leave_pack(steal, FALSE, FALSE);
-			msg("she stole %s!", inv_name(steal, TRUE));
+			msg(msg_get("MSG_SHE_STOLE"), inv_name(steal, TRUE));
 			discard(steal);
 		    }
 		}
@@ -320,7 +325,7 @@ attack(THING *mp)
     {
 	if (has_hit)
 	{
-	    addmsg(".  ");
+	    addmsg(msg_get("MSG_PERIOD"));
 	    has_hit = FALSE;
 	}
 	if (mp->t_type == 'F')
@@ -345,15 +350,26 @@ attack(THING *mp)
  * set_mname:
  *	return the monster name for the given monster
  */
-char *
+const char *
 set_mname(THING *tp)
 {
     int ch;
-    char *mname;
-    static char tbuf[MAXSTR] = { 't', 'h', 'e', ' ' };
+    const char *mname;
+    static char tbuf[MAXSTR];
+    static const char *monster_msg_keys[] = {
+	"MSG_MONSTER_AQUATOR", "MSG_MONSTER_BAT", "MSG_MONSTER_CENTAUR",
+	"MSG_MONSTER_DRAGON", "MSG_MONSTER_EMU", "MSG_MONSTER_VENUS_FLYTRAP",
+	"MSG_MONSTER_GRIFFIN", "MSG_MONSTER_HOBGOBLIN", "MSG_MONSTER_ICE_MONSTER",
+	"MSG_MONSTER_JABBERWOCK", "MSG_MONSTER_KESTREL", "MSG_MONSTER_LEPRECHAUN",
+	"MSG_MONSTER_MEDUSA", "MSG_MONSTER_NYMPH", "MSG_MONSTER_ORC",
+	"MSG_MONSTER_PHANTOM", "MSG_MONSTER_QUAGGA", "MSG_MONSTER_RATTLESNAKE",
+	"MSG_MONSTER_SNAKE", "MSG_MONSTER_TROLL", "MSG_MONSTER_BLACK_UNICORN",
+	"MSG_MONSTER_VAMPIRE", "MSG_MONSTER_WRAITH", "MSG_MONSTER_XEROC",
+	"MSG_MONSTER_YETI", "MSG_MONSTER_ZOMBIE"
+    };
 
     if (!see_monst(tp) && !on(player, SEEMONST))
-	return (terse ? "it" : "something");
+	return (terse ? msg_get("MSG_IT") : msg_get("MSG_SOMETHING"));
     else if (on(player, ISHALU))
     {
 	move(tp->t_pos.y, tp->t_pos.x);
@@ -362,11 +378,11 @@ set_mname(THING *tp)
 	    ch = rnd(26);
 	else
 	    ch -= 'A';
-	mname = monsters[ch].m_name;
+	mname = msg_get(monster_msg_keys[ch]);
     }
     else
-	mname = monsters[tp->t_type - 'A'].m_name;
-    strcpy(&tbuf[4], mname);
+	mname = msg_get(monster_msg_keys[tp->t_type - 'A']);
+    strcpy(tbuf, mname);
     return tbuf;
 }
 
@@ -482,13 +498,13 @@ roll_em(THING *thatt, THING *thdef, THING *weap, bool hurl)
  *	The print name of a combatant
  */
 char *
-prname(char *mname, bool upper)
+prname(const char *mname, bool upper)
 {
     static char tbuf[MAXSTR];
 
     *tbuf = '\0';
     if (mname == 0)
-	strcpy(tbuf, "you"); 
+	strcpy(tbuf, msg_get("MSG_YOU"));
     else
 	strcpy(tbuf, mname);
     if (upper)
@@ -501,15 +517,15 @@ prname(char *mname, bool upper)
  *	A missile hits a monster
  */
 void
-thunk(THING *weap, char *mname, bool noend)
+thunk(THING *weap, const char *mname, bool noend)
 {
     if (to_death)
 	return;
     if (weap->o_type == WEAPON)
-	addmsg("the %s hits ", weap_info[weap->o_which].oi_name);
+	addmsg(msg_get("MSG_THE_HITS"), msg_get_weapon_name(weap->o_which));
     else
-	addmsg("you hit ");
-    addmsg("%s", mname);
+	addmsg(msg_get("MSG_YOU_HIT"));
+    addmsg(" %s", mname);
     if (!noend)
 	endmsg();
 }
@@ -520,27 +536,36 @@ thunk(THING *weap, char *mname, bool noend)
  */
 
 void
-hit(char *er, char *ee, bool noend)
+hit(const char *er, const char *ee, bool noend)
 {
     int i;
-    char *s;
+    const char *s;
     extern char *h_names[];
+    char buf[MAXSTR];
 
     if (to_death)
 	return;
-    addmsg(prname(er, TRUE));
+
     if (terse)
-	s = " hit";
+	i = 0;
     else
     {
 	i = rnd(4);
-	if (er != NULL)
-	    i += 4;
-	s = h_names[i];
     }
-    addmsg(s);
-    if (!terse)
-	addmsg(prname(ee, FALSE));
+    if (er != NULL)
+	i += 4;
+
+    s = msg_get(h_names[i]);
+
+    /* For Korean, the message format includes both attacker and defender */
+    if (er == NULL && ee != NULL)
+	sprintf(buf, s, prname(ee, FALSE));
+    else if (er != NULL && ee == NULL)
+	sprintf(buf, s, prname(er, TRUE));
+    else
+	sprintf(buf, s, "");
+
+    addmsg(buf);
     if (!noend)
 	endmsg();
 }
@@ -550,23 +575,34 @@ hit(char *er, char *ee, bool noend)
  *	Print a message to indicate a poor swing
  */
 void
-miss(char *er, char *ee, bool noend)
+miss(const char *er, const char *ee, bool noend)
 {
     int i;
     extern char *m_names[];
+    const char *s;
+    char buf[MAXSTR];
 
     if (to_death)
 	return;
-    addmsg(prname(er, TRUE));
+
     if (terse)
 	i = 0;
     else
 	i = rnd(4);
     if (er != NULL)
 	i += 4;
-    addmsg(m_names[i]);
-    if (!terse)
-	addmsg(" %s", prname(ee, FALSE));
+
+    s = msg_get(m_names[i]);
+
+    /* For Korean, the message format includes both attacker and defender */
+    if (er == NULL && ee != NULL)
+	sprintf(buf, s, prname(ee, FALSE));
+    else if (er != NULL && ee == NULL)
+	sprintf(buf, s, prname(er, TRUE));
+    else
+	sprintf(buf, s, "");
+
+    addmsg(buf);
     if (!noend)
 	endmsg();
 }
@@ -576,15 +612,15 @@ miss(char *er, char *ee, bool noend)
  *	A missile misses a monster
  */
 void
-bounce(THING *weap, char *mname, bool noend)
+bounce(THING *weap, const char *mname, bool noend)
 {
     if (to_death)
 	return;
     if (weap->o_type == WEAPON)
-	addmsg("the %s misses ", weap_info[weap->o_which].oi_name);
+	addmsg(msg_get("MSG_THE_MISSES"), msg_get_weapon_name(weap->o_which));
     else
-	addmsg("you missed ");
-    addmsg(mname);
+	addmsg(msg_get("MSG_YOU_MISSED"));
+    addmsg(" %s", mname);
     if (!noend)
 	endmsg();
 }
@@ -628,7 +664,7 @@ remove_mon(coord *mp, THING *tp, bool waskill)
 void
 killed(THING *tp, bool pr)
 {
-    char *mname;
+    const char *mname;
 
     pstats.s_exp += tp->t_stats.s_exp;
 
@@ -666,16 +702,13 @@ killed(THING *tp, bool pr)
     {
 	if (has_hit)
 	{
-	    addmsg(".  Defeated ");
+	    msg(msg_get("MSG_DEFEATED_MONSTER"), mname);
 	    has_hit = FALSE;
 	}
 	else
 	{
-	    if (!terse)
-		addmsg("you have ");
-	    addmsg("defeated ");
+	    msg(msg_get("MSG_YOU_DEFEATED_MONSTER"), mname);
 	}
-	msg(mname);
     }
     /*
      * Do adjustments if he went up a level

@@ -13,6 +13,7 @@
 #include <curses.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * used to hold the new hero position
@@ -48,7 +49,7 @@ do_move(int dy, int dx)
     if (no_move)
     {
 	no_move--;
-	msg("you are still stuck in the bear trap");
+	msg(msg_get("MSG_MOVE_STUCK_BEAR_TRAP"));
 	return;
     }
     /*
@@ -98,7 +99,7 @@ over:
     }
     else if (on(player, ISHELD) && ch != 'F')
     {
-	msg("you are being held");
+	msg(msg_get("MSG_MOVE_BEING_HELD"));
 	return;
     }
     switch (ch)
@@ -279,40 +280,40 @@ be_trapped(coord *tc)
 	case T_DOOR:
 	    level++;
 	    new_level();
-	    msg("you fell into a trap!");
+	    msg(msg_get("MSG_MOVE_FELL_TRAP"));
 	when T_BEAR:
 	    no_move += BEARTIME;
-	    msg("you are caught in a bear trap");
+	    msg(msg_get("MSG_MOVE_CAUGHT_BEAR_TRAP"));
         when T_MYST:
             switch(rnd(11))
             {
-                case 0: msg("you are suddenly in a parallel dimension");
-                when 1: msg("the light in here suddenly seems %s", rainbow[rnd(cNCOLORS)]);
-                when 2: msg("you feel a sting in the side of your neck");
-                when 3: msg("multi-colored lines swirl around you, then fade");
-                when 4: msg("a %s light flashes in your eyes", rainbow[rnd(cNCOLORS)]);
-                when 5: msg("a spike shoots past your ear!");
-                when 6: msg("%s sparks dance across your armor", rainbow[rnd(cNCOLORS)]);
-                when 7: msg("you suddenly feel very thirsty");
-                when 8: msg("you feel time speed up suddenly");
-                when 9: msg("time now seems to be going slower");
-                when 10: msg("you pack turns %s!", rainbow[rnd(cNCOLORS)]);
+                case 0: msg(msg_get("MSG_MOVE_PARALLEL_DIMENSION"));
+                when 1: msg(msg_get("MSG_MOVE_LIGHT_SEEMS"), rainbow[rnd(cNCOLORS)]);
+                when 2: msg(msg_get("MSG_MOVE_STING_NECK"));
+                when 3: msg(msg_get("MSG_MOVE_MULTICOLOR_SWIRL"));
+                when 4: msg(msg_get("MSG_MOVE_LIGHT_FLASH"), rainbow[rnd(cNCOLORS)]);
+                when 5: msg(msg_get("MSG_MOVE_SPIKE_SHOOTS"));
+                when 6: msg(msg_get("MSG_MOVE_SPARKS_DANCE"), rainbow[rnd(cNCOLORS)]);
+                when 7: msg(msg_get("MSG_MOVE_FEEL_THIRSTY"));
+                when 8: msg(msg_get("MSG_MOVE_TIME_SPEED_UP"));
+                when 9: msg(msg_get("MSG_MOVE_TIME_SLOWER"));
+                when 10: msg(msg_get("MSG_MOVE_PACK_TURNS"), rainbow[rnd(cNCOLORS)]);
             }
 	when T_SLEEP:
 	    no_command += SLEEPTIME;
 	    player.t_flags &= ~ISRUN;
-	    msg("a strange white mist envelops you and you fall asleep");
+	    msg(msg_get("MSG_MOVE_WHITE_MIST"));
 	when T_ARROW:
 	    if (swing(pstats.s_lvl - 1, pstats.s_arm, 1))
 	    {
 		pstats.s_hpt -= roll(1, 6);
 		if (pstats.s_hpt <= 0)
 		{
-		    msg("an arrow killed you");
+		    msg(msg_get("MSG_MOVE_ARROW_KILLED"));
 		    death('a');
 		}
 		else
-		    msg("oh no! An arrow shot you");
+		    msg(msg_get("MSG_MOVE_ARROW_SHOT"));
 	    }
 	    else
 	    {
@@ -321,7 +322,7 @@ be_trapped(coord *tc)
 		arrow->o_count = 1;
 		arrow->o_pos = hero;
 		fall(arrow, FALSE);
-		msg("an arrow shoots past you");
+		msg(msg_get("MSG_MOVE_ARROW_PAST"));
 	    }
 	when T_TELEP:
 	    /*
@@ -332,21 +333,21 @@ be_trapped(coord *tc)
 	    mvaddch(tc->y, tc->x, TRAP);
 	when T_DART:
 	    if (!swing(pstats.s_lvl+1, pstats.s_arm, 1))
-		msg("a small dart whizzes by your ear and vanishes");
+		msg(msg_get("MSG_MOVE_DART_WHIZZES"));
 	    else
 	    {
 		pstats.s_hpt -= roll(1, 4);
 		if (pstats.s_hpt <= 0)
 		{
-		    msg("a poisoned dart killed you");
+		    msg(msg_get("MSG_MOVE_DART_KILLED"));
 		    death('d');
 		}
 		if (!ISWEARING(R_SUSTSTR) && !save(VS_POISON))
 		    chg_str(-1);
-		msg("a small dart just hit you in the shoulder");
+		msg(msg_get("MSG_MOVE_DART_HIT"));
 	    }
 	when T_RUST:
-	    msg("a gush of water hits you on the head");
+	    msg(msg_get("MSG_MOVE_WATER_GUSH"));
 	    rust_armor(cur_armor);
     }
     flush_type();
@@ -412,14 +413,14 @@ rust_armor(THING *arm)
     if ((arm->o_flags & ISPROT) || ISWEARING(R_SUSTARM))
     {
 	if (!to_death)
-	    msg("the rust vanishes instantly");
+	    msg(msg_get("MSG_MOVE_RUST_VANISHES"));
     }
     else
     {
 	arm->o_arm++;
 	if (!terse)
-	    msg("your armor appears to be weaker now. Oh my!");
+	    msg(msg_get("MSG_MOVE_ARMOR_WEAKER_OH"));
 	else
-	    msg("your armor weakens");
+	    msg(msg_get("MSG_MOVE_ARMOR_WEAKENS"));
     }
 }

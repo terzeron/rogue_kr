@@ -14,6 +14,7 @@
 #include <curses.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * add_pack:
@@ -46,7 +47,7 @@ add_pack(THING *obj, bool silent)
 	    mvaddch(hero.y, hero.x, floor_ch());
 	    chat(hero.y, hero.x) = (proom->r_flags & ISGONE) ? PASSAGE : FLOOR;
 	    discard(obj);
-	    msg("the scroll turns to dust as you pick it up");
+	    msg(msg_get("MSG_SCROLL_TO_DUST"));
 	    return;
 	}
 
@@ -152,8 +153,9 @@ out:
     if (!silent)
     {
 	if (!terse)
-	    addmsg("you now have ");
-	msg("%s (%c)", inv_name(obj, !terse), obj->o_packch);
+	    msg(msg_get("MSG_YOU_NOW_HAVE"), inv_name(obj, !terse), obj->o_packch);
+	else
+	    msg("%s (%c)", inv_name(obj, !terse), obj->o_packch);
     }
 }
 
@@ -168,10 +170,10 @@ pack_room(bool from_floor, THING *obj)
     if (++inpack > MAXPACK)
     {
 	if (!terse)
-	    addmsg("there's ");
-	addmsg("no room");
+	    addmsg(msg_get("MSG_THERES"));
+	addmsg(msg_get("MSG_NO_ROOM"));
 	if (!terse)
-	    addmsg(" in your pack");
+	    addmsg(msg_get("MSG_IN_YOUR_PACK"));
 	endmsg();
 	if (from_floor)
 	    move_msg(obj);
@@ -339,8 +341,8 @@ void
 move_msg(THING *obj)
 {
     if (!terse)
-	addmsg("you ");
-    msg("moved onto %s", inv_name(obj, TRUE));
+	addmsg(msg_get("MSG_YOU"));
+    msg(msg_get("MSG_MOVED_ONTO"), inv_name(obj, TRUE));
 }
 
 /*
@@ -355,9 +357,9 @@ picky_inven()
     char mch;
 
     if (pack == NULL)
-	msg("you aren't carrying anything");
+	msg(msg_get("MSG_NOT_CARRYING"));
     else if (next(pack) == NULL)
-	msg("a) %s", inv_name(pack, FALSE));
+	msg(msg_get("MSG_A_ITEM"), inv_name(pack, FALSE));
     else
     {
 	msg(terse ? "item: " : "which item do you wish to inventory: ");
@@ -373,7 +375,7 @@ picky_inven()
 		msg("%c) %s", mch, inv_name(obj, FALSE));
 		return;
 	    }
-	msg("'%s' not in pack", unctrl(mch));
+	msg(msg_get("MSG_NOT_IN_PACK"), unctrl(mch));
     }
 }
 
@@ -388,22 +390,22 @@ get_item(char *purpose, int type)
     char ch;
 
     if (pack == NULL)
-	msg("you aren't carrying anything");
+	msg(msg_get("MSG_NOT_CARRYING"));
     else if (again)
 	if (last_pick)
 	    return last_pick;
 	else
-	    msg("you ran out");
+	    msg(msg_get("MSG_YOU_RAN_OUT"));
     else
     {
 	for (;;)
 	{
 	    if (!terse)
-		addmsg("which object do you want to ");
+		addmsg(msg_get("MSG_WHICH_OBJECT"));
 	    addmsg(purpose);
 	    if (terse)
-		addmsg(" what");
-	    msg("? (* for list): ");
+		addmsg(msg_get("MSG_WHAT"));
+	    msg(msg_get("MSG_FOR_LIST"));
 	    ch = readchar();
 	    mpos = 0;
 	    /*
@@ -432,7 +434,7 @@ get_item(char *purpose, int type)
 		    break;
 	    if (obj == NULL)
 	    {
-		msg("'%s' is not a valid item",unctrl(ch));
+		msg(msg_get("MSG_NOT_VALID_ITEM"), unctrl(ch));
 		continue;
 	    }
 	    else 
@@ -456,8 +458,9 @@ money(int value)
     if (value > 0)
     {
 	if (!terse)
-	    addmsg("you found ");
-	msg("%d gold pieces", value);
+	    msg(msg_get("MSG_YOU_FOUND_GOLD"), value);
+	else
+	    msg("%d gold pieces", value);
     }
 }
 

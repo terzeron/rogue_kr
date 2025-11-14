@@ -15,6 +15,7 @@
 #include <curses.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * command:
@@ -89,7 +90,7 @@ command()
 	    if (--no_command == 0)
 	    {
 		player.t_flags |= ISRUN;
-		msg("you can move again");
+		msg(msg_get("MSG_YOU_CAN_MOVE_AGAIN"));
 	    }
 	}
 	else
@@ -170,10 +171,10 @@ over:
 		    }
 		    else {
 			if (!terse)
-			    addmsg("there is ");
-			addmsg("nothing here");
+			    addmsg(msg_get("MSG_THERE_IS"));
+			addmsg(msg_get("MSG_NOTHING_HERE"));
                         if (!terse)
-                            addmsg(" to pick up");
+                            addmsg(msg_get("MSG_TO_PICK_UP"));
                         endmsg();
 		    }
 		}
@@ -226,8 +227,8 @@ over:
 			|| ((!see_monst(mp)) && !on(player, SEEMONST)))
 		    {
 			if (!terse)
-			    addmsg("I see ");
-			msg("no monster there");
+			    addmsg(msg_get("MSG_I_SEE"));
+			msg(msg_get("MSG_NO_MONSTER_THERE"));
 			after = FALSE;
 		    }
 		    else if (diag_ok(&hero, &delta))
@@ -246,7 +247,7 @@ over:
 		when 'a':
 		    if (last_comm == '\0')
 		    {
-			msg("you haven't typed a command yet");
+			msg(msg_get("MSG_NO_COMMAND_YET"));
 			after = FALSE;
 		    }
 		    else
@@ -291,7 +292,7 @@ over:
 		    wrefresh(curscr);
 		when 'v':
 		    after = FALSE;
-		    msg("version %s. (mctesq was here)", release);
+		    msg(msg_get("MSG_VERSION"), release);
 		when 'S': 
 		    after = FALSE;
 		    save_game();
@@ -304,9 +305,9 @@ over:
 			delta.x += hero.x;
 			fp = &flat(delta.y, delta.x);
                         if (!terse)
-                            addmsg("You have found ");
+                            addmsg(msg_get("MSG_YOU_HAVE_FOUND"));
 			if (chat(delta.y, delta.x) != TRAP)
-			    msg("no trap there");
+			    msg(msg_get("MSG_NO_TRAP_THERE"));
 			else if (on(player, ISHALU))
 			    msg(tr_name[rnd(NTRAPS)]);
 			else {
@@ -321,19 +322,19 @@ over:
 		    {
 			wizard = FALSE;
 			turn_see(TRUE);
-			msg("not wizard any more");
+			msg(msg_get("MSG_NOT_WIZARD"));
 		    }
 		    else
 		    {
 			wizard = passwd();
-			if (wizard) 
+			if (wizard)
 			{
 			    noscore = TRUE;
 			    turn_see(FALSE);
-			    msg("you are suddenly as smart as Ken Arnold in dungeon #%d", dnum);
+			    msg(msg_get("MSG_NOW_WIZARD"), dnum);
 			}
 			else
-			    msg("sorry");
+			    msg(msg_get("MSG_SORRY"));
 		    }
 #endif
 		when ESCAPE:	/* Escape */
@@ -351,13 +352,13 @@ over:
 			countch = dir_ch;
 			goto over;
 		    }
-		when ')': current(cur_weapon, "wielding", NULL);
-		when ']': current(cur_armor, "wearing", NULL);
+		when ')': current(cur_weapon, msg_get("MSG_WIELDING"), NULL);
+		when ']': current(cur_armor, msg_get("MSG_WEARING"), NULL);
 		when '=':
-		    current(cur_ring[LEFT], "wearing",
-					    terse ? "(L)" : "on left hand");
-		    current(cur_ring[RIGHT], "wearing",
-					    terse ? "(R)" : "on right hand");
+		    current(cur_ring[LEFT], msg_get("MSG_WEARING"),
+					    terse ? msg_get("MSG_LEFT_ABBREV") : msg_get("MSG_ON_LEFT_HAND"));
+		    current(cur_ring[RIGHT], msg_get("MSG_WEARING"),
+					    terse ? msg_get("MSG_RIGHT_ABBREV") : msg_get("MSG_ON_RIGHT_HAND"));
 		when '@':
 		    stat_msg = TRUE;
 		    status();
@@ -368,16 +369,16 @@ over:
 #ifdef MASTER
 		    if (wizard) switch (ch)
 		    {
-			case '|': msg("@ %d,%d", hero.y, hero.x);
+			case '|': msg(msg_get("MSG_AT_POSITION"), hero.y, hero.x);
 			when 'C': create_obj();
-			when '$': msg("inpack = %d", inpack);
+			when '$': msg(msg_get("MSG_INPACK"), inpack);
 			when CTRL('G'): inventory(lvl_obj, 0);
 			when CTRL('W'): whatis(FALSE, 0);
 			when CTRL('D'): level++; new_level();
 			when CTRL('A'): level--; new_level();
 			when CTRL('F'): show_map();
 			when CTRL('T'): teleport();
-			when CTRL('E'): msg("food left: %d", food_left);
+			when CTRL('E'): msg(msg_get("MSG_FOOD_LEFT"), food_left);
 			when CTRL('C'): add_pass();
 			when CTRL('X'): turn_see(on(player, SEEMONST));
 			when CTRL('~'):
@@ -462,7 +463,7 @@ illcom(int ch)
 {
     save_msg = FALSE;
     count = 0;
-    msg("illegal command '%s'", unctrl(ch));
+    msg(msg_get("MSG_ILLEGAL_COMMAND"), unctrl(ch));
     save_msg = TRUE;
 }
 
@@ -498,7 +499,7 @@ search()
 			if (rnd(5 + probinc) != 0)
 			    break;
 			chat(y, x) = DOOR;
-                        msg("a secret door");
+                        msg(msg_get("MSG_SECRET_DOOR"));
 foundone:
 			found = TRUE;
 			*fp |= F_REAL;
@@ -510,7 +511,7 @@ foundone:
 			    break;
 			chat(y, x) = TRAP;
 			if (!terse)
-			    addmsg("you found ");
+			    addmsg(msg_get("MSG_YOU_FOUND"));
 			if (on(player, ISHALU))
 			    msg(tr_name[rnd(NTRAPS)]);
 			else {
@@ -531,6 +532,88 @@ foundone:
 }
 
 /*
+ * init_helpstr:
+ *	Initialize help strings from i18n message catalog
+ */
+void
+init_helpstr()
+{
+    static int initialized = 0;
+    int idx = 0;
+
+    if (initialized)
+	return;
+    initialized = 1;
+
+    /* Initialize help descriptions from message catalog */
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_PRINTS_HELP");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_IDENTIFY_OBJECT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_LEFT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_DOWN");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_UP");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RIGHT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_UP_LEFT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_UP_RIGHT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_DOWN_LEFT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_DOWN_RIGHT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_LEFT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_DOWN");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_UP");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_RIGHT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_UP_LEFT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_UP_RIGHT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_DOWN_LEFT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_DOWN_RIGHT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_LEFT_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_DOWN_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_UP_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_RIGHT_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_UP_LEFT_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_UP_RIGHT_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_DOWN_LEFT_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_RUN_DOWN_RIGHT_UNTIL_ADJ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_SHIFT_DIR");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_CTRL_DIR");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_FIGHT_DIR");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_THROW");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_MOVE_ONTO");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_ZAP_DIR");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_IDENTIFY_TRAP");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_SEARCH");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_GO_DOWN");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_GO_UP");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_REST");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_PICK_UP");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_INVENTORY");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_INVENTORY_SINGLE");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_QUAFF");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_READ");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_EAT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_WIELD");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_WEAR_ARMOR");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_TAKE_OFF");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_PUT_ON_RING");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_REMOVE_RING");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_DROP");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_CALL");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_REPEAT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_PRINT_WEAPON");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_PRINT_ARMOR");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_PRINT_RINGS");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_PRINT_STATS");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_DISCOVERED");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_OPTIONS");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_REDRAW");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_REPEAT_MSG");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_CANCEL");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_SAVE");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_QUIT");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_SHELL");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_FIGHT_DEATH");
+    helpstr[idx++].h_desc = msg_get("MSG_HELP_VERSION");
+}
+
+/*
  * help:
  *	Give single character help, or the whole mess if he wants it
  */
@@ -540,7 +623,11 @@ help()
     register struct h_list *strp;
     register char helpch;
     register int numprint, cnt;
-    msg("character you want help for (* for all): ");
+
+    /* Initialize help strings from i18n if needed */
+    init_helpstr();
+
+    msg(msg_get("MSG_HELP_PROMPT"));
     helpch = readchar();
     mpos = 0;
     /*
@@ -558,7 +645,7 @@ help()
 		lower_msg = FALSE;
 		return;
 	    }
-	msg("unknown character '%s'", unctrl(helpch));
+	msg(msg_get("MSG_UNKNOWN_CHARACTER"), unctrl(helpch));
 	return;
     }
     /*
@@ -588,7 +675,7 @@ help()
 		break;
 	}
     wmove(hw, LINES - 1, 0);
-    waddstr(hw, "--Press space to continue--");
+    waddstr(hw, msg_get("MSG_PRESS_SPACE"));
     wrefresh(hw);
     wait_for(' ');
     clearok(stdscr, TRUE);
@@ -609,30 +696,50 @@ identify()
 {
     register int ch;
     register struct h_list *hp;
-    register char *str;
+    register const char *str;
     static struct h_list ident_list[] = {
-	{'|',		"wall of a room",		FALSE},
-	{'-',		"wall of a room",		FALSE},
-	{GOLD,		"gold",				FALSE},
-	{STAIRS,	"a staircase",			FALSE},
-	{DOOR,		"door",				FALSE},
-	{FLOOR,		"room floor",			FALSE},
-	{PLAYER,	"you",				FALSE},
-	{PASSAGE,	"passage",			FALSE},
-	{TRAP,		"trap",				FALSE},
-	{POTION,	"potion",			FALSE},
-	{SCROLL,	"scroll",			FALSE},
-	{FOOD,		"food",				FALSE},
-	{WEAPON,	"weapon",			FALSE},
-	{' ',		"solid rock",			FALSE},
-	{ARMOR,		"armor",			FALSE},
-	{AMULET,	"the Amulet of Yendor",		FALSE},
-	{RING,		"ring",				FALSE},
-	{STICK,		"wand or staff",		FALSE},
+	{'|',		NULL,		FALSE},
+	{'-',		NULL,		FALSE},
+	{GOLD,		NULL,		FALSE},
+	{STAIRS,	NULL,		FALSE},
+	{DOOR,		NULL,		FALSE},
+	{FLOOR,		NULL,		FALSE},
+	{PLAYER,	NULL,		FALSE},
+	{PASSAGE,	NULL,		FALSE},
+	{TRAP,		NULL,		FALSE},
+	{POTION,	NULL,		FALSE},
+	{SCROLL,	NULL,		FALSE},
+	{FOOD,		NULL,		FALSE},
+	{WEAPON,	NULL,		FALSE},
+	{' ',		NULL,		FALSE},
+	{ARMOR,		NULL,		FALSE},
+	{AMULET,	NULL,		FALSE},
+	{RING,		NULL,		FALSE},
+	{STICK,		NULL,		FALSE},
 	{'\0'}
     };
 
-    msg("what do you want identified? ");
+    /* Initialize descriptions from message catalog */
+    ident_list[0].h_desc = msg_get("MSG_WALL");
+    ident_list[1].h_desc = msg_get("MSG_WALL");
+    ident_list[2].h_desc = msg_get("MSG_GOLD_DESC");
+    ident_list[3].h_desc = msg_get("MSG_STAIRCASE");
+    ident_list[4].h_desc = msg_get("MSG_DOOR");
+    ident_list[5].h_desc = msg_get("MSG_ROOM_FLOOR");
+    ident_list[6].h_desc = msg_get("MSG_YOU");
+    ident_list[7].h_desc = msg_get("MSG_PASSAGE");
+    ident_list[8].h_desc = msg_get("MSG_TRAP");
+    ident_list[9].h_desc = msg_get("MSG_POTION");
+    ident_list[10].h_desc = msg_get("MSG_SCROLL");
+    ident_list[11].h_desc = msg_get("MSG_FOOD");
+    ident_list[12].h_desc = msg_get("MSG_WEAPON");
+    ident_list[13].h_desc = msg_get("MSG_SOLID_ROCK");
+    ident_list[14].h_desc = msg_get("MSG_ARMOR");
+    ident_list[15].h_desc = msg_get("MSG_AMULET");
+    ident_list[16].h_desc = msg_get("MSG_RING");
+    ident_list[17].h_desc = msg_get("MSG_STICK");
+
+    msg(msg_get("MSG_WHAT_IDENTIFY"));
     ch = readchar();
     mpos = 0;
     if (ch == ESCAPE)
@@ -644,7 +751,7 @@ identify()
 	str = monsters[ch-'A'].m_name;
     else
     {
-	str = "unknown character";
+	str = msg_get("MSG_UNKNOWN_CHAR");
 	for (hp = ident_list; hp->h_ch != '\0'; hp++)
 	    if (hp->h_ch == ch)
 	    {
@@ -652,7 +759,7 @@ identify()
 		break;
 	    }
     }
-    msg("'%s': %s", unctrl(ch), str);
+    msg(msg_get("MSG_IDENTIFY_RESULT"), unctrl(ch), str);
 }
 
 /*
@@ -665,7 +772,7 @@ d_level()
     if (levit_check())
 	return;
     if (chat(hero.y, hero.x) != STAIRS)
-	msg("I see no way down");
+	msg(msg_get("MSG_NO_WAY_DOWN"));
     else
     {
 	level++;
@@ -690,12 +797,12 @@ u_level()
 	    if (level == 0)
 		total_winner();
 	    new_level();
-	    msg("you feel a wrenching sensation in your gut");
+	    msg(msg_get("MSG_WRENCHING_SENSATION"));
 	}
 	else
-	    msg("your way is magically blocked");
+	    msg(msg_get("MSG_WAY_BLOCKED"));
     else
-	msg("I see no way up");
+	msg(msg_get("MSG_NO_WAY_UP"));
 }
 
 /*
@@ -708,7 +815,7 @@ levit_check()
 {
     if (!on(player, ISLEVIT))
 	return FALSE;
-    msg("You can't.  You're floating off the ground!");
+    msg(msg_get("MSG_CANT_LEVITATE"));
     return TRUE;
 }
 
@@ -753,7 +860,7 @@ norm:
 	    if (*guess != NULL)
 		elsewise = *guess;
 	when FOOD:
-	    msg("you can't call that anything");
+	    msg(msg_get("MSG_CANT_CALL_THAT"));
 	    return;
 	otherwise:
 	    guess = &obj->o_label;
@@ -762,19 +869,19 @@ norm:
     }
     if (know != NULL && *know)
     {
-	msg("that has already been identified");
+	msg(msg_get("MSG_ALREADY_IDENTIFIED"));
 	return;
     }
     if (elsewise != NULL && elsewise == *guess)
     {
 	if (!terse)
-	    addmsg("Was ");
-	msg("called \"%s\"", elsewise);
+	    addmsg(msg_get("MSG_WAS"));
+	msg(msg_get("MSG_CALLED"), elsewise);
     }
     if (terse)
-	msg("call it: ");
+	msg(msg_get("MSG_CALL_IT"));
     else
-	msg("what do you want to call it? ");
+	msg(msg_get("MSG_WHAT_CALL_IT"));
 
     if (elsewise == NULL)
 	strcpy(prbuf, "");
@@ -794,13 +901,16 @@ norm:
  *	Print the current weapon/armor
  */
 void
-current(THING *cur, char *how, char *where)
+current(THING *cur, const char *how, const char *where)
 {
     after = FALSE;
     if (cur != NULL)
     {
 	if (!terse)
-	    addmsg("you are %s (", how);
+	{
+	    addmsg(msg_get("MSG_YOU_ARE"));
+	    addmsg(" %s (", how);
+	}
 	inv_describe = FALSE;
 	addmsg("%c) %s", cur->o_packch, inv_name(cur, TRUE));
 	inv_describe = TRUE;
@@ -811,8 +921,12 @@ current(THING *cur, char *how, char *where)
     else
     {
 	if (!terse)
-	    addmsg("you are ");
-	addmsg("%s nothing", how);
+	{
+	    addmsg(msg_get("MSG_YOU_ARE"));
+	    addmsg(" ");
+	}
+	addmsg("%s ", how);
+	addmsg(msg_get("MSG_NOTHING"));
 	if (where)
 	    addmsg(" %s", where);
 	endmsg();

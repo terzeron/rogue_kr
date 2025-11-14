@@ -5,11 +5,11 @@
 # Rogue: Exploring the Dungeons of Doom
 # Copyright (C) 1980-1983, 1985, 1999 Michael Toy, Ken Arnold and Glenn Wichman
 # All rights reserved.
-#       
+#
 # See the file LICENSE.TXT for full copyright and licensing information.
 #
 ###############################################################################
-        
+
 ###############################################################################
 # Site configuration occurs beneath this comment
 # Typically ./configure (autoconf tools) configures this section
@@ -26,9 +26,9 @@ O=o
 CC    = @CC@
 
 #CFLAGS=-O2
-CFLAGS= @CFLAGS@ 
+CFLAGS= @CFLAGS@
 
-#LIBS=-lcurses
+#LIBS=-lcursesw
 LIBS =	@LIBS@
 
 #RM=rm -f
@@ -95,13 +95,14 @@ man6dir = $(mandir)/man6
 ###############################################################################
 # Site configuration occurs above this comment
 # It should not be necessary to change anything below this comment
-############################################################################### 
+###############################################################################
 
-HDRS     = rogue.h extern.h score.h
+HDRS     = rogue.h extern.h score.h i18n.h
+MSGFILES = en.msg ko.msg
 OBJS1    = vers.$(O) extern.$(O) armor.$(O) chase.$(O) command.$(O) \
            daemon.$(O) daemons.$(O) fight.$(O) init.$(O) io.$(O) list.$(O) \
            mach_dep.$(O) main.$(O) mdport.$(O) misc.$(O) monsters.$(O) \
-           move.$(O) new_level.$(O)
+           move.$(O) new_level.$(O) i18n.$(O) utils.$(O)
 OBJS2    = options.$(O) pack.$(O) passages.$(O) potions.$(O) rings.$(O) \
            rip.$(O) rooms.$(O) save.$(O) scrolls.$(O) state.$(O) sticks.$(O) \
            things.$(O) weapons.$(O) wizard.$(O) xcrypt.$(O)
@@ -111,8 +112,16 @@ CFILES   = vers.c extern.c armor.c chase.c command.c daemon.c \
            main.c  mdport.c misc.c monsters.c move.c new_level.c \
            options.c pack.c passages.c potions.c rings.c rip.c \
            rooms.c save.c scrolls.c state.c sticks.c things.c \
-           weapons.c wizard.c xcrypt.c
+           weapons.c wizard.c xcrypt.c i18n.c utils.c
 MISC_C   = findpw.c scedit.c scmisc.c
+TEST_OBJS = vers.$(O) extern.$(O) armor.$(O) chase.$(O) command.$(O) \
+           daemon.$(O) daemons.$(O) fight.$(O) i18n.$(O) init.$(O) io.$(O) list.$(O) \
+           mach_dep.$(O) mdport.$(O) misc.$(O) monsters.$(O) move.$(O) \
+           new_level.$(O) options.$(O) pack.$(O) passages.$(O) potions.$(O) \
+           rings.$(O) rip.$(O) rooms.$(O) save.$(O) scrolls.$(O) state.$(O) \
+           sticks.$(O) things.$(O) weapons.$(O) wizard.$(O) xcrypt.$(O) utils.$(O)
+TEST_RUNNER = tests/test_runner
+TEST_STUBS = tests/test_main_stubs.$(O)
 DOCSRC   = rogue.me.in rogue.6.in rogue.doc.in rogue.html.in rogue.cat.in
 DOCS     = $(PROGRAM).doc $(PROGRAM).html $(PROGRAM).cat $(PROGRAM).me \
            $(PROGRAM).6
@@ -125,21 +134,84 @@ MISC     = Makefile.std LICENSE.TXT rogue54.sln rogue54.vcproj rogue.spec \
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CPPFLAGS) /c $*.c
-    
+
 .c.o:
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $*.c
-    
-$(PROGRAM): $(HDRS) $(OBJS)
+
+# Default target
+all: $(PROGRAM)
+
+# Message files dependency - i18n module depends on message files
+i18n.$(O): $(MSGFILES)
+
+$(PROGRAM): $(HDRS) $(OBJS) $(MSGFILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
-    
+
+# Test targets
+TEST_MODULAR = tests/test_all
+# Exclude main.o from test builds since tests/test_main.o provides main()
+TEST_ROGUE_OBJS = $(filter-out main.o, $(OBJS))
+TEST_MODULAR_OBJS = tests/test_main.o tests/test_misc.o \
+                    tests/test_fight.o tests/test_monsters.o tests/test_weapons.o \
+                    tests/test_list.o tests/test_move.o tests/test_daemon.o \
+                    tests/test_i18n.o tests/test_armor.o \
+                    tests/test_chase.o tests/test_pack.o tests/test_potions.o \
+                    tests/test_scrolls.o tests/test_rings.o tests/test_sticks.o \
+                    tests/test_things.o tests/test_main_stubs.o tests/test_daemons.o \
+                    tests/test_command.o tests/test_extern.o tests/test_init.o \
+                    tests/test_io.o tests/test_mach_dep.o tests/test_mdport.o \
+                    tests/test_new_level.o tests/test_options.o tests/test_passages.o \
+                    tests/test_rip.o tests/test_rooms.o tests/test_save.o \
+                    tests/test_state.o tests/test_utils.o tests/test_vers.o \
+                    tests/test_wizard.o tests/test_xcrypt.o $(TEST_ROGUE_OBJS)
+
+$(TEST_RUNNER): tests/test_minimal.c
+	$(CC) $(CFLAGS) -o $(TEST_RUNNER) tests/test_minimal.c -lm
+
+tests/%.o: tests/%.c tests/test_framework.h
+	$(CC) $(CFLAGS) -I. -c $< -o $@
+
+$(TEST_MODULAR): $(TEST_MODULAR_OBJS)
+	$(CC) $(CFLAGS) -o $(TEST_MODULAR) $(TEST_MODULAR_OBJS) -lcmocka $(LIBS) -lm
+
+test: $(TEST_MODULAR)
+	@echo "Running Rogue modular test suite..."
+	@./$(TEST_MODULAR)
+
+test-minimal: $(TEST_RUNNER)
+	@echo "Running minimal test suite..."
+	@./$(TEST_RUNNER)
+
+test-build-only:
+	@echo "Testing build process..."
+	@$(MAKE) clean > /dev/null 2>&1
+	@echo "  - Cleaned build directory"
+	@$(MAKE) $(PROGRAM) > /dev/null 2>&1 && echo "  - Build successful: $(PROGRAM) created" || (echo "  - Build FAILED"; exit 1)
+	@test -x ./$(PROGRAM) && echo "  - Executable is valid" || (echo "  - Executable invalid"; exit 1)
+	@echo "Build test PASSED"
+
+check-msgs:
+	@echo "Checking message files..."
+	@for msg in $(MSGFILES) ; do \
+	    if test ! -f $$msg ; then \
+	        echo "  - ERROR: $$msg not found" ; exit 1 ; \
+	    else \
+	        echo "  - $$msg found" ; \
+	    fi ; \
+	done
+	@echo "Message files OK"
+
 clean:
 	$(RM) $(OBJS1)
 	$(RM) $(OBJS2)
 	$(RM) core a.exe a.out a.exe.stackdump $(PROGRAM) $(PROGRAM).exe
-	$(RM) $(PROGRAM).tar $(PROGRAM).tar.gz $(PROGRAM).zip 
+	$(RM) $(PROGRAM).tar $(PROGRAM).tar.gz $(PROGRAM).zip
 	$(RM) $(DISTNAME)/*
+	$(RM) $(TEST_RUNNER) $(TEST_RUNNER).exe
+	$(RM) $(TEST_MODULAR) $(TEST_MODULAR).exe
+	$(RM) tests/*.o
 	-rmdir $(DISTNAME)
-    
+
 maintainer-clean:
 	$(RM) config.h
 	$(RM) Makefile
@@ -158,16 +230,16 @@ stddocs:
 dist.src:
 	$(MAKE) $(MAKEFILE) clean
 	mkdir $(DISTNAME)
-	cp $(CFILES) $(HDRS) $(MISC) $(AFILES) $(DISTNAME)
+	cp $(CFILES) $(HDRS) $(MISC) $(AFILES) $(MSGFILES) $(DISTNAME)
 	tar cf $(DISTNAME)-src.tar $(DISTNAME)
 	gzip -f $(DISTNAME)-src.tar
 	rm -fr $(DISTNAME)
 
 findpw: findpw.c xcrypt.o mdport.o xcrypt.o
-	$(CC) -s -o findpw findpw.c xcrypt.o mdport.o -lcurses
+	$(CC) -s -o findpw findpw.c xcrypt.o mdport.o -lcursesw
 
 scedit: scedit.o scmisc.o vers.o mdport.o xcrypt.o
-	$(CC) -s -o scedit vers.o scedit.o scmisc.o mdport.o xcrypt.o -lcurses
+	$(CC) -s -o scedit vers.o scedit.o scmisc.o mdport.o xcrypt.o -lcursesw
 
 scmisc.o scedit.o:
 	$(CC) -O -c $(SF) $*.c
@@ -187,7 +259,7 @@ $(PROGRAM).cat: rogue.6
 	fi
 
 dist: clean $(PROGRAM)
-	tar cf $(DISTFILE).tar $(PROGRAM) LICENSE.TXT $(DOCS)
+	tar cf $(DISTFILE).tar $(PROGRAM) LICENSE.TXT $(DOCS) $(MSGFILES)
 	gzip -f $(DISTFILE).tar
 
 install: $(PROGRAM)
@@ -207,14 +279,17 @@ install: $(PROGRAM)
 	-$(INSTALL) -m 0644 rogue.cat $(DESTDIR)$(docdir)/$(PROGRAM).cat
 	-$(INSTALL) -m 0644 LICENSE.TXT $(DESTDIR)$(docdir)/LICENSE.TXT
 	-$(INSTALL) -m 0644 rogue.me $(DESTDIR)$(docdir)/$(PROGRAM).me
+	-for msg in $(MSGFILES) ; do \
+	    if test -f $$msg ; then $(INSTALL) -m 0644 $$msg $(DESTDIR)$(datadir)/$(PROGRAM)/$$msg ; fi ; \
+	 done
 	-if test ! -f $(DESTDIR)$(LOCKFILE)  ; then $(INSTALL) -m 0666 test $(DESTDIR)$(LOCKFILE)  ; $(RM) $(DESTDIR)$(LOCKFILE) ; fi
 	-$(RM) test
 
-uninstall:	
+uninstall:
 	-$(RM) $(DESTDIR)$(bindir)/$(PROGRAM)
 	-$(RM) $(DESTDIR)$(man6dir)/$(PROGRAM).6
 	-$(RM) $(DESTDIR)$(docdir)$(PROGRAM)/$(PROGRAM).doc
 	-$(RM) $(DESTDIR)$(LOCKFILE)
 	-$(RMDIR) $(DESTDIR)$(docdir)$(PROGRAM)
-    
+
 reinstall: uninstall install

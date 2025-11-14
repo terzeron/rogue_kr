@@ -96,7 +96,7 @@ set_know(THING *obj, struct obj_info *info)
  * type_name:
  *	Return a pointer to the name of the type
  */
-char *
+const char *
 type_name(int type)
 {
     struct h_list *hp;

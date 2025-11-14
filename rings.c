@@ -12,6 +12,7 @@
 
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * ring_on:
@@ -33,9 +34,9 @@ ring_on()
     if (obj->o_type != RING)
     {
 	if (!terse)
-	    msg("it would be difficult to wrap that around a finger");
+	    msg(msg_get("MSG_RING_DIFFICULT_WRAP"));
 	else
-	    msg("not a ring");
+	    msg(msg_get("MSG_RING_NOT_RING"));
 	return;
     }
 
@@ -57,9 +58,9 @@ ring_on()
     else
     {
 	if (!terse)
-	    msg("you already have a ring on each hand");
+	    msg(msg_get("MSG_RING_ALREADY_TWO"));
 	else
-	    msg("wearing two");
+	    msg(msg_get("MSG_RING_WEARING_TWO"));
 	return;
     }
     cur_ring[ring] = obj;
@@ -81,8 +82,8 @@ ring_on()
     }
 
     if (!terse)
-	addmsg("you are now wearing ");
-    msg("%s (%c)", inv_name(obj, TRUE), obj->o_packch);
+	addmsg(msg_get("MSG_RING_NOW_WEARING"));
+    msg(" %s (%c)", inv_name(obj, TRUE), obj->o_packch);
 }
 
 /*
@@ -99,9 +100,9 @@ ring_off()
     if (cur_ring[LEFT] == NULL && cur_ring[RIGHT] == NULL)
     {
 	if (terse)
-	    msg("no rings");
+	    msg(msg_get("MSG_RING_NO_RINGS"));
 	else
-	    msg("you aren't wearing any rings");
+	    msg(msg_get("MSG_RING_NOT_WEARING_ANY"));
 	return;
     }
     else if (cur_ring[LEFT] == NULL)
@@ -115,11 +116,11 @@ ring_off()
     obj = cur_ring[ring];
     if (obj == NULL)
     {
-	msg("not wearing such a ring");
+	msg(msg_get("MSG_RING_NOT_WEARING_SUCH"));
 	return;
     }
     if (dropcheck(obj))
-	msg("was wearing %s(%c)", inv_name(obj, TRUE), obj->o_packch);
+	msg(msg_get("MSG_RING_WAS_WEARING"), inv_name(obj, TRUE), obj->o_packch);
 }
 
 /*
@@ -134,9 +135,9 @@ gethand()
     for (;;)
     {
 	if (terse)
-	    msg("left or right ring? ");
+	    msg(msg_get("MSG_RING_LEFT_OR_RIGHT"));
 	else
-	    msg("left hand or right hand? ");
+	    msg(msg_get("MSG_RING_LEFT_OR_RIGHT_HAND"));
 	if ((c = readchar()) == ESCAPE)
 	    return -1;
 	mpos = 0;
@@ -145,9 +146,9 @@ gethand()
 	else if (c == 'r' || c == 'R')
 	    return RIGHT;
 	if (terse)
-	    msg("L or R");
+	    msg(msg_get("MSG_RING_L_OR_R"));
 	else
-	    msg("please type L or R");
+	    msg(msg_get("MSG_RING_PLEASE_L_OR_R"));
     }
 }
 

@@ -11,6 +11,7 @@
  * See the file LICENSE.TXT for full copyright and licensing information.
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -21,6 +22,7 @@
 #include <curses.h>
 #include "rogue.h"
 #include "score.h"
+#include "i18n.h"
 
 static char *rip[] = {
 "                       __________\n",
@@ -38,6 +40,32 @@ static char *rip[] = {
 "         ________)/\\\\_//(\\/(/\\)/\\//\\/|_)_______\n",
     0
 };
+
+static void
+format_tomb_line(char *out, size_t size,
+    const char *prefix, const char *text, const char *suffix, int inner_width)
+{
+    const char *content = (text == NULL) ? "" : text;
+    if (inner_width <= 0)
+    {
+	snprintf(out, size, "%s%s%s", prefix, content, suffix);
+	return;
+    }
+
+    int len = (int) strlen(content);
+    if (len > inner_width)
+    {
+	snprintf(out, size, "%s%s%s", prefix, content, suffix);
+	return;
+    }
+
+    int pad = inner_width - len;
+    int left = pad / 2;
+    int right = pad - left;
+
+    snprintf(out, size, "%s%*s%s%*s%s",
+	     prefix, left, "", content, right, "", suffix);
+}
 
 /*
  * score:
@@ -57,12 +85,13 @@ score(int amount, int flags, char monst)
 # endif
     void (*fp)(int);
     unsigned int uid;
-    static char *reason[] = {
-	"killed",
-	"quit",
-	"A total winner",
-	"killed with Amulet"
-    };
+    const char *reason[4];
+
+    /* Initialize reason strings from i18n */
+    reason[0] = msg_get("MSG_KILLED");
+    reason[1] = msg_get("MSG_QUIT");
+    reason[2] = msg_get("MSG_TOTAL_WINNER");
+    reason[3] = msg_get("MSG_KILLED_WITH_AMULET");
 
     start_score();
 
@@ -72,7 +101,7 @@ score(int amount, int flags, char monst)
 #endif
         )
     {
-	mvaddstr(LINES - 1, 0 , "[Press return to continue]");
+	mvaddstr(LINES - 1, 0 , msg_get("MSG_PRESS_RETURN_TO_CONTINUE"));
         refresh();
         wgetnstr(stdscr,prbuf,80);
  	endwin();
@@ -159,18 +188,22 @@ score(int amount, int flags, char monst)
      */
     if (flags != -1)
 	putchar('\n');
-    printf("Top %s %s:\n", Numname, allscore ? "Scores" : "Rogueists");
-    printf("   Score Name\n");
+    printf(msg_get("MSG_TOP_SCORES"), Numname, allscore ? msg_get("MSG_SCORES") : msg_get("MSG_ROGUEISTS"));
+    putchar('\n');
+    printf("%s", msg_get("MSG_SCORE_HEADER"));
+    putchar('\n');
     for (scp = top_ten; scp < endp; scp++)
     {
 	if (scp->sc_score) {
 	    if (sc2 == scp)
             md_raw_standout();
-	    printf("%2d %5d %s: %s on level %d", (int) (scp - top_ten + 1),
-		scp->sc_score, scp->sc_name, reason[scp->sc_flags],
-		scp->sc_level);
-	    if (scp->sc_flags == 0 || scp->sc_flags == 3)
-		printf(" by %s", killname((char) scp->sc_monster, TRUE));
+	    printf("%2d %5d %s: %s ", (int) (scp - top_ten + 1),
+		scp->sc_score, scp->sc_name, reason[scp->sc_flags]);
+	    printf(msg_get("MSG_ON_LEVEL"), scp->sc_level);
+	    if (scp->sc_flags == 0 || scp->sc_flags == 3) {
+		printf(" ");
+		printf(msg_get("MSG_BY"), killname((char) scp->sc_monster, TRUE));
+	    }
 #ifdef MASTER
 	    if (prflags == 1)
 	    {
@@ -239,27 +272,66 @@ death(char monst)
     killer = killname(monst, FALSE);
     if (!tombstone)
     {
-	mvprintw(LINES - 2, 0, "Killed by ");
+        mvprintw(LINES - 2, 0, "%s", msg_get("MSG_KILLED_BY_PREFIX"));
+	printw(" ");
 	killer = killname(monst, FALSE);
 	if (monst != 's' && monst != 'h')
 	    printw("a%s ", vowelstr(killer));
-	printw("%s with %d gold", killer, purse);
+	printw("%s ", killer);
+	printw(msg_get("MSG_WITH_GOLD"), purse);
     }
     else
     {
+	char rest_line[80], in_line[80], peace_line[80], killed_line[80];
+	char killed_text[80];
+	const char *rest_txt = msg_get("MSG_TOMBSTONE_REST");
+	const char *in_txt = msg_get("MSG_TOMBSTONE_IN");
+	const char *peace_txt = msg_get("MSG_TOMBSTONE_PEACE");
+	const char *killed_template = msg_get("MSG_TOMBSTONE_KILLED");
+	const char *gold_label = msg_get("MSG_TOMBSTONE_GOLD");
+	const char *article = (monst == 's' || monst == 'h') ? "" : vowelstr(killer);
+
+	format_tomb_line(rest_line, sizeof(rest_line),
+	                 "                     /    ", rest_txt, "    \\\n", 8);
+	format_tomb_line(in_line, sizeof(in_line),
+	                 "                    /      ", in_txt, "      \\\n", 6);
+	format_tomb_line(peace_line, sizeof(peace_line),
+	                 "                   /     ", peace_txt, "      \\\n", 5);
+
+	if (strstr(killed_template, "%s") != NULL)
+	    snprintf(killed_text, sizeof(killed_text), killed_template, article);
+	else
+	    snprintf(killed_text, sizeof(killed_text), "%s%s", killed_template, article);
+
+	format_tomb_line(killed_line, sizeof(killed_line),
+	                 "                  |   ", killed_text, "    |\n", 14);
 	time(&date);
 	lt = localtime(&date);
 	move(8, 0);
-	dp = rip;
-	while (*dp)
-	    addstr(*dp++);
+	for (int i = 0; rip[i] != NULL; i++)
+	{
+	    switch (i)
+	    {
+		case 2:
+		    addstr(rest_line);
+		    break;
+		case 3:
+		    addstr(in_line);
+		    break;
+		case 4:
+		    addstr(peace_line);
+		    break;
+		case 8:
+		    addstr(killed_line);
+		    break;
+		default:
+		    addstr(rip[i]);
+		    break;
+	    }
+	}
 	mvaddstr(17, center(killer), killer);
-	if (monst == 's' || monst == 'h')
-	    mvaddch(16, 32, ' ');
-	else
-	    mvaddstr(16, 33, vowelstr(killer));
 	mvaddstr(14, center(whoami), whoami);
-	sprintf(prbuf, "%d Au", purse);
+	snprintf(prbuf, MAXSTR, "%d %s", purse, gold_label);
 	move(15, center(prbuf));
 	addstr(prbuf);
 	sprintf(prbuf, "%4d", 1900+lt->tm_year);
@@ -268,9 +340,11 @@ death(char monst)
     move(LINES - 1, 0);
     refresh();
     score(purse, amulet ? 3 : 0, monst);
-    printf("[Press return to continue]");
+    printf("%s", msg_get("MSG_PRESS_RETURN_TO_CONTINUE"));
     fflush(stdout);
-    (void) fgets(prbuf,10,stdin);
+    if (fgets(prbuf,10,stdin) == NULL) {
+        prbuf[0] = '\0';
+    }
     my_exit(0);
 }
 
@@ -393,7 +467,7 @@ char *
 killname(char monst, bool doart)
 {
     struct h_list *hp;
-    char *sp;
+    const char *sp;
     bool article;
     static struct h_list nlist[] = {
 	{'a',	"arrow",		TRUE},
@@ -421,11 +495,37 @@ killname(char monst, bool doart)
 		break;
 	    }
     }
-    if (doart && article)
-	sprintf(prbuf, "a%s ", vowelstr(sp));
-    else
-	prbuf[0] = '\0';
-    strcat(prbuf, sp);
+
+    /* Translate death causes and monster names */
+    if (monst == 'a')
+	sp = msg_get("MSG_DEATH_ARROW");
+    else if (monst == 'b')
+	sp = msg_get("MSG_DEATH_BOLT");
+    else if (monst == 'd')
+	sp = msg_get("MSG_DEATH_DART");
+    else if (monst == 'h')
+	sp = msg_get("MSG_DEATH_HYPOTHERMIA");
+    else if (monst == 's')
+	sp = msg_get("MSG_DEATH_STARVATION");
+    else if (isupper(monst))
+    {
+	/* Translate monster names */
+	static const char *monster_msg_keys[] = {
+	    "MSG_MONSTER_AQUATOR", "MSG_MONSTER_BAT", "MSG_MONSTER_CENTAUR",
+	    "MSG_MONSTER_DRAGON", "MSG_MONSTER_EMU", "MSG_MONSTER_VENUS_FLYTRAP",
+	    "MSG_MONSTER_GRIFFIN", "MSG_MONSTER_HOBGOBLIN", "MSG_MONSTER_ICE_MONSTER",
+	    "MSG_MONSTER_JABBERWOCK", "MSG_MONSTER_KESTREL", "MSG_MONSTER_LEPRECHAUN",
+	    "MSG_MONSTER_MEDUSA", "MSG_MONSTER_NYMPH", "MSG_MONSTER_ORC",
+	    "MSG_MONSTER_PHANTOM", "MSG_MONSTER_QUAGGA", "MSG_MONSTER_RATTLESNAKE",
+	    "MSG_MONSTER_SNAKE", "MSG_MONSTER_TROLL", "MSG_MONSTER_BLACK_UNICORN",
+	    "MSG_MONSTER_VAMPIRE", "MSG_MONSTER_WRAITH", "MSG_MONSTER_XEROC",
+	    "MSG_MONSTER_YETI", "MSG_MONSTER_ZOMBIE"
+	};
+	sp = msg_get(monster_msg_keys[monst - 'A']);
+    }
+
+    /* For Korean, we don't use articles like "a" or "the" */
+    strcpy(prbuf, sp);
     return prbuf;
 }
 

@@ -1,0 +1,536 @@
+# Rogue용 한국어 메시지 카탈로그
+# 형식: 키=값
+
+# io.c 메시지
+MSG_MORE=--계속--
+MSG_LEVEL=레벨
+MSG_GOLD=골드
+MSG_HP=체력
+MSG_STR=힘
+MSG_ARM=방어
+MSG_EXP=경험
+MSG_HUNGRY=배고픔
+MSG_WEAK=약화
+MSG_FAINT=기절
+
+# command.c 메시지
+MSG_YOU_CAN_MOVE_AGAIN=다시 움직일 수 있습니다
+MSG_THERE_IS=여기에
+MSG_NOTHING_HERE=아무것도 없습니다
+MSG_TO_PICK_UP= 주울 것이
+MSG_I_SEE=보입니다
+MSG_NO_MONSTER_THERE=거기에는 몬스터가 없습니다
+MSG_NO_COMMAND_YET=아직 명령을 입력하지 않았습니다
+MSG_VERSION=버전 %s. (mctesq 다녀감)
+MSG_YOU_HAVE_FOUND=발견했습니다
+MSG_NO_TRAP_THERE=거기에는 함정이 없습니다
+MSG_NOT_WIZARD=더 이상 마법사가 아닙니다
+MSG_NOW_WIZARD=당신은 갑자기 %d번 던전의 켄 아놀드처럼 똑똑해졌습니다
+MSG_SORRY=죄송합니다
+MSG_AT_POSITION=위치: %d,%d
+MSG_INPACK=소지품 = %d
+MSG_FOOD_LEFT=남은 식량: %d
+MSG_ILLEGAL_COMMAND=잘못된 명령어 '%s'
+MSG_SECRET_DOOR=비밀 문
+MSG_YOU_FOUND=발견했습니다
+MSG_HELP_PROMPT=도움이 필요한 문자를 입력하세요 (*는 모두):
+MSG_UNKNOWN_CHARACTER=알 수 없는 문자 '%s'
+MSG_PRESS_SPACE=--계속하려면 스페이스를 누르세요--
+MSG_WHAT_IDENTIFY=무엇을 식별하시겠습니까?
+MSG_IDENTIFY_RESULT='%s': %s
+MSG_NO_WAY_DOWN=아래로 내려가는 길이 보이지 않습니다
+MSG_WRENCHING_SENSATION=뱃속이 뒤틀리는 느낌이 듭니다
+MSG_WAY_BLOCKED=마법에 의해 길이 막혔습니다
+MSG_NO_WAY_UP=위로 올라가는 길이 보이지 않습니다
+MSG_CANT_LEVITATE=할 수 없습니다. 공중에 떠 있습니다!
+MSG_CANT_CALL_THAT=그것을 아무 이름으로나 부를 수 없습니다
+MSG_ALREADY_IDENTIFIED=이미 식별되었습니다
+MSG_WAS=이전에
+MSG_CALLED="%s"(으)로 불렸습니다
+MSG_CALL_IT=이름:
+MSG_WHAT_CALL_IT=무엇이라고 부르시겠습니까?
+MSG_YOU_ARE=당신은
+MSG_NOTHING=아무것도
+MSG_WIELDING= 들고 있습니다
+MSG_WEARING= 입고 있습니다
+MSG_ON_LEFT_HAND=왼손에
+MSG_ON_RIGHT_HAND=오른손에
+MSG_LEFT_ABBREV=(왼)
+MSG_RIGHT_ABBREV=(오)
+
+# identify.c 설명
+MSG_WALL=방의 벽
+MSG_GOLD_DESC=골드
+MSG_STAIRCASE=계단
+MSG_DOOR=문
+MSG_ROOM_FLOOR=방 바닥
+MSG_YOU=당신
+MSG_PASSAGE=통로
+MSG_TRAP=함정
+MSG_POTION=물약
+MSG_SCROLL=두루마리
+MSG_FOOD=식량
+MSG_WEAPON=무기
+MSG_SOLID_ROCK=단단한 바위
+MSG_ARMOR=갑옷
+MSG_AMULET=옌도르의 아뮬렛
+MSG_RING=반지
+MSG_STICK=마법봉 또는 지팡이
+MSG_UNKNOWN_CHAR=알 수 없는 문자
+
+# fight.c 메시지
+MSG_HANDS_STOP_GLOWING=손에서 나던 %s 빛이 사라집니다
+MSG_APPEARS_CONFUSED=%s이(가) 혼란스러워 보입니다
+MSG_PERIOD=.
+MSG_YOU_ARE_FROZEN=몸이 얼어붙었습니다
+MSG_BY_THE= %s 때문에
+MSG_BITE_LEG_WEAKER=다리를 물려 약해진 느낌입니다
+MSG_BITE_WEAKENED=물려서 약해졌습니다
+MSG_BITE_MOMENTARILY=물려서 순간적으로 약해졌습니다
+MSG_BITE_NO_EFFECT=물렸지만 효과가 없습니다
+MSG_SUDDENLY_WEAKER=갑자기 약해진 느낌입니다
+MSG_PURSE_LIGHTER=지갑이 가벼워진 것 같습니다
+MSG_SHE_STOLE=그녀가 %s을(를) 훔쳤습니다!
+MSG_THE_HITS=%s이(가) 명중했습니다
+MSG_YOU_HIT=명중했습니다
+MSG_THE_MISSES=%s이(가) 빗나갔습니다
+MSG_YOU_MISSED=빗나갔습니다
+MSG_DEFEATED=. 물리쳤습니다
+MSG_YOU_HAVE=당신은
+MSG_DEFEATED_LOWER=물리쳤습니다
+MSG_YOU_DEFEATED_MONSTER=당신은 %s을(를) 물리쳤습니다.
+MSG_DEFEATED_MONSTER=%s을(를) 물리쳤습니다.
+MSG_HIT_MONSTER_TERSE=당신은 %s을(를) 공격했습니다.
+MSG_HIT_MONSTER_1=당신은 %s에게 강력한 공격을 성공했습니다.
+MSG_HIT_MONSTER_2=당신은 %s을(를) 공격했습니다.
+MSG_HIT_MONSTER_3=당신은 %s에게 상처를 입혔습니다.
+MSG_HIT_MONSTER_4=당신은 %s을(를) 휘둘러 공격했습니다.
+MSG_MISS_MONSTER_1=당신은 %s을(를) 놓쳤습니다.
+MSG_MISS_MONSTER_2=당신은 %s을(를) 공격했지만 빗나갔습니다.
+MSG_MISS_MONSTER_3=당신의 공격이 %s을(를) 간신히 빗나갔습니다.
+MSG_MISS_MONSTER_4=당신은 %s을(를) 맞추지 못했습니다.
+MSG_MONSTER_HIT_1=%s이(가) 당신에게 강력한 공격을 성공했습니다.
+MSG_MONSTER_HIT_2=%s이(가) 당신을 공격했습니다.
+MSG_MONSTER_HIT_3=%s이(가) 당신에게 상처를 입혔습니다.
+MSG_MONSTER_HIT_4=%s이(가) 당신을 휘둘러 공격했습니다.
+MSG_MONSTER_MISS_1=%s이(가) 당신을 놓쳤습니다.
+MSG_MONSTER_MISS_2=%s이(가) 당신을 공격했지만 빗나갔습니다.
+MSG_MONSTER_MISS_3=당신은 %s의 공격을 간신히 피했습니다.
+MSG_MONSTER_MISS_4=%s이(가) 당신을 맞추지 못했습니다.
+MSG_IT=그것
+MSG_SOMETHING=무언가
+
+# pack.c 메시지
+MSG_IN_YOUR_PACK= 당신의 가방에
+MSG_WHAT= 무엇을
+MSG_NOT_VALID_ITEM='%s'은(는) 유효한 아이템이 아닙니다
+MSG_NOT_IN_PACK='%s'이(가) 가방에 없습니다
+MSG_FOR_LIST=? (* 목록):
+MSG_A_ITEM=a) %s
+MSG_MOVED_ONTO=%s 위로 이동했습니다
+MSG_NO_ROOM=공간이 없습니다
+MSG_SCROLL_TO_DUST=두루마리를 집자 먼지로 변했습니다
+MSG_THERES= 있습니다
+MSG_WHICH_OBJECT=어떤 물건을
+MSG_NOT_CARRYING=아무것도 가지고 있지 않습니다
+MSG_YOU_FOUND=발견했습니다
+MSG_YOU_FOUND_GOLD=%d 골드 조각을 발견했습니다
+MSG_YOU_NOW_HAVE=%s을(를) 주웠습니다 (%c)
+MSG_YOU_RAN_OUT=다 썼습니다
+MSG_GOLD_PICES=골드 %d개
+
+# move.c 메시지
+MSG_MOVE_STUCK_BEAR_TRAP=아직 곰 덫에 걸려있습니다
+MSG_MOVE_BEING_HELD=붙잡혔습니다
+MSG_MOVE_FELL_TRAP=함정에 빠졌습니다!
+MSG_MOVE_CAUGHT_BEAR_TRAP=곰 덫에 걸렸습니다
+MSG_MOVE_PARALLEL_DIMENSION=갑자기 평행 차원으로 이동했습니다
+MSG_MOVE_LIGHT_SEEMS=이곳의 빛이 갑자기 %s 보입니다
+MSG_MOVE_STING_NECK=목 옆이 따끔합니다
+MSG_MOVE_MULTICOLOR_SWIRL=여러 색의 선들이 주위를 맴돌다 사라집니다
+MSG_MOVE_LIGHT_FLASH=%s 빛이 눈에서 번쩍입니다
+MSG_MOVE_SPIKE_SHOOTS=가시가 귀를 스쳐 지나갑니다!
+MSG_MOVE_SPARKS_DANCE=%s 불꽃이 갑옷 위에서 춤을 춥니다
+MSG_MOVE_FEEL_THIRSTY=갑자기 심한 갈증을 느낍니다
+MSG_MOVE_TIME_SPEED_UP=시간이 갑자기 빨리 가는 것처럼 느껴집니다
+MSG_MOVE_TIME_SLOWER=이제 시간이 느리게 가는 것 같습니다
+MSG_MOVE_PACK_TURNS=가방이 %s(으)로 변합니다!
+MSG_MOVE_WHITE_MIST=이상한 흰 안개가 당신을 감싸고 잠이 듭니다
+MSG_MOVE_ARROW_KILLED=화살에 맞아 죽었습니다
+MSG_MOVE_ARROW_SHOT=이런! 화살에 맞았습니다
+MSG_MOVE_ARROW_PAST=화살이 당신을 스쳐 지나갑니다
+MSG_MOVE_DART_WHIZZES=작은 다트가 귓가를 쌩하고 지나가 사라집니다
+MSG_MOVE_DART_KILLED=독 다트에 맞아 죽었습니다
+MSG_MOVE_DART_HIT=작은 다트가 어깨에 맞았습니다
+MSG_MOVE_WATER_GUSH=물줄기가 머리에 쏟아집니다
+MSG_MOVE_RUST_VANISHES=녹이 즉시 사라집니다
+MSG_MOVE_ARMOR_WEAKER_OH=갑옷이 약해진 것 같습니다. 이런!
+MSG_MOVE_ARMOR_WEAKENS=갑옷이 약해집니다
+
+# scrolls.c 메시지
+MSG_SCROLL_NOTHING_ON_IT=읽을 내용이 아무것도 없습니다
+MSG_SCROLL_NOTHING_TO_READ=읽을 것이 없습니다
+MSG_SCROLL_HANDS_GLOW=손에서 %s 빛이 나기 시작합니다
+MSG_SCROLL_ARMOR_GLOWS=갑옷에서 잠시 %s 빛이 납니다
+MSG_SCROLL_MONSTER_FREEZE_1=주위의 몬스터
+MSG_SCROLL_MONSTER_FREEZE_2=들이
+MSG_SCROLL_MONSTER_FREEZE_3= 얼어붙습니다
+MSG_SCROLL_MONSTER_FREEZE_4=
+MSG_SCROLL_SENSE_OF_LOSS=이상한 상실감을 느낍니다
+MSG_SCROLL_FALL_ASLEEP=잠이 듭니다
+MSG_SCROLL_FAINT_CRY=멀리서 희미한 고뇌의 외침이 들립니다
+MSG_SCROLL_IS_AN=이 두루마리는 %s의 두루마리입니다
+MSG_SCROLL_HAS_MAP=오, 이 두루마리에는 지도가 있습니다
+MSG_SCROLL_NOSE_TINGLES_FOOD=코가 간질거리며 음식 냄새가 납니다.--계속--
+MSG_SCROLL_NOSE_TINGLES=코가 간질거립니다
+MSG_SCROLL_WEAPON_GLOWS=당신의 %s에서 잠시 %s 빛이 납니다
+MSG_SCROLL_MANIACAL_LAUGHTER=멀리서 미친 웃음소리가 들립니다
+MSG_SCROLL_UNIVERSAL_ONENESS=우주적 일체감을 느낍니다
+MSG_SCROLL_WATCHED_OVER=누군가 당신을 지켜보는 것 같습니다
+MSG_SCROLL_HIGH_HUMMING=높은 허밍 소리가 들립니다
+MSG_SCROLL_ARMOR_SHIELD=갑옷이 반짝이는 %s 보호막으로 덮입니다
+MSG_SCROLL_PUZZLING=정말 수수께끼 같은 두루마리입니다!
+
+# sticks.c 메시지
+MSG_STICK_CANT_ZAP=그것으로는 마법을 쓸 수 없습니다!
+MSG_STICK_NOTHING_HAPPENS=아무 일도 일어나지 않습니다
+MSG_STICK_CORRIDOR_GLOWS=복도가 빛나다가 사라집니다
+MSG_STICK_ROOM_LIT=방이 밝아졌습니다
+MSG_STICK_BY_LIGHT= 반짝이는 %s 빛으로
+MSG_STICK_TOO_WEAK=너무 약해서 사용할 수 없습니다
+MSG_STICK_MISSILE_VANISHES=발사체가 사라집니다
+MSG_STICK_MISSILE_VANISHES_LONG=발사체가 연기와 함께 사라집니다
+MSG_STICK_BIZARRE=정말 기괴한 막대기입니다!
+MSG_STICK_TINGLING=짜릿한 느낌이 듭니다
+MSG_STICK_BOUNCES=%s이(가) 튕깁니다
+MSG_STICK_FLAME_BOUNCES=불꽃이 튕깁니다
+MSG_STICK_OFF_DRAGON= 용에게서
+MSG_STICK_MISSES=%s이(가) 빗나갔습니다
+MSG_STICK_WHIZZES_PAST=%s이(가) %s을(를) 쌩하고 지나갑니다
+MSG_STICK_HITS=%s이(가) 명중합니다
+MSG_STICK_HIT_BY=%s에 맞았습니다
+MSG_STICK_WHIZZES_BY=%s이(가) 당신 옆을 쌩하고 지나갑니다
+MSG_STICK_CHARGES= [%d회]
+MSG_STICK_CHARGES_SHORT= [%d]
+
+# rings.c 메시지
+MSG_RING_DIFFICULT_WRAP=손가락에 끼우기 어려울 것 같습니다
+MSG_RING_NOT_RING=반지가 아닙니다
+MSG_RING_ALREADY_TWO=이미 양손에 반지를 끼고 있습니다
+MSG_RING_WEARING_TWO=두 개 착용 중
+MSG_RING_NOW_WEARING=이제 착용합니다
+MSG_RING_NO_RINGS=반지 없음
+MSG_RING_NOT_WEARING_ANY=반지를 끼고 있지 않습니다
+MSG_RING_NOT_WEARING_SUCH=그런 반지를 끼고 있지 않습니다
+MSG_RING_WAS_WEARING=%s(%c) 착용 중이었음
+MSG_RING_LEFT_OR_RIGHT=왼쪽 또는 오른쪽 반지?
+MSG_RING_LEFT_OR_RIGHT_HAND=왼손 또는 오른손?
+MSG_RING_L_OR_R=왼쪽 또는 오른쪽
+MSG_RING_PLEASE_L_OR_R=L 또는 R을 입력하세요
+
+# potions.c 메시지
+MSG_POTION_TRIPY=정말 환상적인 느낌입니다!
+MSG_POTION_CONFUSED=잠깐, 무슨 일이지. 응? 뭐라고? 누구?
+MSG_POTION_COSMIC=오, 와! 모든 것이 정말 우주적으로 보입니다!
+MSG_POTION_DARK_BUMMER=오, 젠장! 모든 것이 어둡습니다! 도와줘!
+MSG_POTION_DARK_CLOAK=어둠의 장막이 당신 주위에 내려앉습니다
+MSG_POTION_FLOATING_WOW=오, 와! 공중에 떠 있습니다!
+MSG_POTION_FLOATING_START=공중에 떠오르기 시작합니다
+MSG_POTION_YUK=우웩! 왜 그걸 마시고 싶어하나요?
+MSG_POTION_UNDRINKABLE=마실 수 없습니다
+MSG_POTION_MOMENTARILY_SICK=순간적으로 메스꺼움을 느낍니다
+MSG_POTION_VERY_SICK=이제 매우 아픈 느낌입니다
+MSG_POTION_FEEL_BETTER=기분이 나아지기 시작합니다
+MSG_POTION_STRONGER=이제 더 강해진 느낌입니다. 이 불룩한 근육 좀 보세요!
+MSG_POTION_FEELING_PASSES=잠시 %s 느낌이 들다가 사라집니다
+MSG_POTION_FEELING_NORMAL=평범한
+MSG_POTION_FEELING_STRANGE=이상한
+MSG_POTION_SENSE_MAGIC=이 레벨에서 마법의 존재를 감지합니다.--계속--
+MSG_POTION_TASTES_LIKE=이 물약은 %s 주스 맛이 납니다
+MSG_POTION_MORE_SKILLFUL=갑자기 훨씬 더 능숙해진 느낌입니다
+MSG_POTION_MUCH_BETTER=기분이 훨씬 나아지기 시작합니다
+MSG_POTION_MOVING_FASTER=훨씬 더 빨리 움직이는 것을 느낍니다
+MSG_POTION_TASTES_GREAT=이거 맛이 좋네요. 온몸이 따뜻해지는 느낌입니다
+MSG_POTION_ODD_TASTING=정말 이상한 맛의 물약입니다!
+
+# things.c 메시지
+MSG_THING_SOMETHING_THERE=거기에 이미 무언가 있습니다
+MSG_THING_DROPPED=%s을(를) 떨어뜨렸습니다
+MSG_THING_CANT_CURSED=할 수 없습니다. 저주받은 것 같습니다
+MSG_THING_BAD_PICK_ONE=잘못된 선택: %d 아이템 중 %d
+MSG_THING_ITEM_PROB=%s: %d%%
+MSG_THING_FOR=에 대해
+MSG_THING_WHAT_TYPE=어떤 종류
+MSG_THING_WANT_LIST=의 물건 목록을 원하십니까
+MSG_THING_PROMPT_ALL=? (*는 모두)
+MSG_THING_PROMPT_WIZARD=?
+MSG_THING_NOT_A_TYPE=종류가 아닙니다
+MSG_THING_PLEASE_TYPE=%c%c%c%c 중 하나를 입력하세요 (종료는 ESCAPE)
+
+# main.c messages
+MSG_QUIT_WITH_GOLD=골드 %d개를 가지고 게임을 종료했습니다
+MSG_REALLY_QUIT=정말 종료할까요?
+MSG_YES_KEY=y
+
+# rip.c messages
+MSG_GOLD_PIECES_RIP=   %5d  골드
+MSG_TOMBSTONE_REST=평안히
+MSG_TOMBSTONE_IN=잠드소서
+MSG_TOMBSTONE_PEACE=영원히
+MSG_TOMBSTONE_KILLED=에게 살해됨%s
+MSG_TOMBSTONE_GOLD=골드
+
+# armor.c messages
+MSG_ARMOR_ALREADY_WEARING=you are already wearing some
+MSG_ARMOR_MUST_TAKE_OFF=.  You'll have to take it off first
+MSG_ARMOR_CANT_WEAR=you can't wear that
+MSG_ARMOR_YOU_ARE_NOW=you are now
+MSG_ARMOR_WEARING=wearing %s
+MSG_ARMOR_NOT_WEARING_TERSE=not wearing armor
+MSG_ARMOR_NOT_WEARING_VERBOSE=you aren't wearing any armor
+MSG_ARMOR_WAS_LOWERCASE=was
+MSG_ARMOR_USED_TO_BE=you used to be
+MSG_ARMOR_WEARING_ITEM= wearing %c) %s
+
+# help screen messages - extern.c
+MSG_HELP_PRINTS_HELP=	도움말 출력
+MSG_HELP_IDENTIFY_OBJECT=	물체 식별
+MSG_HELP_LEFT=	왼쪽
+MSG_HELP_DOWN=	아래
+MSG_HELP_UP=	위
+MSG_HELP_RIGHT=	오른쪽
+MSG_HELP_UP_LEFT=	위쪽 왼쪽
+MSG_HELP_UP_RIGHT=	위쪽 오른쪽
+MSG_HELP_DOWN_LEFT=	아래 왼쪽
+MSG_HELP_DOWN_RIGHT=	아래 오른쪽
+MSG_HELP_RUN_LEFT=	왼쪽으로 달리기
+MSG_HELP_RUN_DOWN=	아래로 달리기
+MSG_HELP_RUN_UP=	위로 달리기
+MSG_HELP_RUN_RIGHT=	오른쪽으로 달리기
+MSG_HELP_RUN_UP_LEFT=	위쪽 왼쪽으로 달리기
+MSG_HELP_RUN_UP_RIGHT=	위쪽 오른쪽으로 달리기
+MSG_HELP_RUN_DOWN_LEFT=	아래 왼쪽으로 달리기
+MSG_HELP_RUN_DOWN_RIGHT=	아래 오른쪽으로 달리기
+MSG_HELP_RUN_LEFT_UNTIL_ADJ=	왼쪽으로 인접할 때까지 달리기
+MSG_HELP_RUN_DOWN_UNTIL_ADJ=	아래로 인접할 때까지 달리기
+MSG_HELP_RUN_UP_UNTIL_ADJ=	위로 인접할 때까지 달리기
+MSG_HELP_RUN_RIGHT_UNTIL_ADJ=	오른쪽으로 인접할 때까지 달리기
+MSG_HELP_RUN_UP_LEFT_UNTIL_ADJ=	위쪽 왼쪽으로 인접할 때까지 달리기
+MSG_HELP_RUN_UP_RIGHT_UNTIL_ADJ=	위쪽 오른쪽으로 인접할 때까지 달리기
+MSG_HELP_RUN_DOWN_LEFT_UNTIL_ADJ=	아래 왼쪽으로 인접할 때까지 달리기
+MSG_HELP_RUN_DOWN_RIGHT_UNTIL_ADJ=	아래 오른쪽으로 인접할 때까지 달리기
+MSG_HELP_SHIFT_DIR=	<SHIFT><방향>: 그 방향으로 달리기
+MSG_HELP_CTRL_DIR=	<CTRL><방향>: 인접할 때까지 달리기
+MSG_HELP_FIGHT_DIR=<방향>	죽음이나 거의 죽음까지 전투
+MSG_HELP_THROW=<방향>	무언가 던지기
+MSG_HELP_MOVE_ONTO=<방향>	줍지 않고 이동하기
+MSG_HELP_ZAP_DIR=<방향>	방향으로 마법봉 사용
+MSG_HELP_IDENTIFY_TRAP=<방향>	함정 유형 식별
+MSG_HELP_SEARCH=	함정/비밀문 찾기
+MSG_HELP_GO_DOWN=	계단 내려가기
+MSG_HELP_GO_UP=	계단 올라가기
+MSG_HELP_REST=	한 턴 휴식
+MSG_HELP_PICK_UP=	무언가 줍기
+MSG_HELP_INVENTORY=	소지품
+MSG_HELP_INVENTORY_SINGLE=	단일 아이템 소지품
+MSG_HELP_QUAFF=	물약 마시기
+MSG_HELP_READ=	두루마리 읽기
+MSG_HELP_EAT=	식량 먹기
+MSG_HELP_WIELD=	무기 들기
+MSG_HELP_WEAR_ARMOR=	갑옷 입기
+MSG_HELP_TAKE_OFF=	갑옷 벗기
+MSG_HELP_PUT_ON_RING=	반지 끼기
+MSG_HELP_REMOVE_RING=	반지 빼기
+MSG_HELP_DROP=	물체 떨어뜨리기
+MSG_HELP_CALL=	물체 이름짓기
+MSG_HELP_REPEAT=	마지막 명령 반복
+MSG_HELP_PRINT_WEAPON=	현재 무기 출력
+MSG_HELP_PRINT_ARMOR=	현재 갑옷 출력
+MSG_HELP_PRINT_RINGS=	현재 반지 출력
+MSG_HELP_PRINT_STATS=	현재 능력치 출력
+MSG_HELP_DISCOVERED=	발견한 것 회상
+MSG_HELP_OPTIONS=	옵션 검사/설정
+MSG_HELP_REDRAW=	화면 다시 그리기
+MSG_HELP_REPEAT_MSG=	마지막 메시지 반복
+MSG_HELP_CANCEL=	명령 취소
+MSG_HELP_SAVE=	게임 저장
+MSG_HELP_QUIT=	종료
+MSG_HELP_SHELL=	쉘 탈출
+MSG_HELP_FIGHT_DEATH=<방향>	둘 중 하나가 죽을 때까지 전투
+MSG_HELP_VERSION=	버전 번호 출력
+
+# main.c messages - startup
+MSG_HELLO_WIZARD=%s님 안녕하세요, 던전 #%d에 오신 것을 환영합니다
+MSG_HELLO_DIGGING=%s님 안녕하세요, 잠시만 기다리시면 던전을 만들겠습니다...
+MSG_SCREEN_TOO_SMALL=\n죄송합니다. 화면은 최소 %dx%d 이상이어야 합니다\n
+MSG_REALLY_QUIT=정말 종료하시겠습니까?
+MSG_QUIT_WITH_GOLD=골드 %d개를 가지고 게임을 종료했습니다
+MSG_PRESS_RETURN_TO_CONTINUE=[계속하려면 엔터를 누르세요]
+
+# rip.c messages - scoreboard and death
+MSG_TOP_SCORES=상위 %s %s:
+MSG_SCORE_HEADER=   점수 이름
+MSG_SCORES=점수판
+MSG_ROGUEISTS=로그 플레이어
+MSG_KILLED=죽음
+MSG_QUIT=종료
+MSG_TOTAL_WINNER=완전 승리
+MSG_KILLED_WITH_AMULET=아뮬렛과 함께 죽음
+MSG_ON_LEVEL=%d층에서
+MSG_BY=%s에 의해
+MSG_KILLED_BY_PREFIX=죽은 원인:
+MSG_WITH_GOLD=골드 %d개와 함께
+
+# Death causes - rip.c killname()
+MSG_DEATH_ARROW=화살
+MSG_DEATH_BOLT=볼트
+MSG_DEATH_DART=다트
+MSG_DEATH_HYPOTHERMIA=저체온증
+MSG_DEATH_STARVATION=굶주림
+
+# Monster names - extern.c monsters[26]
+MSG_MONSTER_AQUATOR=아쿼터
+MSG_MONSTER_BAT=박쥐
+MSG_MONSTER_CENTAUR=켄타우로스
+MSG_MONSTER_DRAGON=용
+MSG_MONSTER_EMU=에뮤
+MSG_MONSTER_VENUS_FLYTRAP=파리지옥
+MSG_MONSTER_GRIFFIN=그리핀
+MSG_MONSTER_HOBGOBLIN=홉고블린
+MSG_MONSTER_ICE_MONSTER=얼음 괴물
+MSG_MONSTER_JABBERWOCK=재버워크
+MSG_MONSTER_KESTREL=황조롱이
+MSG_MONSTER_LEPRECHAUN=레프리콘
+MSG_MONSTER_MEDUSA=메두사
+MSG_MONSTER_NYMPH=님프
+MSG_MONSTER_ORC=오크
+MSG_MONSTER_PHANTOM=유령
+MSG_MONSTER_QUAGGA=콰가
+MSG_MONSTER_RATTLESNAKE=방울뱀
+MSG_MONSTER_SNAKE=뱀
+MSG_MONSTER_TROLL=트롤
+MSG_MONSTER_BLACK_UNICORN=검은 유니콘
+MSG_MONSTER_VAMPIRE=뱀파이어
+MSG_MONSTER_WRAITH=망령
+MSG_MONSTER_XEROC=제록
+MSG_MONSTER_YETI=예티
+MSG_MONSTER_ZOMBIE=좀비
+
+# Weapon names - extern.c weap_info[]
+MSG_WEAPON_MACE=철퇴
+MSG_WEAPON_LONG_SWORD=장검
+MSG_WEAPON_SHORT_BOW=단궁
+MSG_WEAPON_ARROW=화살
+MSG_WEAPON_DAGGER=단검
+MSG_WEAPON_TWO_HANDED_SWORD=양손검
+MSG_WEAPON_DART=투척 화살
+MSG_WEAPON_SHURIKEN=수리검
+MSG_WEAPON_SPEAR=창
+
+# Potion colors - init.c rainbow[]
+MSG_COLOR_AMBER=호박색
+MSG_COLOR_AQUAMARINE=하늘색
+MSG_COLOR_BLACK=검은색
+MSG_COLOR_BLUE=파란색
+MSG_COLOR_BROWN=갈색
+MSG_COLOR_CLEAR=투명한
+MSG_COLOR_CRIMSON=진홍색
+MSG_COLOR_CYAN=청록색
+MSG_COLOR_ECRU=베이지색
+MSG_COLOR_GOLD=금색
+MSG_COLOR_GREEN=초록색
+MSG_COLOR_GREY=회색
+MSG_COLOR_MAGENTA=자홍색
+MSG_COLOR_ORANGE=주황색
+MSG_COLOR_PINK=분홍색
+MSG_COLOR_PLAID=체크무늬
+MSG_COLOR_PURPLE=보라색
+MSG_COLOR_RED=빨간색
+MSG_COLOR_SILVER=은색
+MSG_COLOR_TAN=황갈색
+MSG_COLOR_TANGERINE=귤색
+MSG_COLOR_TOPAZ=황옥색
+MSG_COLOR_TURQUOISE=청록색
+MSG_COLOR_VERMILION=주홍색
+MSG_COLOR_VIOLET=보라색
+MSG_COLOR_WHITE=흰색
+MSG_COLOR_YELLOW=노란색
+
+# Item type names
+MSG_POTION=물약
+MSG_RING=반지
+MSG_WAND=지팡이
+MSG_STAFF=막대기
+MSG_SCROLL=두루마리
+MSG_ARMOR=갑옷
+
+# Armor types - armor.c arm_info[]
+MSG_ARMOR_LEATHER_ARMOR=가죽 갑옷
+MSG_ARMOR_RING_MAIL=링 메일
+MSG_ARMOR_STUDDED_LEATHER_ARMOR=박음 가죽 갑옷
+MSG_ARMOR_SCALE_MAIL=비늘 갑옷
+MSG_ARMOR_CHAIN_MAIL=사슬 갑옷
+MSG_ARMOR_SPLINT_MAIL=판금 갑옷
+MSG_ARMOR_BANDED_MAIL=띠 갑옷
+MSG_ARMOR_PLATE_MAIL=판금 갑옷
+
+# Ring stones - r_stones[] array
+MSG_STONE_AGATE=마노
+MSG_STONE_ALEXANDRITE=알렉산드라이트
+MSG_STONE_AMETHYST=자수정
+MSG_STONE_CARNELIAN=카넬리안
+MSG_STONE_DIAMOND=다이아몬드
+MSG_STONE_EMERALD=에메랄드
+MSG_STONE_GERMANIUM=게르마늄
+MSG_STONE_GRANITE=화강암
+MSG_STONE_GARNET=석류석
+MSG_STONE_JADE=옥
+MSG_STONE_KRYPTONITE=크립토나이트
+MSG_STONE_LAPIS_LAZULI=청금석
+MSG_STONE_MOONSTONE=월장석
+MSG_STONE_OBSIDIAN=흑요석
+MSG_STONE_ONYX=마노
+MSG_STONE_OPAL=오팔
+MSG_STONE_PEARL=진주
+MSG_STONE_PERIDOT=감람석
+MSG_STONE_RUBY=루비
+MSG_STONE_SAPPHIRE=사파이어
+MSG_STONE_STIBOTANTALITE=스티보탄탈라이트
+MSG_STONE_TIGER_EYE=호안석
+MSG_STONE_TOPAZ=토파즈
+MSG_STONE_TURQUOISE=터키석
+MSG_STONE_TAAFFEITE=타페이트
+MSG_STONE_ZIRCON=지르콘
+
+# Wand/Staff materials - ws_made[] array
+MSG_MATERIAL_AVOCADO_WOOD=아보카도 나무
+MSG_MATERIAL_BALSA=발사 나무
+MSG_MATERIAL_BAMBOO=대나무
+MSG_MATERIAL_BIRCH=자작나무
+MSG_MATERIAL_CEDAR=삼나무
+MSG_MATERIAL_CHERRY=벚나무
+MSG_MATERIAL_CYPRESS=노송나무
+MSG_MATERIAL_DOGWOOD=층층나무
+MSG_MATERIAL_DRIFTWOOD=유목
+MSG_MATERIAL_ELM=느릅나무
+MSG_MATERIAL_EUCALYPTUS=유칼립투스
+MSG_MATERIAL_FALL=가을
+MSG_MATERIAL_HEMLOCK=독미나리
+MSG_MATERIAL_HOLLY=호랑가시나무
+MSG_MATERIAL_IRONWOOD=쇠물푸레나무
+MSG_MATERIAL_KUKUI=쿠쿠이
+MSG_MATERIAL_MAHOGANY=마호가니
+MSG_MATERIAL_MANZANITA=만자니타
+MSG_MATERIAL_MAPLE=단풍나무
+MSG_MATERIAL_MULBERRY=뽕나무
+MSG_MATERIAL_OAK=참나무
+MSG_MATERIAL_PERSIMMON=감나무
+MSG_MATERIAL_PECAN=피칸
+MSG_MATERIAL_PINE=소나무
+MSG_MATERIAL_POPLAR=포플러
+MSG_MATERIAL_REDWOOD=레드우드
+MSG_MATERIAL_ROSEWOOD=자단
+MSG_MATERIAL_SPRUCE=가문비나무
+MSG_MATERIAL_TEAK=티크
+MSG_MATERIAL_WALNUT=호두나무
+MSG_MATERIAL_ZEBRAWOOD=얼룩말무늬나무

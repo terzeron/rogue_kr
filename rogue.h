@@ -10,9 +10,17 @@
  * See the file LICENSE.TXT for full copyright and licensing information.
  */
 
+#ifndef ROGUE_H
+#define ROGUE_H
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <curses.h>
+
 #include "extern.h"
 
-#undef lines 
+#undef lines
 
 #define NOOP(x) (x += 0)
 #define CCHAR(x) ( (char) (x & A_CHARTEXT) )
@@ -316,7 +324,7 @@
  */
 struct h_list {
     char h_ch;
-    char *h_desc;
+    const char *h_desc;
     bool h_print;
 };
 
@@ -483,7 +491,7 @@ extern int	dnum, e_levels[], seed;
 
 extern WINDOW	*hw;
 
-extern coord	delta, oldpos, stairs;
+extern coord	delta, oldpos, stairs, ch_ret;
 
 extern PLACE	places[];
 
@@ -507,7 +515,7 @@ extern struct obj_info	arm_info[], pot_info[], ring_info[],
 void	_attach(THING **list, THING *item);
 void	_detach(THING **list, THING *item);
 void	_free_list(THING **ptr);
-void	addmsg(char *fmt, ...);
+void	addmsg(const char *fmt, ...);
 bool	add_haste(bool potion);
 void	add_pack(THING *obj, bool silent);
 void	add_pass();
@@ -516,7 +524,7 @@ void	accnt_maze(int y, int x, int ny, int nx);
 void	aggravate();
 int	attack(THING *mp);
 void	badcheck(char *name, struct obj_info *info, int bound);
-void	bounce(THING *weap, char *mname, bool noend);
+void	bounce(THING *weap, const char *mname, bool noend);
 void	call();
 void	call_it(struct obj_info *info);
 bool	cansee(int y, int x);
@@ -527,7 +535,7 @@ void	conn(int r1, int r2);
 void	command();
 void	create_obj();
 
-void	current(THING *cur, char *how, char *where);
+void	current(THING *cur, const char *how, const char *where);
 void	d_level();
 void	death(char monst);
 char	death_monst();
@@ -547,7 +555,7 @@ void	do_pot(int type, bool knowit);
 void	do_rooms();
 void	do_run(char ch);
 void	do_zap();
-void	doadd(char *fmt, va_list args);
+void	doadd(const char *fmt, va_list args);
 void	door(struct room *rm, coord *cp);
 void	door_open(struct room *rp);
 void	drain();
@@ -563,7 +571,8 @@ int	exp_add(THING *tp);
 void	extinguish(void (*func)());
 void	fall(THING *obj, bool pr);
 void	fire_bolt(coord *start, coord *dir, char *name);
-char	floor_at();
+char    floor_at();
+char	floor_ch();
 void	flush_type();
 int	fight(coord *mp, THING *weap, bool thrown);
 void	fix_stick(THING *cur);
@@ -572,7 +581,7 @@ bool	get_dir();
 int	gethand();
 void	give_pack(THING *tp);
 void	help();
-void	hit(char *er, char *ee, bool noend);
+void	hit(const char *er, const char *ee, bool noend);
 void	horiz(struct room *rp, int starty);
 void	leave_room(coord *cp);
 void	lengthen(void (*func)(), int xtime);
@@ -593,12 +602,12 @@ void	invis_on();
 void	killed(THING *tp, bool pr);
 void	kill_daemon(void (*func)());
 bool	lock_sc();
-void	miss(char *er, char *ee, bool noend);
+void	miss(const char *er, const char *ee, bool noend);
 void	missile(int ydelta, int xdelta);
 void	money(int value);
 int	move_monst(THING *tp);
 void	move_msg(THING *obj);
-int	msg(char *fmt, ...);
+int	msg(const char *fmt, ...);
 void	nameit(THING *obj, char *type, char *which, struct obj_info *op, char *(*prfunc)(THING *));
 void	new_level();
 void	new_monster(THING *tp, char type, coord *cp);
@@ -648,7 +657,7 @@ void	setup();
 void	shell();
 bool	show_floor();
 void	show_map();
-void	show_win(char *message);
+void	show_win(const char *message);
 int	sign(int nm);
 int	spread(int nm);
 void	start_daemon(void (*func)(), int arg, int type);
@@ -660,7 +669,7 @@ int	swing(int at_lvl, int op_arm, int wplus);
 void	take_off();
 void	teleport();
 void	total_winner();
-void	thunk(THING *weap, char *mname, bool noend);
+void	thunk(THING *weap, const char *mname, bool noend);
 void	treas_room();
 void	turnref();
 void	u_level();
@@ -681,7 +690,7 @@ bool	dropcheck(THING *obj);
 bool	fallpos(coord *pos, coord *newpos);
 bool	find_floor(struct room *rp, coord *cp, int limit, bool monst);
 bool	is_magic(THING *obj);
-bool    is_symlink(char *sp); 
+bool    is_symlink(char *sp);
 bool	levit_check();
 bool	pack_room(bool from_floor, THING *obj);
 bool	roll_em(THING *thatt, THING *thdef, THING *weap, bool hurl);
@@ -699,13 +708,13 @@ char	readchar();
 char	rnd_thing();
 
 char	*charge_str(THING *obj);
-char	*choose_str(char *ts, char *ns);
+const char	*choose_str(const char *ts, const char *ns);
 char	*inv_name(THING *obj, bool drop);
 char	*nullstr(THING *ignored);
 char	*num(int n1, int n2, char type);
 char	*ring_num(THING *obj);
-char	*set_mname(THING *tp);
-char	*vowelstr(char *str);
+const char	*set_mname(THING *tp);
+char	*vowelstr(const char *str);
 
 int	get_bool(void *vp, WINDOW *win);
 int	get_inv_t(void *vp, WINDOW *win);
@@ -751,3 +760,5 @@ extern char     *wood[];
 extern int      cNWOOD;
 extern char     *metal[];
 extern int      cNMETAL;
+
+#endif // ROGUE_H

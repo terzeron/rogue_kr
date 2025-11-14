@@ -157,7 +157,7 @@ char	add_line(char *fmt, char *arg);
 
 char	*killname(char monst, bool doart);
 char	*nothing(char type);
-char	*type_name(int type);
+const char	*type_name(int type);
 
 #ifdef CHECKTIME
 int	checkout();

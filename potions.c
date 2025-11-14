@@ -13,6 +13,7 @@
 #include <curses.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 typedef struct
 {
@@ -25,11 +26,11 @@ typedef struct
 static PACT p_actions[] =
 {
 	{ ISHUH,	unconfuse,	HUHDURATION,	/* P_CONFUSE */
-		"what a tripy feeling!",
-		"wait, what's going on here. Huh? What? Who?" },
+		NULL,
+		NULL },
 	{ ISHALU,	come_down,	SEEDURATION,	/* P_LSD */
-		"Oh, wow!  Everything seems so cosmic!",
-		"Oh, wow!  Everything seems so cosmic!" },
+		NULL,
+		NULL },
 	{ 0,		NULL,	0 },			/* P_POISON */
 	{ 0,		NULL,	0 },			/* P_STRENGTH */
 	{ CANSEE,	unsee,	SEEDURATION,		/* P_SEEINVIS */
@@ -43,12 +44,34 @@ static PACT p_actions[] =
 	{ 0,		NULL,	0 },			/* P_HASTE */
 	{ 0,		NULL,	0 },			/* P_RESTORE */
 	{ ISBLIND,	sight,	SEEDURATION,		/* P_BLIND */
-		"oh, bummer!  Everything is dark!  Help!",
-		"a cloak of darkness falls around you" },
+		NULL,
+		NULL },
 	{ ISLEVIT,	land,	HEALTIME,		/* P_LEVIT */
-		"oh, wow!  You're floating in the air!",
-		"you start to float in the air" }
+		NULL,
+		NULL }
 };
+
+/*
+ * init_potion_messages:
+ *	Initialize potion messages from message catalog
+ */
+static void
+init_potion_messages()
+{
+    static int initialized = 0;
+    if (initialized)
+	return;
+    initialized = 1;
+
+    p_actions[P_CONFUSE].pa_high = (char *)msg_get("MSG_POTION_TRIPY");
+    p_actions[P_CONFUSE].pa_straight = (char *)msg_get("MSG_POTION_CONFUSED");
+    p_actions[P_LSD].pa_high = (char *)msg_get("MSG_POTION_COSMIC");
+    p_actions[P_LSD].pa_straight = (char *)msg_get("MSG_POTION_COSMIC");
+    p_actions[P_BLIND].pa_high = (char *)msg_get("MSG_POTION_DARK_BUMMER");
+    p_actions[P_BLIND].pa_straight = (char *)msg_get("MSG_POTION_DARK_CLOAK");
+    p_actions[P_LEVIT].pa_high = (char *)msg_get("MSG_POTION_FLOATING_WOW");
+    p_actions[P_LEVIT].pa_straight = (char *)msg_get("MSG_POTION_FLOATING_START");
+}
 
 /*
  * quaff:

@@ -15,6 +15,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "utils.h"
 
 /*
  * look:
@@ -419,7 +420,7 @@ aggravate()
  *	"an".
  */
 char *
-vowelstr(char *str)
+vowelstr(const char *str)
 {
     switch (*str)
     {
@@ -514,28 +515,7 @@ get_dir()
     return TRUE;
 }
 
-/*
- * sign:
- *	Return the sign of the number
- */
-int
-sign(int nm)
-{
-    if (nm < 0)
-	return -1;
-    else
-	return (nm > 0);
-}
 
-/*
- * spread:
- *	Give a spread around a given number (+/- 20%)
- */
-int
-spread(int nm)
-{
-    return nm - nm / 20 + rnd(nm / 10);
-}
 
 /*
  * call_it:
@@ -590,8 +570,8 @@ rnd_thing()
  *	Choose the first or second string depending on whether it the
  *	player is tripping
  */
-char *
-choose_str(char *ts, char *ns)
+const char *
+choose_str(const char *ts, const char *ns)
 {
 	return (on(player, ISHALU) ? ts : ns);
 }

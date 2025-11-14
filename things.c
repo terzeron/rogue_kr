@@ -15,6 +15,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * inv_name:
@@ -26,7 +27,7 @@ inv_name(THING *obj, bool drop)
 {
     char *pb;
     struct obj_info *op;
-    char *sp;
+    const char *sp;
     int which;
 
     pb = prbuf;
@@ -40,23 +41,56 @@ inv_name(THING *obj, bool drop)
 	when STICK:
 	    nameit(obj, ws_type[which], ws_made[which], &ws_info[which], charge_str);
 	when SCROLL:
-	    if (obj->o_count == 1)
 	    {
-		strcpy(pb, "A scroll ");
-		pb = &prbuf[9];
+		char *lang = getenv("LANG");
+		int is_korean = (lang != NULL && strncmp(lang, "ko", 2) == 0);
+
+		op = &scr_info[which];
+
+		if (is_korean)
+		{
+		    /* Korean word order */
+		    if (op->oi_know)
+		    {
+			/* Known: "name의 두루마리" */
+			sprintf(pb, "%s의 %s", op->oi_name, msg_get("MSG_SCROLL"));
+		    }
+		    else if (op->oi_guess)
+		    {
+			/* Guessed: "guess(이)라고 불리는 두루마리" */
+			sprintf(pb, "%s(이)라고 불리는 %s", op->oi_guess, msg_get("MSG_SCROLL"));
+		    }
+		    else
+		    {
+			/* Unknown: "'title'이라는 이름의 두루마리" */
+			const char *transliterated = transliterate_to_korean(s_names[which]);
+			if (obj->o_count == 1)
+			    sprintf(pb, "'%s'이라는 이름의 %s", transliterated, msg_get("MSG_SCROLL"));
+			else
+			    sprintf(pb, "%d개의 '%s'이라는 이름의 %s", obj->o_count, transliterated, msg_get("MSG_SCROLL"));
+		    }
+		}
+		else
+		{
+		    /* English word order */
+		    if (obj->o_count == 1)
+		    {
+			strcpy(pb, "A scroll ");
+			pb = &prbuf[9];
+		    }
+		    else
+		    {
+			sprintf(pb, "%d scrolls ", obj->o_count);
+			pb = &prbuf[strlen(prbuf)];
+		    }
+		    if (op->oi_know)
+			sprintf(pb, "of %s", op->oi_name);
+		    else if (op->oi_guess)
+			sprintf(pb, "called %s", op->oi_guess);
+		    else
+			sprintf(pb, "titled '%s'", s_names[which]);
+		}
 	    }
-	    else
-	    {
-		sprintf(pb, "%d scrolls ", obj->o_count);
-		pb = &prbuf[strlen(prbuf)];
-	    }
-	    op = &scr_info[which];
-	    if (op->oi_know)
-		sprintf(pb, "of %s", op->oi_name);
-	    else if (op->oi_guess)
-		sprintf(pb, "called %s", op->oi_guess);
-	    else
-		sprintf(pb, "titled '%s'", s_names[which]);
 	when FOOD:
 	    if (which == 1)
 		if (obj->o_count == 1)
@@ -69,40 +103,85 @@ inv_name(THING *obj, bool drop)
 		else
 		    sprintf(pb, "%d rations of food", obj->o_count);
 	when WEAPON:
-	    sp = weap_info[which].oi_name;
-	    if (obj->o_count > 1)
-		sprintf(pb, "%d ", obj->o_count);
-	    else
-		sprintf(pb, "A%s ", vowelstr(sp));
-	    pb = &prbuf[strlen(prbuf)];
-	    if (obj->o_flags & ISKNOW)
-		sprintf(pb, "%s %s", num(obj->o_hplus,obj->o_dplus,WEAPON), sp);
-	    else
-		sprintf(pb, "%s", sp);
-	    if (obj->o_count > 1)
-		strcat(pb, "s");
-	    if (obj->o_label != NULL)
 	    {
-		pb = &prbuf[strlen(prbuf)];
-		sprintf(pb, " called %s", obj->o_label);
+		char *lang = getenv("LANG");
+		int is_korean = (lang != NULL && strncmp(lang, "ko", 2) == 0);
+
+		sp = is_korean ? msg_get_weapon_name(which) : weap_info[which].oi_name;
+
+		if (is_korean)
+		{
+		    /* Korean word order */
+		    if (obj->o_count > 1)
+			sprintf(pb, "%s %d개", sp, obj->o_count);
+		    else if (obj->o_flags & ISKNOW)
+			sprintf(pb, "%s %s", num(obj->o_hplus,obj->o_dplus,WEAPON), sp);
+		    else
+			sprintf(pb, "%s", sp);
+		}
+		else
+		{
+		    /* English word order */
+		    if (obj->o_count > 1)
+			sprintf(pb, "%d ", obj->o_count);
+		    else
+			sprintf(pb, "A%s ", vowelstr(sp));
+		    pb = &prbuf[strlen(prbuf)];
+		    if (obj->o_flags & ISKNOW)
+			sprintf(pb, "%s %s", num(obj->o_hplus,obj->o_dplus,WEAPON), sp);
+		    else
+			sprintf(pb, "%s", sp);
+		    if (obj->o_count > 1)
+			strcat(pb, "s");
+		}
+
+		if (obj->o_label != NULL)
+		{
+		    pb = &prbuf[strlen(prbuf)];
+		    if (is_korean)
+			sprintf(pb, " (%s(이)라 불리는)", obj->o_label);
+		    else
+			sprintf(pb, " called %s", obj->o_label);
+		}
 	    }
 	when ARMOR:
-	    sp = arm_info[which].oi_name;
-	    if (obj->o_flags & ISKNOW)
 	    {
-		sprintf(pb, "%s %s [",
-		    num(a_class[which] - obj->o_arm, 0, ARMOR), sp);
-		if (!terse)
-		    strcat(pb, "protection ");
-		pb = &prbuf[strlen(prbuf)];
-		sprintf(pb, "%d]", 10 - obj->o_arm);
-	    }
-	    else
-		sprintf(pb, "%s", sp);
-	    if (obj->o_label != NULL)
-	    {
-		pb = &prbuf[strlen(prbuf)];
-		sprintf(pb, " called %s", obj->o_label);
+		char *lang = getenv("LANG");
+		int is_korean = (lang != NULL && strncmp(lang, "ko", 2) == 0);
+
+		sp = is_korean ? msg_get_armor_name(which) : arm_info[which].oi_name;
+
+		if (obj->o_flags & ISKNOW)
+		{
+		    if (is_korean)
+		    {
+			/* Korean: "+2 가죽 갑옷 [방어력 8]" */
+			sprintf(pb, "%s %s [%s %d]",
+			    num(a_class[which] - obj->o_arm, 0, ARMOR), sp,
+			    terse ? "" : "방어력 ", 10 - obj->o_arm);
+		    }
+		    else
+		    {
+			/* English: "+2 leather armor [protection 8]" */
+			sprintf(pb, "%s %s [",
+			    num(a_class[which] - obj->o_arm, 0, ARMOR), sp);
+			if (!terse)
+			    strcat(pb, "protection ");
+			pb = &prbuf[strlen(prbuf)];
+			sprintf(pb, "%d]", 10 - obj->o_arm);
+		    }
+		}
+		else
+		    sprintf(pb, "%s", sp);
+
+		if (obj->o_label != NULL)
+		{
+		    pb = &prbuf[strlen(prbuf)];
+		    if (is_korean)
+			sprintf(pb, " (%s(이)라 불리는)", obj->o_label);
+		    else
+			sprintf(pb, " called %s", obj->o_label);
+		}
 	    }
 	when AMULET:
 	    strcpy(pb, "The Amulet of Yendor");
@@ -148,7 +227,7 @@ drop()
     if (ch != FLOOR && ch != PASSAGE)
     {
 	after = FALSE;
-	msg("there is something there already");
+	msg(msg_get("MSG_THING_SOMETHING_THERE"));
 	return;
     }
     if ((obj = get_item("drop", 0)) == NULL)
@@ -165,7 +244,7 @@ drop()
     obj->o_pos = hero;
     if (obj->o_type == AMULET)
 	amulet = FALSE;
-    msg("dropped %s", inv_name(obj, TRUE));
+    msg(msg_get("MSG_THING_DROPPED"), inv_name(obj, TRUE));
 }
 
 /*
@@ -182,7 +261,7 @@ dropcheck(THING *obj)
 	    return TRUE;
     if (obj->o_flags & ISCURSED)
     {
-	msg("you can't.  It appears to be cursed");
+	msg(msg_get("MSG_THING_CANT_CURSED"));
 	return FALSE;
     }
     if (obj == cur_weapon)
@@ -318,9 +397,9 @@ pick_one(struct obj_info *info, int nitems)
 #ifdef MASTER
 	if (wizard)
 	{
-	    msg("bad pick_one: %d from %d items", i, nitems);
+	    msg(msg_get("MSG_THING_BAD_PICK_ONE"), i, nitems);
 	    for (info = start; info < end; info++)
-		msg("%s: %d%%", info->oi_name, info->oi_prob);
+		msg(msg_get("MSG_THING_ITEM_PROB"), info->oi_name, info->oi_prob);
 	}
 #endif
 	info = start;
@@ -348,11 +427,11 @@ discovered()
     do {
 	disc_list = FALSE;
 	if (!terse)
-	    addmsg("for ");
-	addmsg("what type");
+	    addmsg(msg_get("MSG_THING_FOR"));
+	addmsg(msg_get("MSG_THING_WHAT_TYPE"));
 	if (!terse)
-	    addmsg(" of object do you want a list");
-	msg("? (* for all)");
+	    addmsg(msg_get("MSG_THING_WANT_LIST"));
+	msg(msg_get("MSG_THING_PROMPT_ALL"));
 	ch = readchar();
 	switch (ch)
 	{
@@ -368,9 +447,9 @@ discovered()
 		break;
 	    default:
 		if (terse)
-		    msg("Not a type");
+		    msg(msg_get("MSG_THING_NOT_A_TYPE"));
 		else
-		    msg("Please type one of %c%c%c%c (ESCAPE to quit)", POTION, SCROLL, RING, STICK);
+		    msg(msg_get("MSG_THING_PLEASE_TYPE"), POTION, SCROLL, RING, STICK);
 	}
     } while (!disc_list);
     if (ch == '*')
@@ -619,23 +698,89 @@ nameit(THING *obj, char *type, char *which, struct obj_info *op,
     char *(*prfunc)(THING *))
 {
     char *pb;
+    char *lang = getenv("LANG");
+    int is_korean = (lang != NULL && strncmp(lang, "ko", 2) == 0);
 
     if (op->oi_know || op->oi_guess)
     {
-	if (obj->o_count == 1)
-	    sprintf(prbuf, "A %s ", type);
+	if (is_korean)
+	{
+	    /* Korean: translate type, no article/count prefix */
+	    const char *translated_type = msg_get(
+		strcmp(type, "potion") == 0 ? "MSG_POTION" :
+		strcmp(type, "ring") == 0 ? "MSG_RING" :
+		strcmp(type, "wand") == 0 ? "MSG_WAND" :
+		strcmp(type, "staff") == 0 ? "MSG_STAFF" : type);
+
+	    if (op->oi_know)
+		sprintf(prbuf, "%s %s%s", op->oi_name, translated_type, (*prfunc)(obj));
+	    else if (op->oi_guess)
+		sprintf(prbuf, "%s(이)라고 불리는 %s%s", op->oi_guess, translated_type, (*prfunc)(obj));
+	}
 	else
-	    sprintf(prbuf, "%d %ss ", obj->o_count, type);
-	pb = &prbuf[strlen(prbuf)];
-	if (op->oi_know)
-	    sprintf(pb, "of %s%s(%s)", op->oi_name, (*prfunc)(obj), which);
-	else if (op->oi_guess)
-	    sprintf(pb, "called %s%s(%s)", op->oi_guess, (*prfunc)(obj), which);
+	{
+	    /* English: article + type + of + name */
+	    if (obj->o_count == 1)
+		sprintf(prbuf, "A %s ", type);
+	    else
+		sprintf(prbuf, "%d %ss ", obj->o_count, type);
+	    pb = &prbuf[strlen(prbuf)];
+	    if (op->oi_know)
+		sprintf(pb, "of %s%s(%s)", op->oi_name, (*prfunc)(obj), which);
+	    else if (op->oi_guess)
+		sprintf(pb, "called %s%s(%s)", op->oi_guess, (*prfunc)(obj), which);
+	}
     }
-    else if (obj->o_count == 1)
-	sprintf(prbuf, "A%s %s %s", vowelstr(which), which, type);
     else
-	sprintf(prbuf, "%d %s %ss", obj->o_count, which, type);
+    {
+	/* Unknown item - show color/material/stone */
+	if (is_korean)
+	{
+	    /* Korean: adjective + type (no article) */
+	    const char *translated_adjective;
+	    const char *translated_type;
+
+	    /* Determine if which is a color (for potions) or material (for wands/staves) or stone (for rings) */
+	    if (strcmp(type, "potion") == 0)
+	    {
+		translated_adjective = msg_get_color(which);
+		translated_type = msg_get("MSG_POTION");
+	    }
+	    else if (strcmp(type, "ring") == 0)
+	    {
+		translated_adjective = msg_get_stone(which);
+		translated_type = msg_get("MSG_RING");
+	    }
+	    else if (strcmp(type, "wand") == 0)
+	    {
+		translated_adjective = msg_get_material(which);
+		translated_type = msg_get("MSG_WAND");
+	    }
+	    else if (strcmp(type, "staff") == 0)
+	    {
+		translated_adjective = msg_get_material(which);
+		translated_type = msg_get("MSG_STAFF");
+	    }
+	    else
+	    {
+		translated_adjective = which;
+		translated_type = type;
+	    }
+
+	    if (obj->o_count == 1)
+		sprintf(prbuf, "%s %s", translated_adjective, translated_type);
+	    else
+		sprintf(prbuf, "%d개의 %s %s", obj->o_count, translated_adjective, translated_type);
+	}
+	else
+	{
+	    /* English: article + adjective + type */
+	    if (obj->o_count == 1)
+		sprintf(prbuf, "A%s %s %s", vowelstr(which), which, type);
+	    else
+		sprintf(prbuf, "%d %s %ss", obj->o_count, which, type);
+	}
+    }
 }
 
 /*
@@ -661,11 +806,11 @@ pr_list()
     int ch;
 
     if (!terse)
-	addmsg("for ");
-    addmsg("what type");
+	addmsg(msg_get("MSG_THING_FOR"));
+    addmsg(msg_get("MSG_THING_WHAT_TYPE"));
     if (!terse)
-	addmsg(" of object do you want a list");
-    msg("? ");
+	addmsg(msg_get("MSG_THING_WANT_LIST"));
+    msg(msg_get("MSG_THING_PROMPT_WIZARD"));
     ch = readchar();
     switch (ch)
     {

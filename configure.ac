@@ -23,7 +23,18 @@ AC_C_CONST
 AC_TYPE_UID_T
 AC_TYPE_SIZE_T
 AC_STRUCT_TM
-MP_WITH_CURSES
+AC_MSG_CHECKING([for curses library])
+AC_SEARCH_LIBS([initscr], [ncursesw], [
+  AC_MSG_RESULT([found])
+], [
+  AC_MSG_ERROR([could not find ncursesw library])
+])
+AC_SEARCH_LIBS([tgetent], [termcap tinfo], [
+  AC_MSG_RESULT([found termcap])
+], [
+  AC_MSG_ERROR([could not find termcap library])
+])
+
 # Checks for library functions.
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL

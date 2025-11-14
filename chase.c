@@ -13,10 +13,11 @@
 #include <stdlib.h>
 #include <curses.h>
 #include "rogue.h"
+#include "utils.h"
 
 #define DRAGONSHOT  5	/* one chance in DRAGONSHOT that a dragon will flame */
 
-static coord ch_ret;				/* Where chasing takes you */
+coord ch_ret;				/* Where chasing takes you */
 
 /*
  * runners:
@@ -335,7 +336,7 @@ chase(THING *tp, coord *ee)
 	ch_ret = *rndmove(tp);
 	curdist = dist_cp(&ch_ret, ee);
 	/*
-	 * Small chance that it will become un-confused 
+	 * Small chance that it will become un-confused
 	 */
 	if (rnd(20) == 0)
 	    tp->t_flags &= ~ISHUH;
@@ -413,7 +414,15 @@ chase(THING *tp, coord *ee)
 	    }
 	}
     }
-    return (bool)(curdist != 0 && !ce(ch_ret, hero));
+    // If ch_ret is still the monster's current position, it means no better move was found.
+    // In this case, if the monster is already adjacent to the target, it should stop chasing.
+    if (ce(ch_ret, *er)) // If ch_ret is still the monster's current position
+    {
+        // If the monster is adjacent to the target (ee), it has "reached" it for attacking purposes.
+        if (dist_cp(er, ee) <= 1)
+            return FALSE; // Stop chasing (ready to attack or already on target)
+    }
+    return TRUE; // Keep chasing (found a move or still far away)
 }
 
 /*
@@ -516,26 +525,4 @@ find_dest(THING *tp)
 	}
     }
     return &hero;
-}
-
-/*
- * dist:
- *	Calculate the "distance" between to points.  Actually,
- *	this calculates d^2, not d, but that's good enough for
- *	our purposes, since it's only used comparitively.
- */
-int
-dist(int y1, int x1, int y2, int x2)
-{
-    return ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-}
-
-/*
- * dist_cp:
- *	Call dist() with appropriate arguments for coord pointers
- */
-int
-dist_cp(coord *c1, coord *c2)
-{
-    return dist(c1->y, c1->x, c2->y, c2->x);
 }

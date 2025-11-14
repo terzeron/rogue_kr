@@ -15,6 +15,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * fix_stick:
@@ -58,12 +59,12 @@ do_zap()
     if (obj->o_type != STICK)
     {
 	after = FALSE;
-	msg("you can't zap with that!");
+	msg(msg_get("MSG_STICK_CANT_ZAP"));
 	return;
     }
     if (obj->o_charges == 0)
     {
-	msg("nothing happens");
+	msg(msg_get("MSG_STICK_NOTHING_HAPPENS"));
 	return;
     }
     switch (obj->o_which)
@@ -74,7 +75,7 @@ do_zap()
 	     */
 	    ws_info[WS_LIGHT].oi_know = TRUE;
 	    if (proom->r_flags & ISGONE)
-		msg("the corridor glows and then fades");
+		msg(msg_get("MSG_STICK_CORRIDOR_GLOWS"));
 	    else
 	    {
 		proom->r_flags &= ~ISDARK;
@@ -82,9 +83,9 @@ do_zap()
 		 * Light the room and put the player back up
 		 */
 		enter_room(&hero);
-		addmsg("the room is lit");
+		addmsg(msg_get("MSG_STICK_ROOM_LIT"));
 		if (!terse)
-		    addmsg(" by a shimmering %s light", pick_color("blue"));
+		    addmsg(msg_get("MSG_STICK_BY_LIGHT"), pick_color("blue"));
 		endmsg();
 	    }
 	when WS_DRAIN:
@@ -95,7 +96,7 @@ do_zap()
 	     */
 	    if (pstats.s_hpt < 2)
 	    {
-		msg("you are too weak to use it");
+		msg(msg_get("MSG_STICK_TOO_WEAK"));
 		return;
 	    }
 	    else
@@ -186,9 +187,9 @@ do_zap()
 		&& !save_throw(VS_MAGIC, tp))
 		    hit_monster(unc(bolt.o_pos), &bolt);
 	    else if (terse)
-		msg("missle vanishes");
+		msg(msg_get("MSG_STICK_MISSILE_VANISHES"));
 	    else
-		msg("the missle vanishes with a puff of smoke");
+		msg(msg_get("MSG_STICK_MISSILE_VANISHES_LONG"));
 	when WS_HASTE_M:
 	case WS_SLOW_M:
 	    y = hero.y;
@@ -234,7 +235,7 @@ do_zap()
 	    break;
 #ifdef MASTER
 	otherwise:
-	    msg("what a bizarre schtick!");
+	    msg(msg_get("MSG_STICK_BIZARRE"));
 #endif
     }
     obj->o_charges--;
@@ -272,7 +273,7 @@ drain()
 		*dp++ = mp;
     if ((cnt = (int)(dp - drainee)) == 0)
     {
-	msg("you have a tingling feeling");
+	msg(msg_get("MSG_STICK_TINGLING"));
 	return;
     }
     *dp = NULL;
@@ -349,7 +350,7 @@ fire_bolt(coord *start, coord *dir, char *name)
 		dir->y = -dir->y;
 		dir->x = -dir->x;
 		c1--;
-		msg("the %s bounces", name);
+		msg(msg_get("MSG_STICK_BOUNCES"), name);
 		break;
 	    default:
 def:
@@ -364,9 +365,9 @@ def:
 			used = TRUE;
 			if (tp->t_type == 'D' && strcmp(name, "flame") == 0)
 			{
-			    addmsg("the flame bounces");
+			    addmsg(msg_get("MSG_STICK_FLAME_BOUNCES"));
 			    if (!terse)
-				addmsg(" off the dragon");
+				addmsg(msg_get("MSG_STICK_OFF_DRAGON"));
 			    endmsg();
 			}
 			else
@@ -377,9 +378,9 @@ def:
 			if (start == &hero)
 			    runto(&pos);
 			if (terse)
-			    msg("%s misses", name);
+			    msg(msg_get("MSG_STICK_MISSES"), name);
 			else
-			    msg("the %s whizzes past %s", name, set_mname(tp));
+			    msg(msg_get("MSG_STICK_WHIZZES_PAST"), name, set_mname(tp));
 		    }
 		}
 		else if (hit_hero && ce(pos, hero))
@@ -397,12 +398,12 @@ def:
 			}
 			used = TRUE;
 			if (terse)
-			    msg("the %s hits", name);
+			    msg(msg_get("MSG_STICK_HITS"), name);
 			else
-			    msg("you are hit by the %s", name);
+			    msg(msg_get("MSG_STICK_HIT_BY"), name);
 		    }
 		    else
-			msg("the %s whizzes by you", name);
+			msg(msg_get("MSG_STICK_WHIZZES_BY"), name);
 		}
 		mvaddch(pos.y, pos.x, dirch);
 		refresh();
@@ -424,8 +425,8 @@ charge_str(THING *obj)
     if (!(obj->o_flags & ISKNOW))
 	buf[0] = '\0';
     else if (terse)
-	sprintf(buf, " [%d]", obj->o_charges);
+	sprintf(buf, msg_get("MSG_STICK_CHARGES_SHORT"), obj->o_charges);
     else
-	sprintf(buf, " [%d charges]", obj->o_charges);
+	sprintf(buf, msg_get("MSG_STICK_CHARGES"), obj->o_charges);
     return buf;
 }
