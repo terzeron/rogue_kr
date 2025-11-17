@@ -1,3 +1,15 @@
+# 🇰🇷 한국어 지원
+
+이 저장소는 Rogue 게임의 국제화(i18n) 및 한국어 번역 및 음역 작업을 포함합니다:
+
+- **메시지 국제화 시스템**: 게임 내 메시지를 국제화하고 한국어 메시지 추가
+- **음역 시스템**: 스크롤 이름 등 무작위 문자열을 한글 음역으로 변환
+- **테스트 케이스**: 기존 함수의 기능과 메시지 국제화/지역화 기능 검증을 위한 단위 테스트 추가
+
+`LANG=ko_KR.UTF-8`로 설정하면 게임이 한국어로 실행됩니다.
+
+---
+
 # Rogue: Exploring the Dungeons of Doom
 
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE.TXT)
