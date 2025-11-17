@@ -17,7 +17,7 @@
 
 #define DRAGONSHOT  5	/* one chance in DRAGONSHOT that a dragon will flame */
 
-coord ch_ret;				/* Where chasing takes you */
+static coord ch_ret;				/* Where chasing takes you */
 
 /*
  * runners:
@@ -196,7 +196,18 @@ over:
     {
 	if (ce(this, hero))
 	{
-	    return( attack(th) );
+	    int result = attack(th);
+	    /* Redraw monster after attack to prevent it from disappearing */
+	    move(th->t_pos.y, th->t_pos.x);
+	    if (see_monst(th))
+		addch(th->t_disguise);
+	    else if (on(player, SEEMONST))
+	    {
+		standout();
+		addch(th->t_type);
+		standend();
+	    }
+	    return result;
 	}
 	else if (ce(this, *th->t_dest))
 	{
@@ -414,15 +425,7 @@ chase(THING *tp, coord *ee)
 	    }
 	}
     }
-    // If ch_ret is still the monster's current position, it means no better move was found.
-    // In this case, if the monster is already adjacent to the target, it should stop chasing.
-    if (ce(ch_ret, *er)) // If ch_ret is still the monster's current position
-    {
-        // If the monster is adjacent to the target (ee), it has "reached" it for attacking purposes.
-        if (dist_cp(er, ee) <= 1)
-            return FALSE; // Stop chasing (ready to attack or already on target)
-    }
-    return TRUE; // Keep chasing (found a move or still far away)
+    return (bool)(curdist != 0 && !ce(ch_ret, hero));
 }
 
 /*

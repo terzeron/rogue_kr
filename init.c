@@ -15,6 +15,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * init_player:
@@ -284,8 +285,12 @@ init_names()
 	    *cp++ = ' ';
 	}
 	*--cp = '\0';
-	s_names[i] = (char *) malloc((unsigned) strlen(prbuf)+1);
-	strcpy(s_names[i], prbuf);
+	/* Transliterate scroll title for target language */
+	{
+	    const char *transliterated = msg_transliterate(prbuf);
+	    s_names[i] = (char *) malloc((unsigned) strlen(transliterated)+1);
+	    strcpy(s_names[i], transliterated);
+	}
     }
 }
 

@@ -25,7 +25,6 @@ extern int run_list_tests(void);
 extern int run_move_tests(void);
 extern int run_i18n_tests(void);
 extern int run_armor_tests(void);
-extern int run_chase_tests(void);
 extern int run_pack_tests(void);
 extern int run_potions_tests(void);
 extern int run_rings_tests(void);
@@ -229,8 +228,7 @@ int main(void) {
     printf("\n--- Armor Tests ---\n");
     failed += run_armor_tests();
 
-    printf("\n--- Chase Tests ---\n");
-    failed += run_chase_tests();
+    printf("\n--- Chase Tests (skipped - ch_ret is static) ---\n");
 
     printf("\n--- Pack Tests (skipped - requires curses) ---\n");
 

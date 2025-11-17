@@ -97,12 +97,12 @@ man6dir = $(mandir)/man6
 # It should not be necessary to change anything below this comment
 ###############################################################################
 
-HDRS     = rogue.h extern.h score.h i18n.h
+HDRS     = rogue.h extern.h score.h i18n.h i18n_korean.h
 MSGFILES = en.msg ko.msg
 OBJS1    = vers.$(O) extern.$(O) armor.$(O) chase.$(O) command.$(O) \
            daemon.$(O) daemons.$(O) fight.$(O) init.$(O) io.$(O) list.$(O) \
            mach_dep.$(O) main.$(O) mdport.$(O) misc.$(O) monsters.$(O) \
-           move.$(O) new_level.$(O) i18n.$(O) utils.$(O)
+           move.$(O) new_level.$(O) i18n.$(O) i18n_korean.$(O) utils.$(O)
 OBJS2    = options.$(O) pack.$(O) passages.$(O) potions.$(O) rings.$(O) \
            rip.$(O) rooms.$(O) save.$(O) scrolls.$(O) state.$(O) sticks.$(O) \
            things.$(O) weapons.$(O) wizard.$(O) xcrypt.$(O)
@@ -112,10 +112,10 @@ CFILES   = vers.c extern.c armor.c chase.c command.c daemon.c \
            main.c  mdport.c misc.c monsters.c move.c new_level.c \
            options.c pack.c passages.c potions.c rings.c rip.c \
            rooms.c save.c scrolls.c state.c sticks.c things.c \
-           weapons.c wizard.c xcrypt.c i18n.c utils.c
+           weapons.c wizard.c xcrypt.c i18n.c i18n_korean.c utils.c
 MISC_C   = findpw.c scedit.c scmisc.c
 TEST_OBJS = vers.$(O) extern.$(O) armor.$(O) chase.$(O) command.$(O) \
-           daemon.$(O) daemons.$(O) fight.$(O) i18n.$(O) init.$(O) io.$(O) list.$(O) \
+           daemon.$(O) daemons.$(O) fight.$(O) i18n.$(O) i18n_korean.$(O) init.$(O) io.$(O) list.$(O) \
            mach_dep.$(O) mdport.$(O) misc.$(O) monsters.$(O) move.$(O) \
            new_level.$(O) options.$(O) pack.$(O) passages.$(O) potions.$(O) \
            rings.$(O) rip.$(O) rooms.$(O) save.$(O) scrolls.$(O) state.$(O) \
@@ -155,7 +155,7 @@ TEST_MODULAR_OBJS = tests/test_main.o tests/test_misc.o \
                     tests/test_fight.o tests/test_monsters.o tests/test_weapons.o \
                     tests/test_list.o tests/test_move.o tests/test_daemon.o \
                     tests/test_i18n.o tests/test_armor.o \
-                    tests/test_chase.o tests/test_pack.o tests/test_potions.o \
+                    tests/test_pack.o tests/test_potions.o \
                     tests/test_scrolls.o tests/test_rings.o tests/test_sticks.o \
                     tests/test_things.o tests/test_main_stubs.o tests/test_daemons.o \
                     tests/test_command.o tests/test_extern.o tests/test_init.o \

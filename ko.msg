@@ -100,15 +100,36 @@ MSG_YOU_HAVE=당신은
 MSG_DEFEATED_LOWER=물리쳤습니다
 MSG_YOU_DEFEATED_MONSTER=당신은 %s을(를) 물리쳤습니다.
 MSG_DEFEATED_MONSTER=%s을(를) 물리쳤습니다.
+MSG_YOU_HIT_MONSTER_TERSE=당신은 %s을(를) 공격했습니다.
+MSG_YOU_HIT_MONSTER_1=당신은 %s에게 강력한 공격을 성공했습니다.
+MSG_YOU_HIT_MONSTER_2=당신은 %s을(를) 공격했습니다.
+MSG_YOU_HIT_MONSTER_3=당신은 %s에게 상처를 입혔습니다.
+MSG_YOU_HIT_MONSTER_4=당신은 %s을(를) 휘둘러 공격했습니다.
+MSG_YOU_MISS_MONSTER_TERSE=당신은 %s을(를) 놓쳤습니다.
+MSG_YOU_MISS_MONSTER_1=당신은 %s을(를) 놓쳤습니다.
+MSG_YOU_MISS_MONSTER_2=당신은 %s을(를) 공격했지만 빗나갔습니다.
+MSG_YOU_MISS_MONSTER_3=당신의 공격이 %s을(를) 간신히 빗나갔습니다.
+MSG_YOU_MISS_MONSTER_4=당신은 %s을(를) 맞추지 못했습니다.
 MSG_HIT_MONSTER_TERSE=당신은 %s을(를) 공격했습니다.
 MSG_HIT_MONSTER_1=당신은 %s에게 강력한 공격을 성공했습니다.
 MSG_HIT_MONSTER_2=당신은 %s을(를) 공격했습니다.
 MSG_HIT_MONSTER_3=당신은 %s에게 상처를 입혔습니다.
 MSG_HIT_MONSTER_4=당신은 %s을(를) 휘둘러 공격했습니다.
+MSG_MISS_MONSTER_TERSE=당신은 %s을(를) 놓쳤습니다.
 MSG_MISS_MONSTER_1=당신은 %s을(를) 놓쳤습니다.
 MSG_MISS_MONSTER_2=당신은 %s을(를) 공격했지만 빗나갔습니다.
 MSG_MISS_MONSTER_3=당신의 공격이 %s을(를) 간신히 빗나갔습니다.
 MSG_MISS_MONSTER_4=당신은 %s을(를) 맞추지 못했습니다.
+MSG_MONSTER_HITS_YOU_TERSE=%s이(가) 당신을 공격했습니다.
+MSG_MONSTER_HITS_YOU_1=%s이(가) 당신에게 강력한 공격을 성공했습니다.
+MSG_MONSTER_HITS_YOU_2=%s이(가) 당신을 공격했습니다.
+MSG_MONSTER_HITS_YOU_3=%s이(가) 당신에게 상처를 입혔습니다.
+MSG_MONSTER_HITS_YOU_4=%s이(가) 당신을 휘둘러 공격했습니다.
+MSG_MONSTER_MISSES_YOU_TERSE=%s이(가) 당신을 놓쳤습니다.
+MSG_MONSTER_MISSES_YOU_1=%s이(가) 당신을 놓쳤습니다.
+MSG_MONSTER_MISSES_YOU_2=%s이(가) 당신을 공격했지만 빗나갔습니다.
+MSG_MONSTER_MISSES_YOU_3=당신은 %s의 공격을 간신히 피했습니다.
+MSG_MONSTER_MISSES_YOU_4=%s이(가) 당신을 맞추지 못했습니다.
 MSG_MONSTER_HIT_1=%s이(가) 당신에게 강력한 공격을 성공했습니다.
 MSG_MONSTER_HIT_2=%s이(가) 당신을 공격했습니다.
 MSG_MONSTER_HIT_3=%s이(가) 당신에게 상처를 입혔습니다.
@@ -117,8 +138,37 @@ MSG_MONSTER_MISS_1=%s이(가) 당신을 놓쳤습니다.
 MSG_MONSTER_MISS_2=%s이(가) 당신을 공격했지만 빗나갔습니다.
 MSG_MONSTER_MISS_3=당신은 %s의 공격을 간신히 피했습니다.
 MSG_MONSTER_MISS_4=%s이(가) 당신을 맞추지 못했습니다.
+
+# Monster names - extern.c monsters[26]
+MSG_MONSTER_AQUATOR=아쿼터
+MSG_MONSTER_BAT=박쥐
+MSG_MONSTER_CENTAUR=켄타우로스
+MSG_MONSTER_DRAGON=용
+MSG_MONSTER_EMU=에뮤
+MSG_MONSTER_VENUS_FLYTRAP=파리지옥
+MSG_MONSTER_GRIFFIN=그리핀
+MSG_MONSTER_HOBGOBLIN=홉고블린
+MSG_MONSTER_ICE_MONSTER=얼음 괴물
+MSG_MONSTER_JABBERWOCK=재버워크
+MSG_MONSTER_KESTREL=황조롱이
+MSG_MONSTER_LEPRECHAUN=레프리콘
+MSG_MONSTER_MEDUSA=메두사
+MSG_MONSTER_NYMPH=님프
+MSG_MONSTER_ORC=오크
+MSG_MONSTER_PHANTOM=유령
+MSG_MONSTER_QUAGGA=콰가
+MSG_MONSTER_RATTLESNAKE=방울뱀
+MSG_MONSTER_SNAKE=뱀
+MSG_MONSTER_TROLL=트롤
+MSG_MONSTER_BLACK_UNICORN=검은 유니콘
+MSG_MONSTER_VAMPIRE=뱀파이어
+MSG_MONSTER_WRAITH=망령
+MSG_MONSTER_XEROC=제록
+MSG_MONSTER_YETI=예티
+MSG_MONSTER_ZOMBIE=좀비
 MSG_IT=그것
 MSG_SOMETHING=무언가
+MSG_PRESS_RETURN_TO_CONTINUE=[계속하려면 엔터를 누르세요]
 
 # pack.c 메시지
 MSG_IN_YOUR_PACK= 당신의 가방에
@@ -133,11 +183,9 @@ MSG_SCROLL_TO_DUST=두루마리를 집자 먼지로 변했습니다
 MSG_THERES= 있습니다
 MSG_WHICH_OBJECT=어떤 물건을
 MSG_NOT_CARRYING=아무것도 가지고 있지 않습니다
-MSG_YOU_FOUND=발견했습니다
-MSG_YOU_FOUND_GOLD=%d 골드 조각을 발견했습니다
 MSG_YOU_NOW_HAVE=%s을(를) 주웠습니다 (%c)
 MSG_YOU_RAN_OUT=다 썼습니다
-MSG_GOLD_PICES=골드 %d개
+MSG_GOLD_PIECES=골드 %d개
 
 # move.c 메시지
 MSG_MOVE_STUCK_BEAR_TRAP=아직 곰 덫에 걸려있습니다
@@ -269,7 +317,7 @@ MSG_THING_PLEASE_TYPE=%c%c%c%c 중 하나를 입력하세요 (종료는 ESCAPE)
 
 # main.c messages
 MSG_QUIT_WITH_GOLD=골드 %d개를 가지고 게임을 종료했습니다
-MSG_REALLY_QUIT=정말 종료할까요?
+MSG_REALLY_QUIT=정말 종료하시겠습니까?
 MSG_YES_KEY=y
 
 # rip.c messages
@@ -277,20 +325,20 @@ MSG_GOLD_PIECES_RIP=   %5d  골드
 MSG_TOMBSTONE_REST=평안히
 MSG_TOMBSTONE_IN=잠드소서
 MSG_TOMBSTONE_PEACE=영원히
-MSG_TOMBSTONE_KILLED=에게 살해됨%s
+MSG_TOMBSTONE_KILLED=에게 살해됨
 MSG_TOMBSTONE_GOLD=골드
 
 # armor.c messages
-MSG_ARMOR_ALREADY_WEARING=you are already wearing some
-MSG_ARMOR_MUST_TAKE_OFF=.  You'll have to take it off first
-MSG_ARMOR_CANT_WEAR=you can't wear that
-MSG_ARMOR_YOU_ARE_NOW=you are now
-MSG_ARMOR_WEARING=wearing %s
-MSG_ARMOR_NOT_WEARING_TERSE=not wearing armor
-MSG_ARMOR_NOT_WEARING_VERBOSE=you aren't wearing any armor
-MSG_ARMOR_WAS_LOWERCASE=was
-MSG_ARMOR_USED_TO_BE=you used to be
-MSG_ARMOR_WEARING_ITEM= wearing %c) %s
+MSG_ARMOR_ALREADY_WEARING=당신은 이미 뭔가를 착용하고 있습니다
+MSG_ARMOR_MUST_TAKE_OFF=.  당신은 그걸 먼저 벗어야 합니다
+MSG_ARMOR_CANT_WEAR=당신은 그걸 착용할 수 없습니다
+MSG_ARMOR_YOU_ARE_NOW=당신은 지금
+MSG_ARMOR_WEARING=%s를 착용하고 있습니다.
+MSG_ARMOR_NOT_WEARING_TERSE=방어구를 착용하고 있지 않습니다
+MSG_ARMOR_NOT_WEARING_VERBOSE=당신은 어떤 방어구도 착용하고 있지 않습니다
+MSG_ARMOR_WAS_LOWERCASE=였습니다
+MSG_ARMOR_USED_TO_BE=당신은 예전에
+MSG_ARMOR_WEARING_ITEM= %c를 입고 있었습니다) %s
 
 # help screen messages - extern.c
 MSG_HELP_PRINTS_HELP=	도움말 출력
@@ -363,11 +411,9 @@ MSG_HELP_VERSION=	버전 번호 출력
 MSG_HELLO_WIZARD=%s님 안녕하세요, 던전 #%d에 오신 것을 환영합니다
 MSG_HELLO_DIGGING=%s님 안녕하세요, 잠시만 기다리시면 던전을 만들겠습니다...
 MSG_SCREEN_TOO_SMALL=\n죄송합니다. 화면은 최소 %dx%d 이상이어야 합니다\n
-MSG_REALLY_QUIT=정말 종료하시겠습니까?
-MSG_QUIT_WITH_GOLD=골드 %d개를 가지고 게임을 종료했습니다
-MSG_PRESS_RETURN_TO_CONTINUE=[계속하려면 엔터를 누르세요]
 
 # rip.c messages - scoreboard and death
+MSG_NUMNAME=10
 MSG_TOP_SCORES=상위 %s %s:
 MSG_SCORE_HEADER=   점수 이름
 MSG_SCORES=점수판
@@ -380,6 +426,7 @@ MSG_ON_LEVEL=%d층에서
 MSG_BY=%s에 의해
 MSG_KILLED_BY_PREFIX=죽은 원인:
 MSG_WITH_GOLD=골드 %d개와 함께
+MSG_YOU_FOUND_GOLD=%d 골드 조각을 발견했습니다
 
 # Death causes - rip.c killname()
 MSG_DEATH_ARROW=화살
@@ -387,34 +434,6 @@ MSG_DEATH_BOLT=볼트
 MSG_DEATH_DART=다트
 MSG_DEATH_HYPOTHERMIA=저체온증
 MSG_DEATH_STARVATION=굶주림
-
-# Monster names - extern.c monsters[26]
-MSG_MONSTER_AQUATOR=아쿼터
-MSG_MONSTER_BAT=박쥐
-MSG_MONSTER_CENTAUR=켄타우로스
-MSG_MONSTER_DRAGON=용
-MSG_MONSTER_EMU=에뮤
-MSG_MONSTER_VENUS_FLYTRAP=파리지옥
-MSG_MONSTER_GRIFFIN=그리핀
-MSG_MONSTER_HOBGOBLIN=홉고블린
-MSG_MONSTER_ICE_MONSTER=얼음 괴물
-MSG_MONSTER_JABBERWOCK=재버워크
-MSG_MONSTER_KESTREL=황조롱이
-MSG_MONSTER_LEPRECHAUN=레프리콘
-MSG_MONSTER_MEDUSA=메두사
-MSG_MONSTER_NYMPH=님프
-MSG_MONSTER_ORC=오크
-MSG_MONSTER_PHANTOM=유령
-MSG_MONSTER_QUAGGA=콰가
-MSG_MONSTER_RATTLESNAKE=방울뱀
-MSG_MONSTER_SNAKE=뱀
-MSG_MONSTER_TROLL=트롤
-MSG_MONSTER_BLACK_UNICORN=검은 유니콘
-MSG_MONSTER_VAMPIRE=뱀파이어
-MSG_MONSTER_WRAITH=망령
-MSG_MONSTER_XEROC=제록
-MSG_MONSTER_YETI=예티
-MSG_MONSTER_ZOMBIE=좀비
 
 # Weapon names - extern.c weap_info[]
 MSG_WEAPON_MACE=철퇴
@@ -426,6 +445,20 @@ MSG_WEAPON_TWO_HANDED_SWORD=양손검
 MSG_WEAPON_DART=투척 화살
 MSG_WEAPON_SHURIKEN=수리검
 MSG_WEAPON_SPEAR=창
+
+# Item type names
+MSG_WAND=지팡이
+MSG_STAFF=막대기
+
+# Armor types - armor.c arm_info[]
+MSG_ARMOR_LEATHER_ARMOR=가죽 갑옷
+MSG_ARMOR_RING_MAIL=링 메일
+MSG_ARMOR_STUDDED_LEATHER_ARMOR=박음 가죽 갑옷
+MSG_ARMOR_SCALE_MAIL=비늘 갑옷
+MSG_ARMOR_CHAIN_MAIL=사슬 갑옷
+MSG_ARMOR_SPLINT_MAIL=판금 갑옷
+MSG_ARMOR_BANDED_MAIL=띠 갑옷
+MSG_ARMOR_PLATE_MAIL=판금 갑옷
 
 # Potion colors - init.c rainbow[]
 MSG_COLOR_AMBER=호박색
@@ -456,24 +489,6 @@ MSG_COLOR_VIOLET=보라색
 MSG_COLOR_WHITE=흰색
 MSG_COLOR_YELLOW=노란색
 
-# Item type names
-MSG_POTION=물약
-MSG_RING=반지
-MSG_WAND=지팡이
-MSG_STAFF=막대기
-MSG_SCROLL=두루마리
-MSG_ARMOR=갑옷
-
-# Armor types - armor.c arm_info[]
-MSG_ARMOR_LEATHER_ARMOR=가죽 갑옷
-MSG_ARMOR_RING_MAIL=링 메일
-MSG_ARMOR_STUDDED_LEATHER_ARMOR=박음 가죽 갑옷
-MSG_ARMOR_SCALE_MAIL=비늘 갑옷
-MSG_ARMOR_CHAIN_MAIL=사슬 갑옷
-MSG_ARMOR_SPLINT_MAIL=판금 갑옷
-MSG_ARMOR_BANDED_MAIL=띠 갑옷
-MSG_ARMOR_PLATE_MAIL=판금 갑옷
-
 # Ring stones - r_stones[] array
 MSG_STONE_AGATE=마노
 MSG_STONE_ALEXANDRITE=알렉산드라이트
@@ -481,9 +496,9 @@ MSG_STONE_AMETHYST=자수정
 MSG_STONE_CARNELIAN=카넬리안
 MSG_STONE_DIAMOND=다이아몬드
 MSG_STONE_EMERALD=에메랄드
+MSG_STONE_GARNET=석류석
 MSG_STONE_GERMANIUM=게르마늄
 MSG_STONE_GRANITE=화강암
-MSG_STONE_GARNET=석류석
 MSG_STONE_JADE=옥
 MSG_STONE_KRYPTONITE=크립토나이트
 MSG_STONE_LAPIS_LAZULI=청금석
@@ -496,10 +511,10 @@ MSG_STONE_PERIDOT=감람석
 MSG_STONE_RUBY=루비
 MSG_STONE_SAPPHIRE=사파이어
 MSG_STONE_STIBOTANTALITE=스티보탄탈라이트
+MSG_STONE_TAAFFEITE=타페이트
 MSG_STONE_TIGER_EYE=호안석
 MSG_STONE_TOPAZ=토파즈
 MSG_STONE_TURQUOISE=터키석
-MSG_STONE_TAAFFEITE=타페이트
 MSG_STONE_ZIRCON=지르콘
 
 # Wand/Staff materials - ws_made[] array
@@ -524,8 +539,8 @@ MSG_MATERIAL_MANZANITA=만자니타
 MSG_MATERIAL_MAPLE=단풍나무
 MSG_MATERIAL_MULBERRY=뽕나무
 MSG_MATERIAL_OAK=참나무
-MSG_MATERIAL_PERSIMMON=감나무
 MSG_MATERIAL_PECAN=피칸
+MSG_MATERIAL_PERSIMMON=감나무
 MSG_MATERIAL_PINE=소나무
 MSG_MATERIAL_POPLAR=포플러
 MSG_MATERIAL_REDWOOD=레드우드
@@ -534,3 +549,6 @@ MSG_MATERIAL_SPRUCE=가문비나무
 MSG_MATERIAL_TEAK=티크
 MSG_MATERIAL_WALNUT=호두나무
 MSG_MATERIAL_ZEBRAWOOD=얼룩말무늬나무
+
+# 잡다한 점수판 문자열
+MSG_GOLD_PICES=골드 %d개

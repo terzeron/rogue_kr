@@ -62,10 +62,12 @@ const char *msg_get_stone(const char *stone);
 const char *msg_get_material(const char *material);
 
 /*
- * Transliterate English text to Korean phonetically
- * Used for scroll titles and other pseudo-words
+ * Transliterate English text to target language
+ * For Korean locale: converts English to Korean phonetic approximation
+ * For other locales: returns original English text
+ * Returns pointer to transliterated text (may be static buffer)
  */
-const char *transliterate_to_korean(const char *english);
+const char *msg_transliterate(const char *english);
 
 /*
  * Clean up message catalog resources

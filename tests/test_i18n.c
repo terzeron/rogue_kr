@@ -14,6 +14,7 @@
 
 /* Include i18n header */
 #include "../i18n.h"
+#include "../i18n_korean.h"
 
 /*
  * Test: i18n_init should succeed
@@ -365,7 +366,122 @@ static void test_user_example_transliteration(void **state) {
 
     /* User example: "nejdan valzum umodsef snamicdo" */
     result = transliterate_to_korean("nejdan valzum umodsef snamicdo");
-    assert_string_equal("넺단 발줌 우몯셒 스나믹도", result);
+    assert_string_equal("넺단 발줌 우몯셒 스나밐도", result);
+
+    result = transliterate_to_korean("lorem ipsum dolor sit amet consectetur adipiscing elit");
+    assert_string_equal("로렘 잎숨 돌롤 싵 아멭 콘셐테툴 아디피스킹 엘맅", result);
+
+    result = transliterate_to_korean("vitae lumen per saecula manet, sed verba ventis abeunt");
+    assert_string_equal("비타에 루멘 펠 사에쿨라 마넽, 섿 벨바 벤티스 아베운트", result);
+
+    result = transliterate_to_korean("aurum sine mente nihil est, et ratio lucem parit");
+    assert_string_equal("아우룸 시네 멘테 니힐 에스트, 엩 라티오 루켐 파맅", result);
+}
+
+/*
+ * Test: Special handling for letter 'x'
+ */
+static void test_transliteration_letter_x(void **state) {
+    (void) state; /* unused */
+    const char *result;
+
+    setenv("LANG", "ko_KR.UTF-8", 1);
+    i18n_cleanup();
+    i18n_init();
+
+    result = transliterate_to_korean("exdi");
+    assert_string_equal("엑스디", result);
+
+    result = transliterate_to_korean("alxa");
+    assert_string_equal("알크사", result);
+
+    result = transliterate_to_korean("alxbab");
+    assert_string_equal("알크스밥", result);
+
+    result = transliterate_to_korean("aXo");
+    assert_string_equal("악소", result);
+}
+
+/*
+ * Test: Special handling for 'ng' sound -> ㅇ jongseong
+ */
+static void test_transliteration_ng(void **state) {
+    (void) state; /* unused */
+    const char *result;
+
+    setenv("LANG", "ko_KR.UTF-8", 1);
+    i18n_cleanup();
+    i18n_init();
+
+    result = transliterate_to_korean("ang");
+    assert_string_equal("앙", result);
+
+    result = transliterate_to_korean("bang");
+    assert_string_equal("방", result);
+
+    result = transliterate_to_korean("aNg");
+    assert_string_equal("앙", result);
+
+    /* User-requested ng test cases:
+     * Rule: When 'ng' appears:
+     * - If current syllable has no jongseong: add ㅇ (NG) as jongseong
+     * - If current syllable has jongseong: move it to next syllable's choseong, add ㅡㅇ
+     */
+
+    /* Example 1: tang -> 탕 (no existing jongseong, add ㅇ) */
+    result = transliterate_to_korean("tang");
+    assert_string_equal("탕", result);
+
+    /* Example 2: takng -> 타킁 (k becomes jongseong, ng adds ㅇ) */
+    result = transliterate_to_korean("takng");
+    assert_string_equal("타킁", result);
+
+    /* Example 3: talng -> 탈릉 (l becomes jongseong, ng creates new syllable ㄹ+ㅡ+ㅇ) */
+    result = transliterate_to_korean("talng");
+    assert_string_equal("탈릉", result);
+
+    /* Example 4: taxng -> 탘승 (x creates ㄱ jongseong, ng creates new syllable ㅅ+ㅡ+ㅇ) */
+    result = transliterate_to_korean("taxng");
+    assert_string_equal("탘승", result);
+}
+
+/*
+ * Test: Special handling for letter 'l' and 'r'
+ */
+static void test_transliteration_lr_rules(void **state) {
+    (void) state; /* unused */
+    const char *result;
+
+    setenv("LANG", "ko_KR.UTF-8", 1);
+    i18n_cleanup();
+    i18n_init();
+
+    result = transliterate_to_korean("elit");
+    assert_string_equal("엘맅", result);
+
+    result = transliterate_to_korean("erit");
+    assert_string_equal("에맅", result);
+
+    result = transliterate_to_korean("Lima");
+    assert_string_equal("리마", result);
+}
+
+/*
+ * Test: 's' should become separate 스 when no following vowel
+ */
+static void test_transliteration_s_ending(void **state) {
+    (void) state; /* unused */
+    const char *result;
+
+    setenv("LANG", "ko_KR.UTF-8", 1);
+    i18n_cleanup();
+    i18n_init();
+
+    result = transliterate_to_korean("ventis");
+    assert_string_equal("벤티스", result);
+
+    result = transliterate_to_korean("as");
+    assert_string_equal("아스", result);
 }
 
 /*
@@ -626,6 +742,49 @@ static void test_material_english(void **state) {
     assert_string_equal(result, "bamboo");
 }
 
+/*
+ * Test: msg_transliterate wrapper function with Korean locale
+ */
+static void test_msg_transliterate_korean(void **state) {
+    (void) state; /* unused */
+    const char *result;
+
+    setenv("LANG", "ko_KR.UTF-8", 1);
+    i18n_cleanup();
+    i18n_init();
+
+    /* Test basic transliteration */
+    result = msg_transliterate("amber");
+    assert_non_null(result);
+    assert_true(strlen(result) > 0);
+    /* Should be Korean characters */
+    assert_true((unsigned char)result[0] >= 0x80);
+
+    result = msg_transliterate("blue");
+    assert_non_null(result);
+    assert_true(strlen(result) > 0);
+    assert_true((unsigned char)result[0] >= 0x80);
+}
+
+/*
+ * Test: msg_transliterate wrapper function with English locale
+ */
+static void test_msg_transliterate_english(void **state) {
+    (void) state; /* unused */
+    const char *result;
+
+    setenv("LANG", "en_US.UTF-8", 1);
+    i18n_cleanup();
+    i18n_init();
+
+    /* In English locale, should return unchanged */
+    result = msg_transliterate("amber");
+    assert_string_equal(result, "amber");
+
+    result = msg_transliterate("blue");
+    assert_string_equal(result, "blue");
+}
+
 int run_i18n_tests(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_i18n_init_success),
@@ -648,6 +807,10 @@ int run_i18n_tests(void) {
         cmocka_unit_test(test_english_locale_no_transliteration),
         cmocka_unit_test(test_transliteration_edge_cases),
         cmocka_unit_test(test_user_example_transliteration),
+        cmocka_unit_test(test_transliteration_letter_x),
+        cmocka_unit_test(test_transliteration_ng),
+        cmocka_unit_test(test_transliteration_lr_rules),
+        cmocka_unit_test(test_transliteration_s_ending),
         cmocka_unit_test(test_weapon_name_korean),
         cmocka_unit_test(test_weapon_name_invalid_index),
         cmocka_unit_test(test_monster_name_korean),
@@ -659,6 +822,8 @@ int run_i18n_tests(void) {
         cmocka_unit_test(test_stone_english),
         cmocka_unit_test(test_material_korean),
         cmocka_unit_test(test_material_english),
+        cmocka_unit_test(test_msg_transliterate_korean),
+        cmocka_unit_test(test_msg_transliterate_english),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

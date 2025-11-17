@@ -41,6 +41,52 @@ static char *rip[] = {
     0
 };
 
+/*
+ * Calculate display width of UTF-8 string
+ * Counts Korean/Chinese/Japanese characters as 2, ASCII as 1
+ */
+static int
+display_width(const char *str)
+{
+    int width = 0;
+    const unsigned char *s = (const unsigned char *)str;
+
+    while (*s)
+    {
+	if (*s < 0x80)
+	{
+	    /* ASCII character - width 1 */
+	    width++;
+	    s++;
+	}
+	else if ((*s & 0xE0) == 0xC0)
+	{
+	    /* 2-byte UTF-8 - width 1 (most cases) */
+	    width++;
+	    s += 2;
+	}
+	else if ((*s & 0xF0) == 0xE0)
+	{
+	    /* 3-byte UTF-8 - width 2 (CJK characters) */
+	    width += 2;
+	    s += 3;
+	}
+	else if ((*s & 0xF8) == 0xF0)
+	{
+	    /* 4-byte UTF-8 - width 2 */
+	    width += 2;
+	    s += 4;
+	}
+	else
+	{
+	    /* Invalid UTF-8, skip */
+	    s++;
+	}
+    }
+
+    return width;
+}
+
 static void
 format_tomb_line(char *out, size_t size,
     const char *prefix, const char *text, const char *suffix, int inner_width)
@@ -52,7 +98,7 @@ format_tomb_line(char *out, size_t size,
 	return;
     }
 
-    int len = (int) strlen(content);
+    int len = display_width(content);
     if (len > inner_width)
     {
 	snprintf(out, size, "%s%s%s", prefix, content, suffix);
@@ -60,11 +106,12 @@ format_tomb_line(char *out, size_t size,
     }
 
     int pad = inner_width - len;
-    int left = pad / 2;
-    int right = pad - left;
+
+    int left_pad = pad / 2;
+    int right_pad = pad - left_pad;
 
     snprintf(out, size, "%s%*s%s%*s%s",
-	     prefix, left, "", content, right, "", suffix);
+	     prefix, left_pad, "", content, right_pad, "", suffix);
 }
 
 /*
@@ -188,7 +235,7 @@ score(int amount, int flags, char monst)
      */
     if (flags != -1)
 	putchar('\n');
-    printf(msg_get("MSG_TOP_SCORES"), Numname, allscore ? msg_get("MSG_SCORES") : msg_get("MSG_ROGUEISTS"));
+    printf(msg_get("MSG_TOP_SCORES"), msg_get("MSG_NUMNAME"), allscore ? msg_get("MSG_SCORES") : msg_get("MSG_ROGUEISTS"));
     putchar('\n');
     printf("%s", msg_get("MSG_SCORE_HEADER"));
     putchar('\n');
@@ -283,28 +330,51 @@ death(char monst)
     else
     {
 	char rest_line[80], in_line[80], peace_line[80], killed_line[80];
-	char killed_text[80];
+	char killer_display_line[80];
+	char killed_text[80], killer_line_text[80];
 	const char *rest_txt = msg_get("MSG_TOMBSTONE_REST");
 	const char *in_txt = msg_get("MSG_TOMBSTONE_IN");
 	const char *peace_txt = msg_get("MSG_TOMBSTONE_PEACE");
 	const char *killed_template = msg_get("MSG_TOMBSTONE_KILLED");
 	const char *gold_label = msg_get("MSG_TOMBSTONE_GOLD");
 	const char *article = (monst == 's' || monst == 'h') ? "" : vowelstr(killer);
+	char *lang = getenv("LANG");
+	int is_korean = (lang != NULL && strncmp(lang, "ko", 2) == 0);
 
 	format_tomb_line(rest_line, sizeof(rest_line),
-	                 "                     /    ", rest_txt, "    \\\n", 8);
+	                 "                     /", rest_txt, "\\\n", 12);
 	format_tomb_line(in_line, sizeof(in_line),
-	                 "                    /      ", in_txt, "      \\\n", 6);
+	                 "                    /", in_txt, "\\\n", 14);
 	format_tomb_line(peace_line, sizeof(peace_line),
-	                 "                   /     ", peace_txt, "      \\\n", 5);
+	                 "                   /", peace_txt, "\\\n", 16);
 
-	if (strstr(killed_template, "%s") != NULL)
-	    snprintf(killed_text, sizeof(killed_text), killed_template, article);
+	/* Korean: show monster name on line 8, cause on line 17 */
+	/* English: show "killed by a" on line 8, monster name on line 17 */
+	if (is_korean)
+	{
+	    /* Line 8: monster name */
+	    strncpy(killed_text, killer, sizeof(killed_text) - 1);
+	    killed_text[sizeof(killed_text) - 1] = '\0';
+	    /* Line 17: "~(으)로 인해 살해됨" */
+	    strncpy(killer_line_text, killed_template, sizeof(killer_line_text) - 1);
+	    killer_line_text[sizeof(killer_line_text) - 1] = '\0';
+	}
 	else
-	    snprintf(killed_text, sizeof(killed_text), "%s%s", killed_template, article);
+	{
+	    /* Line 8: "killed by a" */
+	    if (strstr(killed_template, "%s") != NULL)
+		snprintf(killed_text, sizeof(killed_text), killed_template, article);
+	    else
+		snprintf(killed_text, sizeof(killed_text), "%s%s", killed_template, article);
+	    /* Line 17: monster name */
+	    strncpy(killer_line_text, killer, sizeof(killer_line_text) - 1);
+	    killer_line_text[sizeof(killer_line_text) - 1] = '\0';
+	}
 
 	format_tomb_line(killed_line, sizeof(killed_line),
-	                 "                  |   ", killed_text, "    |\n", 14);
+	                 "                  |", killed_text, "|\n", 18);
+	format_tomb_line(killer_display_line, sizeof(killer_display_line),
+	                 "                  |", killer_line_text, "|\n", 18);
 	time(&date);
 	lt = localtime(&date);
 	move(8, 0);
@@ -329,7 +399,7 @@ death(char monst)
 		    break;
 	    }
 	}
-	mvaddstr(17, center(killer), killer);
+	mvaddstr(17, 0, killer_display_line);
 	mvaddstr(14, center(whoami), whoami);
 	snprintf(prbuf, MAXSTR, "%d %s", purse, gold_label);
 	move(15, center(prbuf));
@@ -355,7 +425,7 @@ death(char monst)
 int
 center(char *str)
 {
-    return 28 - (((int)strlen(str) + 1) / 2);
+    return 28 - ((display_width(str) + 1) / 2);
 }
 
 /*
@@ -387,7 +457,7 @@ total_winner()
     addstr("\nYou have joined the elite ranks of those who have escaped the\n");
     addstr("Dungeons of Doom alive.  You journey home and sell all your loot at\n");
     addstr("a great profit and are admitted to the Fighters' Guild.\n");
-    mvaddstr(LINES - 1, 0, "--Press space to continue--");
+    mvaddstr(LINES - 1, 0, msg_get("MSG_PRESS_SPACE"));
     refresh();
     wait_for(' ');
     clear();

@@ -16,6 +16,7 @@
 #include <ctype.h>
 #include "rogue.h"
 #include "i18n.h"
+#include "i18n_korean.h"
 
 /*
  * inv_name:
@@ -92,16 +93,32 @@ inv_name(THING *obj, bool drop)
 		}
 	    }
 	when FOOD:
-	    if (which == 1)
-		if (obj->o_count == 1)
-		    sprintf(pb, "A%s %s", vowelstr(fruit), fruit);
+	    {
+		char *lang = getenv("LANG");
+		int is_korean = (lang != NULL && strncmp(lang, "ko", 2) == 0);
+
+		if (which == 1)
+		{
+		    if (obj->o_count == 1)
+			sprintf(pb, "A%s %s", vowelstr(fruit), fruit);
+		    else
+			sprintf(pb, "%d %ss", obj->o_count, fruit);
+		}
 		else
-		    sprintf(pb, "%d %ss", obj->o_count, fruit);
-	    else
-		if (obj->o_count == 1)
-		    strcpy(pb, "Some food");
-		else
-		    sprintf(pb, "%d rations of food", obj->o_count);
+		{
+		    if (obj->o_count == 1)
+		    {
+			strcpy(pb, is_korean ? "식량" : "Some food");
+		    }
+		    else
+		    {
+			if (is_korean)
+			    sprintf(pb, "식량 %d개", obj->o_count);
+			else
+			    sprintf(pb, "%d rations of food", obj->o_count);
+		    }
+		}
+	    }
 	when WEAPON:
 	    {
 		char *lang = getenv("LANG");
@@ -553,7 +570,7 @@ add_line(char *fmt, char *arg)
 {
     WINDOW *tw, *sw;
     int x, y;
-    char *prompt = "--Press space to continue--";
+    const char *prompt = msg_get("MSG_PRESS_SPACE");
     static int maxlen = -1;
 
     if (line_cnt == 0)

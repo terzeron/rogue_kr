@@ -24,10 +24,10 @@ AC_TYPE_UID_T
 AC_TYPE_SIZE_T
 AC_STRUCT_TM
 AC_MSG_CHECKING([for curses library])
-AC_SEARCH_LIBS([initscr], [ncursesw], [
+AC_SEARCH_LIBS([initscr], [ncursesw ncurses curses], [
   AC_MSG_RESULT([found])
 ], [
-  AC_MSG_ERROR([could not find ncursesw library])
+  AC_MSG_ERROR([could not find curses library (tried ncursesw, ncurses, curses)])
 ])
 AC_SEARCH_LIBS([tgetent], [termcap tinfo], [
   AC_MSG_RESULT([found termcap])

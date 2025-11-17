@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "i18n.h"
+#include "i18n_korean.h"
 
 /* Message entry structure */
 typedef struct {
@@ -238,8 +239,7 @@ const char *msg_get_color(const char *color)
 	i18n_init();
 
     /* Check if we need to translate (Korean locale) */
-    char *lang = getenv("LANG");
-    if (lang == NULL || strncmp(lang, "ko", 2) != 0)
+    if (!is_korean_locale())
 	return color;
 
     /* Find color in list and create message key */
@@ -283,8 +283,7 @@ const char *msg_get_stone(const char *stone)
 	i18n_init();
 
     /* Check if we need to translate (Korean locale) */
-    char *lang = getenv("LANG");
-    if (lang == NULL || strncmp(lang, "ko", 2) != 0)
+    if (!is_korean_locale())
 	return stone;
 
     /* Convert stone name to uppercase for message key */
@@ -316,8 +315,7 @@ const char *msg_get_material(const char *material)
 	i18n_init();
 
     /* Check if we need to translate (Korean locale) */
-    char *lang = getenv("LANG");
-    if (lang == NULL || strncmp(lang, "ko", 2) != 0)
+    if (!is_korean_locale())
 	return material;
 
     /* Convert material name to uppercase for message key */
@@ -338,250 +336,21 @@ const char *msg_get_material(const char *material)
 }
 
 /*
- * Map English consonant to Korean jamo index
- * Returns -1 for vowels, 0-18 for consonants (choseong index)
- * Choseong: ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ
+ * Transliterate English text to target language
+ * For Korean locale: uses syllable-based transliteration
+ * For other locales: returns original text
  */
-static int get_choseong_index(char c)
+const char *msg_transliterate(const char *english)
 {
-    switch(c) {
-	case 'g': return 0;  /* ㄱ */
-	case 'k': return 15; /* ㅋ */
-	case 'n': return 2;  /* ㄴ */
-	case 'd': return 3;  /* ㄷ */
-	case 't': return 16; /* ㅌ */
-	case 'r': return 5;  /* ㄹ */
-	case 'l': return 5;  /* ㄹ */
-	case 'm': return 6;  /* ㅁ */
-	case 'b': return 7;  /* ㅂ */
-	case 'p': return 17; /* ㅍ */
-	case 's': return 9;  /* ㅅ */
-	case 'j': return 12; /* ㅈ */
-	case 'c': return 14; /* ㅊ */
-	case 'h': return 18; /* ㅎ */
-	case 'f': return 17; /* ㅍ (f->p) */
-	case 'v': return 7;  /* ㅂ (v->b) */
-	case 'z': return 12; /* ㅈ (z->j) */
-	case 'q': return 15; /* ㅋ (q->k) */
-	case 'w': return -1; /* vowel-like */
-	case 'y': return -1; /* vowel-like */
-	default: return -1;  /* vowel or unknown */
-    }
-}
-
-/*
- * Map English consonant to Korean jongseong (final consonant) index
- * Returns 0 for none, 1-27 for consonants
- * Jongseong: (없음) ㄱ ㄲ ㄱㅅ ㄴ ㄴㅈ ㄴㅎ ㄷ ㄹ ㄹㄱ ㄹㅁ ㄹㅂ ㄹㅅ ㄹㅌ ㄹㅍ ㄹㅎ ㅁ ㅂ ㅂㅅ ㅅ ㅆ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
- */
-static int get_jongseong_index(char c)
-{
-    switch(c) {
-	case 'g': return 1;  /* ㄱ */
-	case 'k': return 1;  /* ㄱ (k->g in final position) */
-	case 'c': return 1;  /* ㄱ (c->k->g in final position) */
-	case 'n': return 4;  /* ㄴ */
-	case 'd': return 7;  /* ㄷ */
-	case 't': return 7;  /* ㄷ (t->d in final position) */
-	case 'r': return 8;  /* ㄹ */
-	case 'l': return 8;  /* ㄹ */
-	case 'm': return 16; /* ㅁ */
-	case 'b': return 17; /* ㅂ */
-	case 'p': return 17; /* ㅂ (p->b in final position) */
-	case 's': return 19; /* ㅅ */
-	case 'j': return 22; /* ㅈ */
-	case 'f': return 26; /* ㅍ */
-	case 'h': return 27; /* ㅎ */
-	case 'z': return 22; /* ㅈ */
-	default: return 0;   /* no final consonant */
-    }
-}
-
-/*
- * Map English vowel to Korean jungseong (vowel) index
- * Returns 0-20 for vowels, -1 for consonants
- * Jungseong: ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ
- */
-static int get_jungseong_index(char c)
-{
-    switch(c) {
-	case 'a': return 0;  /* ㅏ */
-	case 'e': return 5;  /* ㅔ */
-	case 'i': return 20; /* ㅣ */
-	case 'o': return 8;  /* ㅗ */
-	case 'u': return 13; /* ㅜ */
-	case 'y': return 20; /* ㅣ (y as vowel) */
-	case 'w': return 13; /* ㅜ (w as vowel) */
-	default: return -1;  /* consonant */
-    }
-}
-
-/*
- * Compose a Korean syllable from jamo indices
- * Returns UTF-8 bytes written to out
- */
-static int compose_syllable(char *out, int cho, int jung, int jong)
-{
-    int unicode = 0xAC00 + (cho * 21 * 28) + (jung * 28) + jong;
-
-    /* Convert Unicode codepoint to UTF-8 */
-    out[0] = 0xE0 | ((unicode >> 12) & 0x0F);
-    out[1] = 0x80 | ((unicode >> 6) & 0x3F);
-    out[2] = 0x80 | (unicode & 0x3F);
-    return 3;
-}
-
-/*
- * Transliterate English text to Korean using syllable composition
- * This is for scroll titles and similar pseudo-words
- */
-const char *transliterate_to_korean(const char *english)
-{
-    static char korean_buf[MAX_MSG_VALUE];
-    char *out = korean_buf;
-    const char *in = english;
-    int pending_consonant = -1; /* Store consonant waiting for vowel */
-
     if (!initialized)
 	i18n_init();
 
-    /* Only transliterate if Korean locale */
-    char *lang = getenv("LANG");
-    if (lang == NULL || strncmp(lang, "ko", 2) != 0)
-    {
-	strncpy(korean_buf, english, MAX_MSG_VALUE - 1);
-	korean_buf[MAX_MSG_VALUE - 1] = '\0';
-	return korean_buf;
-    }
+    /* Only transliterate for Korean locale */
+    if (!is_korean_locale())
+	return english;
 
-    korean_buf[0] = '\0';
-    out = korean_buf;
-
-    while (*in && (out - korean_buf) < MAX_MSG_VALUE - 10)
-    {
-	/* Skip spaces and copy as-is */
-	if (*in == ' ')
-	{
-	    /* Flush pending consonant with default vowel */
-	    if (pending_consonant >= 0)
-	    {
-		out += compose_syllable(out, pending_consonant, 18, 0); /* ㅡ */
-		pending_consonant = -1;
-	    }
-	    *out++ = *in++;
-	    continue;
-	}
-
-	char c = *in;
-
-	/* Check for digraphs (special two-letter combinations) */
-	if (in[0] && in[1])
-	{
-	    /* Handle 'ph' as 'f' sound */
-	    if (in[0] == 'p' && in[1] == 'h')
-	    {
-		if (pending_consonant >= 0)
-		{
-		    out += compose_syllable(out, pending_consonant, 18, 0);
-		}
-		pending_consonant = 17; /* ㅍ */
-		in += 2;
-		continue;
-	    }
-	    /* Handle 'th' as 's' sound */
-	    if (in[0] == 't' && in[1] == 'h')
-	    {
-		if (pending_consonant >= 0)
-		{
-		    out += compose_syllable(out, pending_consonant, 18, 0);
-		}
-		pending_consonant = 9; /* ㅅ */
-		in += 2;
-		continue;
-	    }
-	}
-
-	int vowel_idx = get_jungseong_index(c);
-	int consonant_idx = get_choseong_index(c);
-
-	if (vowel_idx >= 0)
-	{
-	    /* It's a vowel */
-	    if (pending_consonant >= 0)
-	    {
-		/* Combine pending consonant with this vowel */
-		/* Look ahead to see if next char is consonant for jongseong */
-		int jong = 0;
-		if (in[1] && get_jungseong_index(in[1]) < 0 && in[1] != ' ')
-		{
-		    /* Next is consonant */
-		    /* Check if character after that is a vowel */
-		    /* AGGRESSIVE JONGSEONG RULE: attach as jongseong UNLESS next char is vowel */
-		    int next_next_is_vowel = (in[2] && get_jungseong_index(in[2]) >= 0);
-
-		    if (!next_next_is_vowel)
-		    {
-			/* Make this consonant a jongseong */
-			jong = get_jongseong_index(in[1]);
-			in++; /* consume the jongseong consonant */
-		    }
-		}
-		out += compose_syllable(out, pending_consonant, vowel_idx, jong);
-		pending_consonant = -1;
-	    }
-	    else
-	    {
-		/* Vowel without initial consonant - use ㅇ (index 11) */
-		/* Check for jongseong */
-		int jong = 0;
-		if (in[1] && get_jungseong_index(in[1]) < 0 && in[1] != ' ')
-		{
-		    /* Next is consonant */
-		    /* AGGRESSIVE JONGSEONG RULE: attach as jongseong UNLESS next char is vowel */
-		    int next_next_is_vowel = (in[2] && get_jungseong_index(in[2]) >= 0);
-
-		    if (!next_next_is_vowel)
-		    {
-			/* Make this consonant a jongseong */
-			jong = get_jongseong_index(in[1]);
-			in++; /* consume the jongseong consonant */
-		    }
-		}
-		out += compose_syllable(out, 11, vowel_idx, jong);
-	    }
-	    in++;
-	}
-	else if (consonant_idx >= 0)
-	{
-	    /* It's a consonant */
-	    if (pending_consonant >= 0)
-	    {
-		/* Previous consonant didn't get a vowel, use default ㅡ */
-		out += compose_syllable(out, pending_consonant, 18, 0);
-	    }
-	    pending_consonant = consonant_idx;
-	    in++;
-	}
-	else
-	{
-	    /* Unknown character, copy as-is */
-	    if (pending_consonant >= 0)
-	    {
-		out += compose_syllable(out, pending_consonant, 18, 0);
-		pending_consonant = -1;
-	    }
-	    *out++ = *in++;
-	}
-    }
-
-    /* Flush any remaining pending consonant */
-    if (pending_consonant >= 0)
-    {
-	out += compose_syllable(out, pending_consonant, 18, 0); /* ㅡ */
-    }
-
-    *out = '\0';
-    return korean_buf;
+    /* Use Korean-specific transliteration */
+    return transliterate_to_korean(english);
 }
 
 /*

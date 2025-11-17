@@ -491,7 +491,7 @@ extern int	dnum, e_levels[], seed;
 
 extern WINDOW	*hw;
 
-extern coord	delta, oldpos, stairs, ch_ret;
+extern coord	delta, oldpos, stairs;
 
 extern PLACE	places[];
 
