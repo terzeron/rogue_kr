@@ -17,7 +17,12 @@ extern void set_know(THING *obj, struct obj_info *info);
 /* Test: type_name returns readable descriptions */
 static void test_type_name_weapon(void **state) {
     (void) state;
-    assert_string_equal("weapon", type_name(WEAPON));
+    const char *result = type_name(WEAPON);
+    /* type_name now returns translated message, check it's not NULL */
+    assert_non_null(result);
+    /* In test environment, msg_get returns the key itself */
+    /* So we check if it contains "WEAPON" or is the translated "weapon" */
+    assert_true(strstr(result, "WEAPON") != NULL || strcmp(result, "weapon") == 0);
 }
 
 /* Test: set_know marks object info as known */

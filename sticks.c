@@ -54,7 +54,7 @@ do_zap()
     char monster, oldch;
     static THING bolt;
 
-    if ((obj = get_item("zap with", STICK)) == NULL)
+    if ((obj = get_item(msg_get("MSG_PURPOSE_ZAP_WITH"), STICK)) == NULL)
 	return;
     if (obj->o_type != STICK)
     {
@@ -224,11 +224,11 @@ do_zap()
 	case WS_FIRE:
 	case WS_COLD:
 	    if (obj->o_which == WS_ELECT)
-		name = "bolt";
+		name = msg_get("MSG_STICK_BOLT");
 	    else if (obj->o_which == WS_FIRE)
-		name = "flame";
+		name = msg_get("MSG_STICK_FLAME");
 	    else
-		name = "ice";
+		name = msg_get("MSG_STICK_ICE");
 	    fire_bolt(&hero, &delta, name);
 	    ws_info[obj->o_which].oi_know = TRUE;
 	when WS_NOP:

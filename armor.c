@@ -23,7 +23,7 @@ wear()
     register THING *obj;
     register char *sp;
 
-    if ((obj = get_item("wear", ARMOR)) == NULL)
+    if ((obj = get_item(msg_get("MSG_PURPOSE_WEAR"), ARMOR)) == NULL)
 	return;
     if (cur_armor != NULL)
     {

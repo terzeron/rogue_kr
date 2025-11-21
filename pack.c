@@ -155,7 +155,7 @@ out:
 	if (!terse)
 	    msg(msg_get("MSG_YOU_NOW_HAVE"), inv_name(obj, !terse), obj->o_packch);
 	else
-	    msg("%s (%c)", inv_name(obj, !terse), obj->o_packch);
+	    msg(msg_get("MSG_HAVE_ITEM_TERSE"), inv_name(obj, !terse), obj->o_packch);
     }
 }
 
@@ -277,11 +277,11 @@ inventory(THING *list, int type)
     if (n_objs == 0)
     {
 	if (terse)
-	    msg(type == 0 ? "empty handed" :
-			    "nothing appropriate");
+	    msg(type == 0 ? msg_get("MSG_PACK_EMPTY_HANDED_TERSE") :
+			    msg_get("MSG_PACK_NOTHING_APPROPRIATE_TERSE"));
 	else
-	    msg(type == 0 ? "you are empty handed" :
-			    "you don't have anything appropriate");
+	    msg(type == 0 ? msg_get("MSG_PACK_EMPTY_HANDED_VERBOSE") :
+			    msg_get("MSG_PACK_NOTHING_APPROPRIATE_VERBOSE"));
 	return FALSE;
     }
     end_line();
@@ -362,7 +362,7 @@ picky_inven()
 	msg(msg_get("MSG_A_ITEM"), inv_name(pack, FALSE));
     else
     {
-	msg(terse ? "item: " : "which item do you wish to inventory: ");
+	msg(terse ? msg_get("MSG_PACK_ITEM_PROMPT_TERSE") : msg_get("MSG_PACK_ITEM_PROMPT_VERBOSE"));
 	mpos = 0;
 	if ((mch = readchar()) == ESCAPE)
 	{
@@ -372,7 +372,7 @@ picky_inven()
 	for (obj = pack; obj != NULL; obj = next(obj))
 	    if (mch == obj->o_packch)
 	    {
-		msg("%c) %s", mch, inv_name(obj, FALSE));
+		msg(msg_get("MSG_SHOW_ITEM"), mch, inv_name(obj, FALSE));
 		return;
 	    }
 	msg(msg_get("MSG_NOT_IN_PACK"), unctrl(mch));
@@ -384,7 +384,7 @@ picky_inven()
  *	Pick something out of a pack for a purpose
  */
 THING *
-get_item(char *purpose, int type)
+get_item(const char *purpose, int type)
 {
     THING *obj;
     char ch;
@@ -460,7 +460,7 @@ money(int value)
 	if (!terse)
 	    msg(msg_get("MSG_YOU_FOUND_GOLD"), value);
 	else
-	    msg("%d gold pieces", value);
+	    msg(msg_get("MSG_GOLD_PIECES"), value);
     }
 }
 

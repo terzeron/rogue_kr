@@ -36,11 +36,11 @@ inv_name(THING *obj, bool drop)
     switch (obj->o_type)
     {
         case POTION:
-	    nameit(obj, "potion", p_colors[which], &pot_info[which], nullstr);
+	    nameit(obj, POTION, p_colors[which], &pot_info[which], nullstr);
 	when RING:
-	    nameit(obj, "ring", r_stones[which], &ring_info[which], ring_num);
+	    nameit(obj, RING, r_stones[which], &ring_info[which], ring_num);
 	when STICK:
-	    nameit(obj, ws_type[which], ws_made[which], &ws_info[which], charge_str);
+	    nameit(obj, STICK, ws_made[which], &ws_info[which], charge_str);
 	when SCROLL:
 	    {
 		char *lang = getenv("LANG");
@@ -76,20 +76,22 @@ inv_name(THING *obj, bool drop)
 		    /* English word order */
 		    if (obj->o_count == 1)
 		    {
-			strcpy(pb, "A scroll ");
-			pb = &prbuf[9];
+			strcpy(pb, msg_get("MSG_THING_SCROLL_A"));
+			strcat(pb, " ");
+			pb = &prbuf[strlen(prbuf)];
 		    }
 		    else
 		    {
-			sprintf(pb, "%d scrolls ", obj->o_count);
+			sprintf(pb, msg_get("MSG_THING_SCROLLS"), obj->o_count);
+			strcat(pb, " ");
 			pb = &prbuf[strlen(prbuf)];
 		    }
 		    if (op->oi_know)
-			sprintf(pb, "of %s", op->oi_name);
+			sprintf(pb, msg_get("MSG_THING_OF"), op->oi_name);
 		    else if (op->oi_guess)
-			sprintf(pb, "called %s", op->oi_guess);
+			sprintf(pb, msg_get("MSG_THING_CALLED"), op->oi_guess);
 		    else
-			sprintf(pb, "titled '%s'", s_names[which]);
+			sprintf(pb, msg_get("MSG_THING_TITLED"), s_names[which]);
 		}
 	    }
 	when FOOD:
@@ -100,22 +102,19 @@ inv_name(THING *obj, bool drop)
 		if (which == 1)
 		{
 		    if (obj->o_count == 1)
-			sprintf(pb, "A%s %s", vowelstr(fruit), fruit);
+			sprintf(pb, msg_get("MSG_FORMAT_A_FRUIT"), vowelstr(fruit), fruit);
 		    else
-			sprintf(pb, "%d %ss", obj->o_count, fruit);
+			sprintf(pb, msg_get("MSG_FORMAT_N_FRUITS"), obj->o_count, fruit);
 		}
 		else
 		{
 		    if (obj->o_count == 1)
 		    {
-			strcpy(pb, is_korean ? "식량" : "Some food");
+			strcpy(pb, msg_get("MSG_THING_SOME_FOOD"));
 		    }
 		    else
 		    {
-			if (is_korean)
-			    sprintf(pb, "식량 %d개", obj->o_count);
-			else
-			    sprintf(pb, "%d rations of food", obj->o_count);
+			sprintf(pb, msg_get("MSG_THING_RATIONS"), obj->o_count);
 		    }
 		}
 	    }
@@ -130,9 +129,9 @@ inv_name(THING *obj, bool drop)
 		{
 		    /* Korean word order */
 		    if (obj->o_count > 1)
-			sprintf(pb, "%s %d개", sp, obj->o_count);
+			sprintf(pb, msg_get("MSG_FORMAT_WEAPON_N_KO"), sp, obj->o_count);
 		    else if (obj->o_flags & ISKNOW)
-			sprintf(pb, "%s %s", num(obj->o_hplus,obj->o_dplus,WEAPON), sp);
+			sprintf(pb, msg_get("MSG_FORMAT_WEAPON_KNOWN_KO"), num(obj->o_hplus,obj->o_dplus,WEAPON), sp);
 		    else
 			sprintf(pb, "%s", sp);
 		}
@@ -142,23 +141,20 @@ inv_name(THING *obj, bool drop)
 		    if (obj->o_count > 1)
 			sprintf(pb, "%d ", obj->o_count);
 		    else
-			sprintf(pb, "A%s ", vowelstr(sp));
+			sprintf(pb, msg_get("MSG_FORMAT_A_WEAPON"), vowelstr(sp));
 		    pb = &prbuf[strlen(prbuf)];
 		    if (obj->o_flags & ISKNOW)
-			sprintf(pb, "%s %s", num(obj->o_hplus,obj->o_dplus,WEAPON), sp);
+			sprintf(pb, msg_get("MSG_FORMAT_WEAPON_KNOWN_EN"), num(obj->o_hplus,obj->o_dplus,WEAPON), sp);
 		    else
 			sprintf(pb, "%s", sp);
 		    if (obj->o_count > 1)
-			strcat(pb, "s");
+			strcat(pb, msg_get("MSG_FORMAT_PLURAL_S"));
 		}
 
 		if (obj->o_label != NULL)
 		{
 		    pb = &prbuf[strlen(prbuf)];
-		    if (is_korean)
-			sprintf(pb, " (%s(이)라 불리는)", obj->o_label);
-		    else
-			sprintf(pb, " called %s", obj->o_label);
+		    sprintf(pb, msg_get("MSG_FORMAT_LABELED"), obj->o_label);
 		}
 	    }
 	when ARMOR:
@@ -173,19 +169,19 @@ inv_name(THING *obj, bool drop)
 		    if (is_korean)
 		    {
 			/* Korean: "+2 가죽 갑옷 [방어력 8]" */
-			sprintf(pb, "%s %s [%s %d]",
+			sprintf(pb, msg_get("MSG_FORMAT_ARMOR_KNOWN_KO"),
 			    num(a_class[which] - obj->o_arm, 0, ARMOR), sp,
-			    terse ? "" : "방어력 ", 10 - obj->o_arm);
+			    terse ? "" : msg_get("MSG_ARMOR_PROTECTION_LABEL"), 10 - obj->o_arm);
 		    }
 		    else
 		    {
 			/* English: "+2 leather armor [protection 8]" */
-			sprintf(pb, "%s %s [",
+			sprintf(pb, msg_get("MSG_FORMAT_ARMOR_KNOWN_EN_START"),
 			    num(a_class[which] - obj->o_arm, 0, ARMOR), sp);
 			if (!terse)
-			    strcat(pb, "protection ");
+			    strcat(pb, msg_get("MSG_ARMOR_PROTECTION_WORD"));
 			pb = &prbuf[strlen(prbuf)];
-			sprintf(pb, "%d]", 10 - obj->o_arm);
+			sprintf(pb, msg_get("MSG_FORMAT_ARMOR_KNOWN_EN_END"), 10 - obj->o_arm);
 		    }
 		}
 		else
@@ -194,32 +190,29 @@ inv_name(THING *obj, bool drop)
 		if (obj->o_label != NULL)
 		{
 		    pb = &prbuf[strlen(prbuf)];
-		    if (is_korean)
-			sprintf(pb, " (%s(이)라 불리는)", obj->o_label);
-		    else
-			sprintf(pb, " called %s", obj->o_label);
+		    sprintf(pb, msg_get("MSG_FORMAT_LABELED"), obj->o_label);
 		}
 	    }
 	when AMULET:
-	    strcpy(pb, "The Amulet of Yendor");
+	    strcpy(pb, msg_get("MSG_THING_AMULET"));
 	when GOLD:
-	    sprintf(prbuf, "%d Gold pieces", obj->o_goldval);
+	    sprintf(prbuf, msg_get("MSG_THING_GOLD_PIECES"), obj->o_goldval);
 #ifdef MASTER
 	otherwise:
 	    debug("Picked up something funny %s", unctrl(obj->o_type));
-	    sprintf(pb, "Something bizarre %s", unctrl(obj->o_type));
+	    sprintf(pb, msg_get("MSG_THING_BIZARRE"), unctrl(obj->o_type));
 #endif
     }
     if (inv_describe)
     {
 	if (obj == cur_armor)
-	    strcat(pb, " (being worn)");
+	    strcat(pb, msg_get("MSG_THING_BEING_WORN"));
 	if (obj == cur_weapon)
-	    strcat(pb, " (weapon in hand)");
+	    strcat(pb, msg_get("MSG_THING_WEAPON_IN_HAND"));
 	if (obj == cur_ring[LEFT])
-	    strcat(pb, " (on left hand)");
+	    strcat(pb, msg_get("MSG_THING_ON_LEFT_HAND"));
 	else if (obj == cur_ring[RIGHT])
-	    strcat(pb, " (on right hand)");
+	    strcat(pb, msg_get("MSG_THING_ON_RIGHT_HAND"));
     }
     if (drop && isupper(prbuf[0]))
 	prbuf[0] = (char) tolower(prbuf[0]);
@@ -247,7 +240,7 @@ drop()
 	msg(msg_get("MSG_THING_SOMETHING_THERE"));
 	return;
     }
-    if ((obj = get_item("drop", 0)) == NULL)
+    if ((obj = get_item(msg_get("MSG_PURPOSE_DROP"), 0)) == NULL)
 	return;
     if (!dropcheck(obj))
 	return;
@@ -598,12 +591,12 @@ add_line(char *fmt, char *arg)
 		refresh();
 		tw = newwin(line_cnt + 1, maxlen + 2, 0, COLS - maxlen - 3);
 		sw = subwin(tw, line_cnt + 1, maxlen + 1, 0, COLS - maxlen - 2);
-                for (y = 0; y <= line_cnt; y++) 
-                { 
-                    wmove(sw, y, 0); 
-                    for (x = 0; x <= maxlen; x++) 
-                        waddch(sw, mvwinch(hw, y, x)); 
-                } 
+                for (y = 0; y <= line_cnt; y++)
+                {
+                    wmove(sw, y, 0);
+                    for (x = 0; x <= maxlen; x++)
+                        waddch(sw, mvwinch(hw, y, x));
+                }
 		wmove(tw, line_cnt, 1);
 		waddstr(tw, prompt);
 		/*
@@ -687,20 +680,20 @@ nothing(char type)
     char *sp, *tystr = NULL;
 
     if (terse)
-	sprintf(prbuf, "Nothing");
+	sprintf(prbuf, msg_get("MSG_THING_NOTHING"));
     else
-	sprintf(prbuf, "Haven't discovered anything");
+	sprintf(prbuf, msg_get("MSG_THING_HAVENT_DISCOVERED"));
     if (type != '*')
     {
 	sp = &prbuf[strlen(prbuf)];
 	switch (type)
 	{
-	    case POTION: tystr = "potion";
-	    when SCROLL: tystr = "scroll";
-	    when RING: tystr = "ring";
-	    when STICK: tystr = "stick";
+	    case POTION: tystr = msg_get("MSG_POTION");
+	    when SCROLL: tystr = msg_get("MSG_SCROLL");
+	    when RING: tystr = msg_get("MSG_RING");
+	    when STICK: tystr = msg_get("MSG_STICK");
 	}
-	sprintf(sp, " about any %ss", tystr);
+	sprintf(sp, msg_get("MSG_THING_ABOUT_ANY"), tystr);
     }
     return prbuf;
 }
@@ -711,41 +704,63 @@ nothing(char type)
  */
 
 void
-nameit(THING *obj, char *type, char *which, struct obj_info *op,
+nameit(THING *obj, int type, char *which, struct obj_info *op,
     char *(*prfunc)(THING *))
 {
     char *pb;
     char *lang = getenv("LANG");
     int is_korean = (lang != NULL && strncmp(lang, "ko", 2) == 0);
+    const char *type_msg_id = NULL;
+    const char *type_en = NULL;
+    int is_wand = 0;
+
+    /* Determine message ID and English name based on type constant */
+    switch (type)
+    {
+	case POTION:
+	    type_msg_id = "MSG_POTION";
+	    type_en = "potion";
+	    break;
+	case RING:
+	    type_msg_id = "MSG_RING";
+	    type_en = "ring";
+	    break;
+	case STICK:
+		/* For STICK, determine wand/staff based on ws_type entry */
+		is_wand = (strcmp(ws_type[obj->o_which], "wand") == 0);
+		type_msg_id = is_wand ? "MSG_WAND" : "MSG_STAFF";
+		type_en = is_wand ? "wand" : "staff";
+	    break;
+	default:
+	    type_msg_id = NULL;
+	    type_en = "item";
+	    break;
+    }
 
     if (op->oi_know || op->oi_guess)
     {
 	if (is_korean)
 	{
-	    /* Korean: translate type, no article/count prefix */
-	    const char *translated_type = msg_get(
-		strcmp(type, "potion") == 0 ? "MSG_POTION" :
-		strcmp(type, "ring") == 0 ? "MSG_RING" :
-		strcmp(type, "wand") == 0 ? "MSG_WAND" :
-		strcmp(type, "staff") == 0 ? "MSG_STAFF" : type);
+	    /* Korean: name + type (no article) */
+	    const char *translated_type = type_msg_id ? msg_get(type_msg_id) : type_en;
 
 	    if (op->oi_know)
 		sprintf(prbuf, "%s %s%s", op->oi_name, translated_type, (*prfunc)(obj));
 	    else if (op->oi_guess)
-		sprintf(prbuf, "%s(이)라고 불리는 %s%s", op->oi_guess, translated_type, (*prfunc)(obj));
+		sprintf(prbuf, msg_get("MSG_FORMAT_CALLED_KOREAN"), op->oi_guess, translated_type, (*prfunc)(obj));
 	}
 	else
 	{
-	    /* English: article + type + of + name */
+	    /* English: article + type + of/called + name */
 	    if (obj->o_count == 1)
-		sprintf(prbuf, "A %s ", type);
+		sprintf(prbuf, msg_get("MSG_FORMAT_A_TYPE"), type_en);
 	    else
-		sprintf(prbuf, "%d %ss ", obj->o_count, type);
+		sprintf(prbuf, msg_get("MSG_FORMAT_N_TYPES"), obj->o_count, type_en);
 	    pb = &prbuf[strlen(prbuf)];
 	    if (op->oi_know)
-		sprintf(pb, "of %s%s(%s)", op->oi_name, (*prfunc)(obj), which);
+		sprintf(pb, msg_get("MSG_FORMAT_OF_NAME"), op->oi_name, (*prfunc)(obj), which);
 	    else if (op->oi_guess)
-		sprintf(pb, "called %s%s(%s)", op->oi_guess, (*prfunc)(obj), which);
+		sprintf(pb, msg_get("MSG_FORMAT_CALLED_NAME"), op->oi_guess, (*prfunc)(obj), which);
 	}
     }
     else
@@ -757,45 +772,39 @@ nameit(THING *obj, char *type, char *which, struct obj_info *op,
 	    const char *translated_adjective;
 	    const char *translated_type;
 
-	    /* Determine if which is a color (for potions) or material (for wands/staves) or stone (for rings) */
-	    if (strcmp(type, "potion") == 0)
+	    /* Determine adjective translation based on type */
+	    switch (type)
 	    {
-		translated_adjective = msg_get_color(which);
-		translated_type = msg_get("MSG_POTION");
-	    }
-	    else if (strcmp(type, "ring") == 0)
-	    {
-		translated_adjective = msg_get_stone(which);
-		translated_type = msg_get("MSG_RING");
-	    }
-	    else if (strcmp(type, "wand") == 0)
-	    {
-		translated_adjective = msg_get_material(which);
-		translated_type = msg_get("MSG_WAND");
-	    }
-	    else if (strcmp(type, "staff") == 0)
-	    {
-		translated_adjective = msg_get_material(which);
-		translated_type = msg_get("MSG_STAFF");
-	    }
-	    else
-	    {
-		translated_adjective = which;
-		translated_type = type;
+		case POTION:
+		    translated_adjective = msg_get_color(which);
+		    translated_type = msg_get("MSG_POTION");
+		    break;
+		case RING:
+		    translated_adjective = msg_get_stone(which);
+		    translated_type = msg_get("MSG_RING");
+		    break;
+			case STICK:
+			    translated_adjective = msg_get_material(which);
+			    translated_type = msg_get(type_msg_id);
+			    break;
+			default:
+			    translated_adjective = which;
+			    translated_type = type_msg_id ? msg_get(type_msg_id) : type_en;
+			    break;
 	    }
 
 	    if (obj->o_count == 1)
 		sprintf(prbuf, "%s %s", translated_adjective, translated_type);
 	    else
-		sprintf(prbuf, "%d개의 %s %s", obj->o_count, translated_adjective, translated_type);
+		sprintf(prbuf, msg_get("MSG_FORMAT_N_ADJECTIVE_TYPE"), obj->o_count, translated_adjective, translated_type);
 	}
 	else
 	{
 	    /* English: article + adjective + type */
 	    if (obj->o_count == 1)
-		sprintf(prbuf, "A%s %s %s", vowelstr(which), which, type);
+		sprintf(prbuf, msg_get("MSG_FORMAT_A_ADJ_TYPE"), vowelstr(which), which, type_en);
 	    else
-		sprintf(prbuf, "%d %s %ss", obj->o_count, which, type);
+		sprintf(prbuf, msg_get("MSG_FORMAT_N_ADJ_TYPES"), obj->o_count, which, type_en);
 	}
     }
 }

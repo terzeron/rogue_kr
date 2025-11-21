@@ -14,6 +14,7 @@
 #include <curses.h>
 #include "rogue.h"
 #include "utils.h"
+#include "i18n.h"
 
 #define DRAGONSHOT  5	/* one chance in DRAGONSHOT that a dragon will flame */
 
@@ -175,7 +176,7 @@ over:
 	    delta.x = sign(hero.x - th->t_pos.x);
 	    if (has_hit)
 		endmsg();
-	    fire_bolt(&th->t_pos, &delta, "flame");
+	    fire_bolt(&th->t_pos, &delta, (char *)msg_get("MSG_FLAME"));
 	    running = FALSE;
 	    count = 0;
 	    quiet = 0;
@@ -304,7 +305,7 @@ runto(coord *runner)
      */
 #ifdef MASTER
     if ((tp = moat(runner->y, runner->x)) == NULL)
-	msg("couldn't find monster in runto at (%d,%d)", runner->y, runner->x);
+	msg(msg_get("MSG_CHASE_MONSTER_NOT_FOUND"), runner->y, runner->x);
 #else
     tp = moat(runner->y, runner->x);
 #endif
@@ -449,7 +450,7 @@ roomin(coord *cp)
 	 && cp->y <= rp->r_pos.y + rp->r_max.y && rp->r_pos.y <= cp->y)
 	    return rp;
 
-    msg("in some bizarre place (%d, %d)", unc(*cp));
+    msg(msg_get("MSG_CHASE_BIZARRE_PLACE"), unc(*cp));
 #ifdef MASTER
     abort();
     return NULL;

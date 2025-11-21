@@ -233,7 +233,7 @@ status()
     if (stat_msg)
     {
 	move(0, 0);
-        msg("%s: %d  %s: %-5d  %s: %*d(%*d)  %s: %2d(%d)  %s: %-2d  %s: %d/%ld  %s",
+        msg(msg_get("MSG_STATUS_FORMAT"),
 	    msg_get("MSG_LEVEL"), level, msg_get("MSG_GOLD"), purse,
 	    msg_get("MSG_HP"), hpwidth, pstats.s_hpt, hpwidth, max_hp,
 	    msg_get("MSG_STR"), pstats.s_str, max_stats.s_str,

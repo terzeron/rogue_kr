@@ -19,6 +19,9 @@
 #include <curses.h>
 #include "rogue.h"
 #include "score.h"
+#include "i18n.h"
+
+static void init_game_resources(void);
 
 typedef struct stat STAT;
 
@@ -47,7 +50,7 @@ over:
     {
 	for (;;)
 	{
-	    msg("save file (%s)? ", file_name);
+	    msg(msg_get("MSG_SAVE_FILE"), file_name);
 	    c = readchar();
 	    mpos = 0;
 	    if (c == ESCAPE)
@@ -58,11 +61,12 @@ over:
 	    else if (c == 'n' || c == 'N' || c == 'y' || c == 'Y')
 		break;
 	    else
-		msg("please answer Y or N");
+		msg(msg_get("MSG_SAVE_ANSWER_YN"));
 	}
 	if (c == 'y' || c == 'Y')
 	{
-	    addstr("Yes\n");
+	    addstr(msg_get("MSG_SAVE_YES"));
+	    addstr("\n");
 	    refresh();
 	    strcpy(buf, file_name);
 	    goto gotfile;
@@ -72,7 +76,7 @@ over:
     do
     {
 	mpos = 0;
-	msg("file name: ");
+	msg(msg_get("MSG_SAVE_FILE_NAME"));
 	buf[0] = '\0';
 	if (get_str(buf, stdscr) == QUIT)
 	{
@@ -89,7 +93,7 @@ gotfile:
 	{
 	    for (;;)
 	    {
-		msg("File exists.  Do you wish to overwrite it?");
+		msg(msg_get("MSG_SAVE_FILE_EXISTS"));
 		mpos = 0;
 		if ((c = readchar()) == ESCAPE)
 		    goto quit_it;
@@ -98,9 +102,9 @@ gotfile:
 		else if (c == 'n' || c == 'N')
 		    goto over;
 		else
-		    msg("Please answer Y or N");
+		    msg(msg_get("MSG_SAVE_ANSWER_YN"));
 	    }
-	    msg("file name: %s", buf);
+	    msg(msg_get("MSG_SAVE_FILE_NAME_RESULT"), buf);
 	    md_unlink(file_name);
 	}
 	strcpy(file_name, buf);
@@ -140,7 +144,7 @@ void
 save_file(FILE *savef)
 {
     char buf[80];
-    mvcur(0, COLS - 1, LINES - 1, 0); 
+    mvcur(0, COLS - 1, LINES - 1, 0);
     putchar('\n');
     endwin();
     resetltchars();
@@ -186,11 +190,13 @@ restore(char *file, char **envp)
     encread(buf, (unsigned) strlen(version) + 1, inf);
     if (strcmp(buf, version) != 0)
     {
-	printf("Sorry, saved game is out of date.\n");
+	printf("%s\n", msg_get("MSG_SAVE_OUT_OF_DATE"));
 	return FALSE;
     }
     encread(buf,80,inf);
     sscanf(buf,"%d x %d\n", &lines, &cols);
+
+    init_game_resources();               /* Ensure tables exist before restore */
 
     initscr();                          /* Start up cursor package */
     keypad(stdscr, 1);
@@ -198,15 +204,19 @@ restore(char *file, char **envp)
     if (lines > LINES)
     {
         endwin();
-        printf("Sorry, original game was played on a screen with %d lines.\n",lines);
-        printf("Current screen only has %d lines. Unable to restore game\n",LINES);
+        printf(msg_get("MSG_SAVE_SCREEN_LINES_MISMATCH"), lines);
+        printf("\n");
+        printf(msg_get("MSG_SAVE_SCREEN_TOO_SMALL"), LINES);
+        printf("\n");
         return(FALSE);
     }
     if (cols > COLS)
     {
         endwin();
-        printf("Sorry, original game was played on a screen with %d columns.\n",cols);
-        printf("Current screen only has %d columns. Unable to restore game\n",COLS);
+        printf(msg_get("MSG_SAVE_SCREEN_COLS_MISMATCH"), cols);
+        printf("\n");
+        printf(msg_get("MSG_SAVE_SCREEN_TOO_NARROW"), COLS);
+        printf("\n");
         return(FALSE);
     }
 
@@ -225,7 +235,7 @@ restore(char *file, char **envp)
 #endif
         md_unlink_open_file(file, inf) < 0)
     {
-	printf("Cannot unlink file\n");
+	printf("%s\n", msg_get("MSG_SAVE_CANNOT_UNLINK"));
 	return FALSE;
     }
     mpos = 0;
@@ -243,27 +253,54 @@ restore(char *file, char **envp)
 	if (sbuf2.st_nlink != 1 || syml)
 	{
 	    endwin();
-	    printf("\nCannot restore from a linked file\n");
+	    printf("\n%s\n", msg_get("MSG_SAVE_LINKED_FILE"));
 	    return FALSE;
 	}
 
     if (pstats.s_hpt <= 0)
     {
 	endwin();
-	printf("\n\"He's dead, Jim\"\n");
+	printf("\n%s\n", msg_get("MSG_SAVE_ALREADY_DEAD"));
 	return FALSE;
     }
 
-	md_tstpresume();
+    md_tstpresume();
 
     environ = envp;
     strcpy(file_name, file);
     clearok(curscr, TRUE);
     srand(md_getpid());
-    msg("file name: %s", file);
+    msg(msg_get("MSG_SAVE_FILE_NAME_RESULT"), file);
     playit();
     /*NOTREACHED*/
     return(0);
+}
+
+/*
+ * init_game_resources:
+ *	Initialize i18n-dependent tables so restored games can use them.
+ */
+static void
+init_game_resources(void)
+{
+    static bool initialized = FALSE;
+
+    if (initialized)
+	return;
+    initialized = TRUE;
+
+    init_rainbow();
+    init_stones_array();
+    init_wood_array();
+    init_metal_array();
+    init_monsters();
+    init_potions();
+    init_scrolls();
+    init_rings();
+    init_sticks();
+    init_inv_t_name();
+    init_traps();
+    init_help();
 }
 
 /*
@@ -346,7 +383,7 @@ rd_score(SCORE *top_ten)
 	if (scoreboard == NULL)
 		return;
 
-	rewind(scoreboard); 
+	rewind(scoreboard);
 
 	for(i = 0; i < numscores; i++)
     {
@@ -358,7 +395,7 @@ rd_score(SCORE *top_ten)
             &top_ten[i].sc_level, &top_ten[i].sc_time);
     }
 
-	rewind(scoreboard); 
+	rewind(scoreboard);
 }
 
 /*
@@ -386,5 +423,5 @@ wr_score(SCORE *top_ten)
           encwrite(scoreline,100,scoreboard);
     }
 
-	rewind(scoreboard); 
+	rewind(scoreboard);
 }

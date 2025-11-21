@@ -48,6 +48,7 @@
 #include <time.h>
 #include <curses.h>
 #include "extern.h"
+#include "i18n.h"
 
 #define NOOP(x) (x += 0)
 
@@ -80,11 +81,14 @@ init_check()
 #if defined(MAXLOAD) || defined(MAXUSERS)
     if (too_much())
     {
-	printf("Sorry, %s, but the system is too loaded now.\n", whoami);
-	printf("Try again later.  Meanwhile, why not enjoy a%s %s?\n",
-	    vowelstr(fruit), fruit);
+	printf(msg_get("MSG_LOAD_SYSTEM_BUSY"), whoami);
+	printf("\n");
+	printf(msg_get("MSG_LOAD_TRY_LATER"), vowelstr(fruit), fruit);
+	printf("\n");
 	if (author())
-	    printf("However, since you're a good guy, it's up to you\n");
+	{
+	    printf("%s\n", msg_get("MSG_LOAD_AUTHOR_EXEMPT"));
+	}
 	else
 	    exit(1);
     }
@@ -119,9 +123,10 @@ open_score()
         md_chmod(scorefile,0664);
     }
 
-    if (scoreboard == NULL) { 
-         fprintf(stderr, "Could not open %s for writing: %s\n", scorefile, strerror(errno)); 
-         fflush(stderr); 
+    if (scoreboard == NULL) {
+         fprintf(stderr, msg_get("MSG_SCORE_CANNOT_OPEN"), scorefile, strerror(errno));
+         fprintf(stderr, "\n");
+         fflush(stderr);
     } 
 #else
     scoreboard = NULL;
@@ -282,10 +287,10 @@ author()
 
 checkout(int sig)
 {
-    static char *msgs[] = {
-	"The load is too high to be playing.  Please leave in %0.1f minutes",
-	"Please save your game.  You have %0.1f minutes",
-	"Last warning.  You have %0.1f minutes to leave",
+    static const char *msg_ids[] = {
+	"MSG_LOAD_TOO_HIGH",
+	"MSG_LOAD_SAVE_GAME",
+	"MSG_LOAD_LAST_WARNING",
     };
     int checktime;
 
@@ -294,19 +299,19 @@ checkout(int sig)
 	if (author())
 	{
 	    num_checks = 1;
-	    chmsg("The load is rather high, O exaulted one");
+	    chmsg(msg_get("MSG_LOAD_HIGH"));
 	}
 	else if (num_checks++ == 3)
-	    fatal("Sorry.  You took too long.  You are dead\n");
+	    fatal(msg_get("MSG_LOAD_TIMEOUT_DEATH"));
 	checktime = (CHECKTIME * 60) / num_checks;
-	chmsg(msgs[num_checks - 1], ((double) checktime / 60.0));
+	chmsg(msg_get(msg_ids[num_checks - 1]), ((double) checktime / 60.0));
     }
     else
     {
 	if (num_checks)
 	{
 	    num_checks = 0;
-	    chmsg("The load has dropped back down.  You have a reprieve");
+	    chmsg(msg_get("MSG_LOAD_DROPPED"));
 	}
 	checktime = (CHECKTIME * 60);
     }
@@ -400,9 +405,9 @@ over:
     }
     else
     {
-	printf("The score file is very busy.  Do you want to wait longer\n");
-	printf("for it to become free so your score can get posted?\n");
-	printf("If so, type \"y\"\n");
+	printf("%s\n", msg_get("MSG_SCORE_FILE_BUSY"));
+	printf("%s\n", msg_get("MSG_SCORE_WAIT_PROMPT"));
+	printf("%s\n", msg_get("MSG_SCORE_TYPE_Y"));
 	if (fgets(prbuf, MAXSTR, stdin) == NULL) {
         prbuf[0] = '\0';
     }

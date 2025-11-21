@@ -184,8 +184,16 @@ MSG_THERES=there's
 MSG_WHICH_OBJECT=which object do you want to
 MSG_NOT_CARRYING=you aren't carrying anything
 MSG_YOU_NOW_HAVE=you now have
+MSG_HAVE_ITEM_TERSE=%s (%c)
+MSG_SHOW_ITEM=%c) %s
 MSG_YOU_RAN_OUT=you ran out
 MSG_GOLD_PIECES=%d gold pieces
+MSG_PACK_EMPTY_HANDED_TERSE=empty handed
+MSG_PACK_NOTHING_APPROPRIATE_TERSE=nothing appropriate
+MSG_PACK_EMPTY_HANDED_VERBOSE=you are empty handed
+MSG_PACK_NOTHING_APPROPRIATE_VERBOSE=you don't have anything appropriate
+MSG_PACK_ITEM_PROMPT_TERSE=item:
+MSG_PACK_ITEM_PROMPT_VERBOSE=which item do you wish to inventory:
 
 # move.c messages
 MSG_MOVE_STUCK_BEAR_TRAP=you are still stuck in the bear trap
@@ -314,11 +322,36 @@ MSG_THING_PROMPT_ALL=? (* for all)
 MSG_THING_PROMPT_WIZARD=?
 MSG_THING_NOT_A_TYPE=Not a type
 MSG_THING_PLEASE_TYPE=Please type one of %c%c%c%c (ESCAPE to quit)
+MSG_THING_SCROLL_A=A scroll
+MSG_THING_SCROLLS=%d scrolls
+MSG_THING_OF=of %s
+MSG_THING_CALLED=called %s
+MSG_THING_TITLED=titled '%s'
+MSG_THING_SOME_FOOD=Some food
+MSG_THING_RATIONS=%d rations of food
+MSG_THING_AMULET=The Amulet of Yendor
+MSG_THING_GOLD_PIECES=%d Gold pieces
+MSG_THING_BIZARRE=Something bizarre %s
+MSG_THING_BEING_WORN= (being worn)
+MSG_THING_WEAPON_IN_HAND= (weapon in hand)
+MSG_THING_ON_LEFT_HAND= (on left hand)
+MSG_THING_ON_RIGHT_HAND= (on right hand)
+MSG_THING_NOTHING=Nothing
+MSG_THING_HAVENT_DISCOVERED=Haven't discovered anything
+MSG_THING_ABOUT_ANY= about any %ss
 
 # main.c messages
 MSG_QUIT_WITH_GOLD=You quit with %d gold pieces
 MSG_REALLY_QUIT=Really quit?
 MSG_YES_KEY=y
+MSG_MAIN_BYE=Okay, bye bye!
+MSG_MAIN_PRESS_RETURN=[Press return to continue]
+
+# options.c messages
+MSG_OPTIONS_TRUE=True
+MSG_OPTIONS_FALSE=False
+MSG_OPTIONS_T_OR_F=(T or F)
+MSG_OPTIONS_INV_TYPE=(O, S, or C)
 
 # rip.c messages
 MSG_GOLD_PIECES_RIP=   %5d  Gold Pieces
@@ -327,6 +360,24 @@ MSG_TOMBSTONE_IN=IN
 MSG_TOMBSTONE_PEACE=PEACE
 MSG_TOMBSTONE_KILLED=killed by a%s
 MSG_TOMBSTONE_GOLD=Gold
+MSG_RIP_ARTICLE=a%s
+MSG_RIP_YOU_MADE_IT=You Made It!
+MSG_RIP_CONGRATULATIONS=     Congratulations, you have made it to the light of day!
+MSG_RIP_VICTORY_1=You have joined the elite ranks of those who have escaped the
+MSG_RIP_VICTORY_2=Dungeons of Doom alive.  You journey home and sell all your loot at
+MSG_RIP_VICTORY_3=a great profit and are admitted to the Fighters' Guild.
+MSG_RIP_WORTH_ITEM=   Worth  Item
+MSG_RIP_GOLD_TOTAL=   %5d  Gold Pieces
+MSG_RIP_WALLY=Wally the Wonder Badger
+
+# fight.c messages (xeroc)
+MSG_FIGHT_HEAVY=heavy!  That's a nasty critter!
+MSG_FIGHT_WAIT=wait!  That's a xeroc!
+
+# sticks.c messages (element names)
+MSG_STICK_BOLT=bolt
+MSG_STICK_FLAME=flame
+MSG_STICK_ICE=ice
 
 # armor.c messages
 MSG_ARMOR_ALREADY_WEARING=you are already wearing some
@@ -552,3 +603,450 @@ MSG_MATERIAL_ZEBRAWOOD=zebrawood
 
 # Miscellaneous scoreboard strings
 MSG_GOLD_PICES=%d gold pieces
+
+# daemons.c messages
+MSG_DAEMON_FEEL_LESS=you feel less %s now
+MSG_DAEMON_TRIPPY=trippy
+MSG_DAEMON_CONFUSED=confused
+MSG_DAEMON_FAR_OUT=far out!  Everything is all cosmic again
+MSG_DAEMON_COMING_DOWN=you are finally coming down now
+MSG_DAEMON_SLOWING_DOWN=you feel yourself slowing down
+MSG_DAEMON_FREAK_OUT=You freak out
+MSG_DAEMON_FAINT=You faint
+MSG_DAEMON_MUNCHIES_MOTOR=the munchies are interfering with your motor capabilites
+MSG_DAEMON_STOMACH_GRUMBLE=your stomach grumbles
+MSG_DAEMON_GETTING_MUNCHIES=getting the munchies
+MSG_DAEMON_GETTING_HUNGRY=getting hungry
+MSG_DAEMON_YOU_GETTING_MUNCHIES=you are getting the munchies
+MSG_DAEMON_YOU_GETTING_HUNGRY=you are getting hungry
+MSG_DAEMON_SO_BORING=Everything looks SO boring now.
+MSG_DAEMON_HIT_GROUND=bummer!  You've hit the ground
+MSG_DAEMON_FEET_FLOOR=you float gently to the floor
+
+# misc.c messages
+MSG_MISC_GET_ILL=ugh, you would get ill if you ate that
+MSG_MISC_INEDIBLE=that's Inedible!
+MSG_MISC_YUMMY=my, that was a yummy %s
+MSG_MISC_AWFUL_BUMMER=%s, this food tastes awful
+MSG_MISC_AWFUL_YUK=yuk
+MSG_MISC_BUMMER=bummer
+MSG_MISC_TASTED_GOOD=%s, that tasted good
+MSG_MISC_OH_WOW=oh, wow
+MSG_MISC_YUM=yum
+MSG_MISC_WELCOME_LEVEL=welcome to level %d
+MSG_MISC_FAINT_EXHAUSTION=you faint from exhaustion
+MSG_MISC_IN_USE=in use
+MSG_MISC_WHICH_DIRECTION=which direction?
+MSG_MISC_CALL_IT_TERSE=call it:
+MSG_MISC_CALL_IT_VERBOSE=what do you want to call it?
+
+# save.c messages
+MSG_SAVE_FILE=save file (%s)?
+MSG_SAVE_ANSWER_YN=please answer Y or N
+MSG_SAVE_FILE_NAME=file name:
+MSG_SAVE_FILE_NAME_RESULT=file name: %s
+MSG_SAVE_FILE_EXISTS=File exists.  Do you wish to overwrite it?
+MSG_SAVE_YES=Yes
+MSG_SAVE_OUT_OF_DATE=Sorry, saved game is out of date.
+MSG_SAVE_SCREEN_LINES_MISMATCH=Sorry, original game was played on a screen with %d lines.
+MSG_SAVE_SCREEN_TOO_SMALL=Current screen only has %d lines. Unable to restore game
+MSG_SAVE_SCREEN_COLS_MISMATCH=Sorry, original game was played on a screen with %d columns.
+MSG_SAVE_SCREEN_TOO_NARROW=Current screen only has %d columns. Unable to restore game
+MSG_SAVE_CANNOT_UNLINK=Cannot unlink file
+MSG_SAVE_LINKED_FILE=Cannot restore from a linked file
+MSG_SAVE_ALREADY_DEAD="He's dead, Jim"
+
+# weapons.c messages
+MSG_WEAPON_VANISHES=the %s vanishes as it hits the ground
+MSG_WEAPON_CANT_WIELD_ARMOR=you can't wield armor
+MSG_WEAPON_YOU_ARE_NOW=you are now
+MSG_WEAPON_WIELDING=wielding %s (%c)
+
+# monsters.c messages
+MSG_MONSTER_GAZE_CONFUSED=s gaze has confused you
+MSG_MONSTER_STARTED_WANDERING=started a wandering %s
+MSG_MONSTER_CANT_FIND=can't find monster in wake_monster
+
+# wizard.c messages (debug mode)
+MSG_WIZARD_NO_PACK=you don't have anything in your pack to identify
+MSG_WIZARD_MUST_IDENTIFY=you must identify something
+MSG_WIZARD_MUST_IDENTIFY_TYPE=you must identify a %s
+MSG_WIZARD_TYPE_ITEM=type of item:
+MSG_WIZARD_WHICH_WANT=which %c do you want? (0-f)
+MSG_WIZARD_BLESSING=blessing? (+,-,n)
+MSG_WIZARD_HOW_MUCH=how much?
+MSG_WIZARD_PASSWORD=wizard's Password:
+
+# wizard.c item type names (for type_name function)
+MSG_TYPE_POTION=potion
+MSG_TYPE_SCROLL=scroll
+MSG_TYPE_FOOD=food
+MSG_TYPE_RING_OR_STAFF=ring, wand or staff
+MSG_TYPE_RING=ring
+MSG_TYPE_WAND_OR_STAFF=wand or staff
+MSG_TYPE_WEAPON=weapon
+MSG_TYPE_ARMOR=suit of armor
+MSG_WIZARD_MORE_LEVEL_MAP=---More (level map)---
+
+# list.c messages
+MSG_LIST_OUT_OF_MEMORY=ran out of memory after %d items
+
+# passages.c messages (debug)
+MSG_PASSAGES_CONNECTIVITY=warning, connectivity problem on this level
+
+# chase.c messages (debug)
+MSG_CHASE_MONSTER_NOT_FOUND=couldn't find monster in runto at (%d,%d)
+MSG_CHASE_BIZARRE_PLACE=in some bizarre place (%d, %d)
+
+# rings.c messages
+MSG_RINGS_WEARING= %s (%c)
+
+# misc.c messages
+MSG_MISC_ALREADY=That's already
+
+# io.c messages (status line)
+MSG_STATUS_FORMAT=%s: %d  %s: %-5d  %s: %*d(%*d)  %s: %2d(%d)  %s: %-2d  %s: %d/%ld  %s
+
+# mach_dep.c messages (load checking)
+MSG_LOAD_HIGH=The load is rather high, O exaulted one
+MSG_LOAD_DROPPED=The load has dropped back down.  You have a reprieve
+MSG_LOAD_TOO_HIGH=The load is too high to be playing.  Please leave in %0.1f minutes
+MSG_LOAD_SAVE_GAME=Please save your game.  You have %0.1f minutes
+MSG_LOAD_LAST_WARNING=Last warning.  You have %0.1f minutes to leave
+MSG_LOAD_SYSTEM_BUSY=Sorry, %s, but the system is too loaded now.
+MSG_LOAD_TRY_LATER=Try again later.  Meanwhile, why not enjoy a%s %s?
+MSG_LOAD_AUTHOR_EXEMPT=However, since you're a good guy, it's up to you
+MSG_LOAD_TIMEOUT_DEATH=Sorry.  You took too long.  You are dead
+MSG_SCORE_FILE_BUSY=The score file is very busy.  Do you want to wait longer
+MSG_SCORE_WAIT_PROMPT=for it to become free so your score can get posted?
+MSG_SCORE_TYPE_Y=If so, type "y"
+MSG_SCORE_CANNOT_OPEN=Could not open %s for writing: %s
+
+# command.c format strings
+MSG_FORMAT_SPACE_PAREN= %s (
+MSG_FORMAT_SPACE=
+
+# monsters.c format strings
+MSG_APOSTROPHE='
+
+# Format strings for dynamic content
+MSG_FORMAT_SPACE_S= %s
+
+# things.c format strings (for nameit function)
+MSG_FORMAT_CALLED_KOREAN=%s(이)라고 불리는 %s%s
+MSG_FORMAT_A_TYPE=A %s
+MSG_FORMAT_N_TYPES=%d %ss
+MSG_FORMAT_OF_NAME= of %s%s(%s)
+MSG_FORMAT_CALLED_NAME=called %s%s(%s)
+MSG_FORMAT_N_ADJECTIVE_TYPE=%d개의 %s %s
+MSG_FORMAT_A_ADJ_TYPE=A%s %s %s
+MSG_FORMAT_N_ADJ_TYPES=%d %s %ss
+
+# things.c format strings (for inv_name function - FOOD, WEAPON, ARMOR)
+MSG_FORMAT_A_FRUIT=A%s %s
+MSG_FORMAT_N_FRUITS=%d %ss
+MSG_FORMAT_WEAPON_N_KO=%s %d개
+MSG_FORMAT_WEAPON_KNOWN_KO=%s %s
+MSG_FORMAT_A_WEAPON=A%s
+MSG_FORMAT_WEAPON_KNOWN_EN=%s %s
+MSG_FORMAT_PLURAL_S=s
+MSG_FORMAT_LABELED= called %s
+MSG_FORMAT_ARMOR_KNOWN_KO=%s %s [%s%d]
+MSG_ARMOR_PROTECTION_LABEL=방어력
+MSG_FORMAT_ARMOR_KNOWN_EN_START=%s %s [
+MSG_ARMOR_PROTECTION_WORD=protection
+MSG_FORMAT_ARMOR_KNOWN_EN_END=%d]
+
+# daemons.c additional messages
+MSG_DAEMON_MUNCHIES_OVERPOWER=the munchies overpower your motor capabilities.
+MSG_DAEMON_TOO_WEAK=you feel too weak from lack of food.
+
+# Additional format strings
+MSG_FORMAT_ITEM=%c) %s
+MSG_FORMAT_S_SPACE=%s
+MSG_FORMAT_PERCENT_S=%s
+
+# get_item purpose strings
+MSG_PURPOSE_WEAR=wear
+MSG_PURPOSE_CHARGE=charge
+MSG_PURPOSE_CALL=call
+MSG_PURPOSE_EAT=eat
+MSG_PURPOSE_IDENTIFY=identify
+MSG_PURPOSE_PUT_ON=put on
+MSG_PURPOSE_QUAFF=quaff
+MSG_PURPOSE_READ=read
+MSG_PURPOSE_THROW=throw
+MSG_PURPOSE_WIELD=wield
+MSG_PURPOSE_ZAP_WITH=zap with
+MSG_PURPOSE_DROP=drop
+
+# Trap names (tr_name[] in extern.c)
+MSG_TRAP_TRAPDOOR=a trapdoor
+MSG_TRAP_ARROW=an arrow trap
+MSG_TRAP_SLEEPING_GAS=a sleeping gas trap
+MSG_TRAP_BEARTRAP=a beartrap
+MSG_TRAP_TELEPORT=a teleport trap
+MSG_TRAP_POISON_DART=a poison dart trap
+MSG_TRAP_RUST=a rust trap
+MSG_TRAP_MYSTERIOUS=a mysterious trap
+
+# Help strings (helpstr[] in extern.c)
+MSG_HELP_PRINTS_HELP=	prints help
+MSG_HELP_IDENTIFY_OBJECT=	identify object
+MSG_HELP_LEFT=	left
+MSG_HELP_DOWN=	down
+MSG_HELP_UP=	up
+MSG_HELP_RIGHT=	right
+MSG_HELP_UP_LEFT=	up & left
+MSG_HELP_UP_RIGHT=	up & right
+MSG_HELP_DOWN_LEFT=	down & left
+MSG_HELP_DOWN_RIGHT=	down & right
+MSG_HELP_RUN_LEFT=	run left
+MSG_HELP_RUN_DOWN=	run down
+MSG_HELP_RUN_UP=	run up
+MSG_HELP_RUN_RIGHT=	run right
+MSG_HELP_RUN_UP_LEFT=	run up & left
+MSG_HELP_RUN_UP_RIGHT=	run up & right
+MSG_HELP_RUN_DOWN_LEFT=	run down & left
+MSG_HELP_RUN_DOWN_RIGHT=	run down & right
+MSG_HELP_RUN_LEFT_ADJ=	run left until adjacent
+MSG_HELP_RUN_DOWN_ADJ=	run down until adjacent
+MSG_HELP_RUN_UP_ADJ=	run up until adjacent
+MSG_HELP_RUN_RIGHT_ADJ=	run right until adjacent
+MSG_HELP_RUN_UP_LEFT_ADJ=	run up & left until adjacent
+MSG_HELP_RUN_UP_RIGHT_ADJ=	run up & right until adjacent
+MSG_HELP_RUN_DOWN_LEFT_ADJ=	run down & left until adjacent
+MSG_HELP_RUN_DOWN_RIGHT_ADJ=	run down & right until adjacent
+MSG_HELP_SHIFT_DIR=	<SHIFT><dir>: run that way
+MSG_HELP_CTRL_DIR=	<CTRL><dir>: run till adjacent
+MSG_HELP_FIGHT=<dir>	fight till death or near death
+MSG_HELP_THROW=<dir>	throw something
+MSG_HELP_MOVE=<dir>	move onto without picking up
+MSG_HELP_ZAP=<dir>	zap a wand in a direction
+MSG_HELP_IDENTIFY_TRAP=<dir>	identify trap type
+MSG_HELP_SEARCH=	search for trap/secret door
+MSG_HELP_DOWN_STAIR=	go down a staircase
+MSG_HELP_UP_STAIR=	go up a staircase
+MSG_HELP_REST=	rest for a turn
+MSG_HELP_PICK_UP=	pick something up
+MSG_HELP_INVENTORY=	inventory
+MSG_HELP_INVENTORY_SINGLE=	inventory single item
+MSG_HELP_QUAFF=	quaff potion
+MSG_HELP_READ=	read scroll
+MSG_HELP_EAT=	eat food
+MSG_HELP_WIELD=	wield a weapon
+MSG_HELP_WEAR=	wear armor
+MSG_HELP_TAKE_OFF=	take armor off
+MSG_HELP_PUT_ON=	put on ring
+MSG_HELP_REMOVE=	remove ring
+MSG_HELP_DROP=	drop object
+MSG_HELP_CALL=	call object
+MSG_HELP_REPEAT=	repeat last command
+MSG_HELP_PRINT_WEAPON=	print current weapon
+MSG_HELP_PRINT_ARMOR=	print current armor
+MSG_HELP_PRINT_RINGS=	print current rings
+MSG_HELP_PRINT_STATS=	print current stats
+MSG_HELP_DISCOVERED=	recall what's been discovered
+MSG_HELP_OPTIONS=	examine/set options
+MSG_HELP_REDRAW=	redraw screen
+MSG_HELP_REPEAT_MSG=	repeat last message
+MSG_HELP_CANCEL=	cancel command
+MSG_HELP_SAVE=	save game
+MSG_HELP_QUIT=	quit
+MSG_HELP_SHELL=	shell escape
+MSG_HELP_FIGHT_DEATH=<dir>	fight till either of you dies
+MSG_HELP_VERSION=	print version number
+
+# Ring stones - init.c stones[]
+MSG_STONE_AGATE=agate
+MSG_STONE_ALEXANDRITE=alexandrite
+MSG_STONE_AMETHYST=amethyst
+MSG_STONE_CARNELIAN=carnelian
+MSG_STONE_DIAMOND=diamond
+MSG_STONE_EMERALD=emerald
+MSG_STONE_GERMANIUM=germanium
+MSG_STONE_GRANITE=granite
+MSG_STONE_GARNET=garnet
+MSG_STONE_JADE=jade
+MSG_STONE_KRYPTONITE=kryptonite
+MSG_STONE_LAPIS_LAZULI=lapis lazuli
+MSG_STONE_MOONSTONE=moonstone
+MSG_STONE_OBSIDIAN=obsidian
+MSG_STONE_ONYX=onyx
+MSG_STONE_OPAL=opal
+MSG_STONE_PEARL=pearl
+MSG_STONE_PERIDOT=peridot
+MSG_STONE_RUBY=ruby
+MSG_STONE_SAPPHIRE=sapphire
+MSG_STONE_STIBOTANTALITE=stibotantalite
+MSG_STONE_TIGER_EYE=tiger eye
+MSG_STONE_TOPAZ=topaz
+MSG_STONE_TURQUOISE=turquoise
+MSG_STONE_TAAFFEITE=taaffeite
+MSG_STONE_ZIRCON=zircon
+
+# Wand wood - init.c wood[]
+MSG_WOOD_AVOCADO_WOOD=avocado wood
+MSG_WOOD_BALSA=balsa
+MSG_WOOD_BAMBOO=bamboo
+MSG_WOOD_BANYAN=banyan
+MSG_WOOD_BIRCH=birch
+MSG_WOOD_CEDAR=cedar
+MSG_WOOD_CHERRY=cherry
+MSG_WOOD_CINNIBAR=cinnibar
+MSG_WOOD_CYPRESS=cypress
+MSG_WOOD_DOGWOOD=dogwood
+MSG_WOOD_DRIFTWOOD=driftwood
+MSG_WOOD_EBONY=ebony
+MSG_WOOD_ELM=elm
+MSG_WOOD_EUCALYPTUS=eucalyptus
+MSG_WOOD_FALL=fall
+MSG_WOOD_HEMLOCK=hemlock
+MSG_WOOD_HOLLY=holly
+MSG_WOOD_IRONWOOD=ironwood
+MSG_WOOD_KUKUI_WOOD=kukui wood
+MSG_WOOD_MAHOGANY=mahogany
+MSG_WOOD_MANZANITA=manzanita
+MSG_WOOD_MAPLE=maple
+MSG_WOOD_OAKEN=oaken
+MSG_WOOD_PERSIMMON_WOOD=persimmon wood
+MSG_WOOD_PECAN=pecan
+MSG_WOOD_PINE=pine
+MSG_WOOD_POPLAR=poplar
+MSG_WOOD_REDWOOD=redwood
+MSG_WOOD_ROSEWOOD=rosewood
+MSG_WOOD_SPRUCE=spruce
+MSG_WOOD_TEAK=teak
+MSG_WOOD_WALNUT=walnut
+MSG_WOOD_ZEBRAWOOD=zebrawood
+
+# Staff metal - init.c metal[]
+MSG_METAL_ALUMINUM=aluminum
+MSG_METAL_BERYLLIUM=beryllium
+MSG_METAL_BONE=bone
+MSG_METAL_BRASS=brass
+MSG_METAL_BRONZE=bronze
+MSG_METAL_COPPER=copper
+MSG_METAL_ELECTRUM=electrum
+MSG_METAL_GOLD=gold
+MSG_METAL_IRON=iron
+MSG_METAL_LEAD=lead
+MSG_METAL_MAGNESIUM=magnesium
+MSG_METAL_MERCURY=mercury
+MSG_METAL_NICKEL=nickel
+MSG_METAL_PEWTER=pewter
+MSG_METAL_PLATINUM=platinum
+MSG_METAL_STEEL=steel
+MSG_METAL_SILVER=silver
+MSG_METAL_SILICON=silicon
+MSG_METAL_TIN=tin
+MSG_METAL_TITANIUM=titanium
+MSG_METAL_TUNGSTEN=tungsten
+MSG_METAL_ZINC=zinc
+
+# Monster names - extern.c monsters[]
+MSG_MONSTER_AQUATOR=aquator
+MSG_MONSTER_BAT=bat
+MSG_MONSTER_CENTAUR=centaur
+MSG_MONSTER_DRAGON=dragon
+MSG_MONSTER_EMU=emu
+MSG_MONSTER_VENUS_FLYTRAP=venus flytrap
+MSG_MONSTER_GRIFFIN=griffin
+MSG_MONSTER_HOBGOBLIN=hobgoblin
+MSG_MONSTER_ICE_MONSTER=ice monster
+MSG_MONSTER_JABBERWOCK=jabberwock
+MSG_MONSTER_KESTREL=kestrel
+MSG_MONSTER_LEPRECHAUN=leprechaun
+MSG_MONSTER_MEDUSA=medusa
+MSG_MONSTER_NYMPH=nymph
+MSG_MONSTER_ORC=orc
+MSG_MONSTER_PHANTOM=phantom
+MSG_MONSTER_QUAGGA=quagga
+MSG_MONSTER_RATTLESNAKE=rattlesnake
+MSG_MONSTER_SNAKE=snake
+MSG_MONSTER_TROLL=troll
+MSG_MONSTER_BLACK_UNICORN=black unicorn
+MSG_MONSTER_VAMPIRE=vampire
+MSG_MONSTER_WRAITH=wraith
+MSG_MONSTER_XEROC=xeroc
+MSG_MONSTER_YETI=yeti
+MSG_MONSTER_ZOMBIE=zombie
+
+# Potion effects - extern.c pot_info[]
+MSG_POTION_CONFUSION=confusion
+MSG_POTION_HALLUCINATION=hallucination
+MSG_POTION_POISON=poison
+MSG_POTION_GAIN_STRENGTH=gain strength
+MSG_POTION_SEE_INVISIBLE=see invisible
+MSG_POTION_HEALING=healing
+MSG_POTION_MONSTER_DETECTION=monster detection
+MSG_POTION_MAGIC_DETECTION=magic detection
+MSG_POTION_RAISE_LEVEL=raise level
+MSG_POTION_EXTRA_HEALING=extra healing
+MSG_POTION_HASTE_SELF=haste self
+MSG_POTION_RESTORE_STRENGTH=restore strength
+MSG_POTION_BLINDNESS=blindness
+MSG_POTION_LEVITATION=levitation
+
+# Scroll effects - extern.c scr_info[]
+MSG_SCROLL_MONSTER_CONFUSION=monster confusion
+MSG_SCROLL_MAGIC_MAPPING=magic mapping
+MSG_SCROLL_HOLD_MONSTER=hold monster
+MSG_SCROLL_SLEEP=sleep
+MSG_SCROLL_ENCHANT_ARMOR=enchant armor
+MSG_SCROLL_IDENTIFY_POTION=identify potion
+MSG_SCROLL_IDENTIFY_SCROLL=identify scroll
+MSG_SCROLL_IDENTIFY_WEAPON=identify weapon
+MSG_SCROLL_IDENTIFY_ARMOR=identify armor
+MSG_SCROLL_IDENTIFY_RING_WAND_STAFF=identify ring, wand or staff
+MSG_SCROLL_SCARE_MONSTER=scare monster
+MSG_SCROLL_FOOD_DETECTION=food detection
+MSG_SCROLL_TELEPORTATION=teleportation
+MSG_SCROLL_ENCHANT_WEAPON=enchant weapon
+MSG_SCROLL_CREATE_MONSTER=create monster
+MSG_SCROLL_REMOVE_CURSE=remove curse
+MSG_SCROLL_AGGRAVATE_MONSTERS=aggravate monsters
+MSG_SCROLL_PROTECT_ARMOR=protect armor
+
+# Ring effects - extern.c ring_info[]
+MSG_RING_PROTECTION=protection
+MSG_RING_ADD_STRENGTH=add strength
+MSG_RING_SUSTAIN_STRENGTH=sustain strength
+MSG_RING_SEARCHING=searching
+MSG_RING_SEE_INVISIBLE=see invisible
+MSG_RING_ADORNMENT=adornment
+MSG_RING_AGGRAVATE_MONSTER=aggravate monster
+MSG_RING_DEXTERITY=dexterity
+MSG_RING_INCREASE_DAMAGE=increase damage
+MSG_RING_REGENERATION=regeneration
+MSG_RING_SLOW_DIGESTION=slow digestion
+MSG_RING_TELEPORTATION=teleportation
+MSG_RING_STEALTH=stealth
+MSG_RING_MAINTAIN_ARMOR=maintain armor
+
+# Wand/Staff effects - extern.c ws_info[]
+MSG_STICK_LIGHT=light
+MSG_STICK_INVISIBILITY=invisibility
+MSG_STICK_LIGHTNING=lightning
+MSG_STICK_FIRE=fire
+MSG_STICK_COLD=cold
+MSG_STICK_POLYMORPH=polymorph
+MSG_STICK_MAGIC_MISSILE=magic missile
+MSG_STICK_HASTE_MONSTER=haste monster
+MSG_STICK_SLOW_MONSTER=slow monster
+MSG_STICK_DRAIN_LIFE=drain life
+MSG_STICK_NOTHING=nothing
+MSG_STICK_TELEPORT_AWAY=teleport away
+MSG_STICK_TELEPORT_TO=teleport to
+MSG_STICK_CANCELLATION=cancellation
+
+# chase.c messages - dragon flame attack
+MSG_FLAME=flame
+
+# options.c messages - inventory type names
+MSG_INV_TYPE_OVERWRITE=Overwrite
+MSG_INV_TYPE_SLOW=Slow
+MSG_INV_TYPE_CLEAR=Clear
+
+# Debug messages
+MSG_DEBUG_NON_OBJECT=Non-object %d,%d

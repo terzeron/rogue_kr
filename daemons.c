@@ -12,6 +12,7 @@
 
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * doctor:
@@ -84,7 +85,7 @@ void
 unconfuse()
 {
     player.t_flags &= ~ISHUH;
-    msg("you feel less %s now", choose_str("trippy", "confused"));
+    msg(msg_get("MSG_DAEMON_FEEL_LESS"), choose_str(msg_get("MSG_DAEMON_TRIPPY"), msg_get("MSG_DAEMON_CONFUSED")));
 }
 
 /*
@@ -115,8 +116,8 @@ sight()
 	player.t_flags &= ~ISBLIND;
 	if (!(proom->r_flags & ISGONE))
 	    enter_room(&hero);
-	msg(choose_str("far out!  Everything is all cosmic again",
-		       "the veil of darkness lifts"));
+	msg(choose_str(msg_get("MSG_DAEMON_FAR_OUT"),
+		       msg_get("MSG_POTION_DARK_CLOAK")));
     }
 }
 
@@ -128,7 +129,7 @@ void
 nohaste()
 {
     player.t_flags &= ~ISHASTE;
-    msg("you feel yourself slowing down");
+    msg(msg_get("MSG_DAEMON_SLOWING_DOWN"));
 }
 
 /*
@@ -153,9 +154,9 @@ stomach()
 	no_command += rnd(8) + 4;
 	hungry_state = 3;
 	if (!terse)
-	    addmsg(choose_str("the munchies overpower your motor capabilities.  ",
-			      "you feel too weak from lack of food.  "));
-	msg(choose_str("You freak out", "You faint"));
+	    addmsg(choose_str(msg_get("MSG_DAEMON_MUNCHIES_OVERPOWER"),
+			      msg_get("MSG_DAEMON_TOO_WEAK")));
+	msg(choose_str(msg_get("MSG_DAEMON_FREAK_OUT"), msg_get("MSG_DAEMON_FAINT")));
     }
     else
     {
@@ -165,17 +166,17 @@ stomach()
 	if (food_left < MORETIME && oldfood >= MORETIME)
 	{
 	    hungry_state = 2;
-	    msg(choose_str("the munchies are interfering with your motor capabilites",
-			   "you are starting to feel weak"));
+	    msg(choose_str(msg_get("MSG_DAEMON_MUNCHIES_MOTOR"),
+			   msg_get("MSG_MOVE_FEEL_WEAK")));
 	}
 	else if (food_left < 2 * MORETIME && oldfood >= 2 * MORETIME)
 	{
 	    hungry_state = 1;
 	    if (terse)
-		msg(choose_str("getting the munchies", "getting hungry"));
+		msg(choose_str(msg_get("MSG_DAEMON_GETTING_MUNCHIES"), msg_get("MSG_DAEMON_GETTING_HUNGRY")));
 	    else
-		msg(choose_str("you are getting the munchies",
-			       "you are starting to get hungry"));
+		msg(choose_str(msg_get("MSG_DAEMON_YOU_GETTING_MUNCHIES"),
+			       msg_get("MSG_DAEMON_YOU_GETTING_HUNGRY")));
 	}
     }
     if (hungry_state != orig_hungry) { 
@@ -231,7 +232,7 @@ come_down()
 	    standend();
 	}
     }
-    msg("Everything looks SO boring now.");
+    msg(msg_get("MSG_DAEMON_SO_BORING"));
 }
 
 /*
@@ -290,6 +291,6 @@ void
 land()
 {
     player.t_flags &= ~ISLEVIT;
-    msg(choose_str("bummer!  You've hit the ground",
-		   "you float gently to the ground"));
+    msg(choose_str(msg_get("MSG_DAEMON_HIT_GROUND"),
+		   msg_get("MSG_DAEMON_FEET_FLOOR")));
 }

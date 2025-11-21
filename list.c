@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
 
 #ifdef MASTER
 int total = 0;			/* total dynamic memory bytes */
@@ -101,7 +102,7 @@ new_item()
 
 #ifdef MASTER
     if ((item = calloc(1, sizeof *item)) == NULL)
-	msg("ran out of memory after %d items", total);
+	msg(msg_get("MSG_LIST_OUT_OF_MEMORY"), total);
     else
 	total++;
 #else

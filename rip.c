@@ -323,7 +323,7 @@ death(char monst)
 	printw(" ");
 	killer = killname(monst, FALSE);
 	if (monst != 's' && monst != 'h')
-	    printw("a%s ", vowelstr(killer));
+	    printw(msg_get("MSG_RIP_ARTICLE"), vowelstr(killer));
 	printw("%s ", killer);
 	printw(msg_get("MSG_WITH_GOLD"), purse);
     }
@@ -452,16 +452,22 @@ total_winner()
     addstr("  @   @ @   @ @  @@   @   @ @   @ @   @ @         @   @  @     \n");
     addstr("   @@@   @@@   @@ @   @   @  @@@@  @@@@  @@@     @@@   @@   @  \n");
     addstr("                                                               \n");
-    addstr("     Congratulations, you have made it to the light of day!    \n");
+    addstr(msg_get("MSG_RIP_CONGRATULATIONS"));
+    addstr("\n");
     standend();
-    addstr("\nYou have joined the elite ranks of those who have escaped the\n");
-    addstr("Dungeons of Doom alive.  You journey home and sell all your loot at\n");
-    addstr("a great profit and are admitted to the Fighters' Guild.\n");
+    addstr("\n");
+    addstr(msg_get("MSG_RIP_VICTORY_1"));
+    addstr("\n");
+    addstr(msg_get("MSG_RIP_VICTORY_2"));
+    addstr("\n");
+    addstr(msg_get("MSG_RIP_VICTORY_3"));
+    addstr("\n");
     mvaddstr(LINES - 1, 0, msg_get("MSG_PRESS_SPACE"));
     refresh();
     wait_for(' ');
     clear();
-    mvaddstr(0, 0, "   Worth  Item\n");
+    mvaddstr(0, 0, msg_get("MSG_RIP_WORTH_ITEM"));
+    addstr("\n");
     oldpurse = purse;
     for (obj = pack; obj != NULL; obj = next(obj))
     {
@@ -523,7 +529,8 @@ total_winner()
 	printw("%c) %5d  %s\n", obj->o_packch, worth, inv_name(obj, FALSE));
 	purse += worth;
     }
-    printw("   %5d  Gold Pieces          ", oldpurse);
+    printw(msg_get("MSG_RIP_GOLD_TOTAL"), oldpurse);
+    printw("          ");
     refresh();
     score(purse, 2, ' ');
     my_exit(0);
@@ -555,7 +562,7 @@ killname(char monst, bool doart)
     }
     else
     {
-	sp = "Wally the Wonder Badger";
+	sp = msg_get("MSG_RIP_WALLY");
 	article = FALSE;
 	for (hp = nlist; hp->h_ch; hp++)
 	    if (hp->h_ch == monst)

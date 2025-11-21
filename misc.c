@@ -16,6 +16,7 @@
 #include <ctype.h>
 #include "rogue.h"
 #include "utils.h"
+#include "i18n.h"
 
 /*
  * look:
@@ -265,8 +266,7 @@ find_obj(int y, int x)
 		return obj;
     }
 #ifdef MASTER
-    sprintf(prbuf, "Non-object %d,%d", y, x);
-    msg(prbuf);
+    msg(msg_get("MSG_DEBUG_NON_OBJECT"), y, x);
     return NULL;
 #else
     /* NOTREACHED */
@@ -284,14 +284,14 @@ eat()
 {
     THING *obj;
 
-    if ((obj = get_item("eat", FOOD)) == NULL)
+    if ((obj = get_item(msg_get("MSG_PURPOSE_EAT"), FOOD)) == NULL)
 	return;
     if (obj->o_type != FOOD)
     {
 	if (!terse)
-	    msg("ugh, you would get ill if you ate that");
+	    msg(msg_get("MSG_MISC_GET_ILL"));
 	else
-	    msg("that's Inedible!");
+	    msg(msg_get("MSG_MISC_INEDIBLE"));
 	return;
     }
     if (food_left < 0)
@@ -302,16 +302,16 @@ eat()
     if (obj == cur_weapon)
 	cur_weapon = NULL;
     if (obj->o_which == 1)
-	msg("my, that was a yummy %s", fruit);
+	msg(msg_get("MSG_MISC_YUMMY"), fruit);
     else
 	if (rnd(100) > 70)
 	{
 	    pstats.s_exp++;
-	    msg("%s, this food tastes awful", choose_str("bummer", "yuk"));
+	    msg(msg_get("MSG_MISC_AWFUL_BUMMER"), choose_str(msg_get("MSG_MISC_BUMMER"), msg_get("MSG_MISC_AWFUL_YUK")));
 	    check_level();
 	}
 	else
-	    msg("%s, that tasted good", choose_str("oh, wow", "yum"));
+	    msg(msg_get("MSG_MISC_TASTED_GOOD"), choose_str(msg_get("MSG_MISC_OH_WOW"), msg_get("MSG_MISC_YUM")));
     leave_pack(obj, FALSE, FALSE);
 }
 
@@ -336,7 +336,7 @@ check_level()
 	add = roll(i - olevel, 10);
 	max_hp += add;
 	pstats.s_hpt += add;
-	msg("welcome to level %d", i);
+	msg(msg_get("MSG_MISC_WELCOME_LEVEL"), i);
     }
 }
 
@@ -388,7 +388,7 @@ add_haste(bool potion)
 	no_command += rnd(8);
 	player.t_flags &= ~(ISRUN|ISHASTE);
 	extinguish(nohaste);
-	msg("you faint from exhaustion");
+	msg(msg_get("MSG_MISC_FAINT_EXHAUSTION"));
 	return FALSE;
     }
     else
@@ -448,8 +448,8 @@ is_current(THING *obj)
 	|| obj == cur_ring[RIGHT])
     {
 	if (!terse)
-	    addmsg("That's already ");
-	msg("in use");
+	    addmsg(msg_get("MSG_MISC_ALREADY"));
+	msg(msg_get("MSG_MISC_IN_USE"));
 	return TRUE;
     }
     return FALSE;
@@ -476,7 +476,7 @@ get_dir()
     else
     {
 	if (!terse)
-	    msg(prompt = "which direction? ");
+	    msg(prompt = msg_get("MSG_MISC_WHICH_DIRECTION"));
 	else
 	    prompt = "direction: ";
 	do
@@ -535,7 +535,7 @@ call_it(struct obj_info *info)
     }
     else if (!info->oi_guess)
     {
-	msg(terse ? "call it: " : "what do you want to call it? ");
+	msg(terse ? msg_get("MSG_MISC_CALL_IT_TERSE") : msg_get("MSG_MISC_CALL_IT_VERBOSE"));
 	if (get_str(prbuf, stdscr) == NORM)
 	{
 	    if (info->oi_guess != NULL)

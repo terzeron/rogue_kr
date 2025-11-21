@@ -96,8 +96,8 @@ fight(coord *mp, THING *weap, bool thrown)
 	    ch = (char)(rnd(26) + 'A');
 	    mvaddch(tp->t_pos.y, tp->t_pos.x, ch);
 	}
-	msg(choose_str("heavy!  That's a nasty critter!",
-		       "wait!  That's a xeroc!"));
+	msg(choose_str(msg_get("MSG_FIGHT_HEAVY"),
+		       msg_get("MSG_FIGHT_WAIT")));
 	if (!thrown)
 	    return FALSE;
     }
@@ -525,7 +525,7 @@ thunk(THING *weap, const char *mname, bool noend)
 	addmsg(msg_get("MSG_THE_HITS"), msg_get_weapon_name(weap->o_which));
     else
 	addmsg(msg_get("MSG_YOU_HIT"));
-    addmsg(" %s", mname);
+    addmsg(msg_get("MSG_FORMAT_SPACE_S"), mname);
     if (!noend)
 	endmsg();
 }
@@ -620,7 +620,7 @@ bounce(THING *weap, const char *mname, bool noend)
 	addmsg(msg_get("MSG_THE_MISSES"), msg_get_weapon_name(weap->o_which));
     else
 	addmsg(msg_get("MSG_YOU_MISSED"));
-    addmsg(" %s", mname);
+    addmsg(msg_get("MSG_FORMAT_SPACE_S"), mname);
     if (!noend)
 	endmsg();
 }

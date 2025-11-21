@@ -14,6 +14,7 @@
 #include <string.h>
 #include "rogue.h"
 #include <ctype.h>
+#include "i18n.h"
 
 /*
  * List of monsters in rough order of vorpalness
@@ -139,7 +140,7 @@ wanderer()
     runto(&tp->t_pos);
 #ifdef MASTER
     if (wizard)
-	msg("started a wandering %s", monsters[tp->t_type-'A'].m_name);
+	msg(msg_get("MSG_MONSTER_STARTED_WANDERING"), monsters[tp->t_type-'A'].m_name);
 #endif
 }
 
@@ -157,7 +158,7 @@ wake_monster(int y, int x)
 
 #ifdef MASTER
     if ((tp = moat(y, x)) == NULL)
-	msg("can't find monster in wake_monster");
+	msg(msg_get("MSG_MONSTER_CANT_FIND"));
 #else
     tp = moat(y, x);
     if (tp == NULL) 	 	 
@@ -189,10 +190,10 @@ wake_monster(int y, int x)
 		    fuse(unconfuse, 0, spread(HUHDURATION), AFTER);
 		player.t_flags |= ISHUH;
 		mname = set_mname(tp);
-		addmsg("%s", mname);
+		addmsg(msg_get("MSG_FORMAT_PERCENT_S"), mname);
 		if (strcmp(mname, "it") != 0)
-		    addmsg("'");
-		msg("s gaze has confused you");
+		    addmsg(msg_get("MSG_APOSTROPHE"));
+		msg(msg_get("MSG_MONSTER_GAZE_CONFUSED"));
 	    }
 	}
     }

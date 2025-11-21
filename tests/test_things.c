@@ -23,7 +23,7 @@ extern void set_order(int *order, int numthings);
 extern char add_line(char *fmt, char *arg);
 extern void end_line(void);
 extern char *nothing(char type);
-extern void nameit(THING *obj, char *type, char *which, struct obj_info *op, char *(*prfunc)(THING *));
+extern void nameit(THING *obj, int type, char *which, struct obj_info *op, char *(*prfunc)(THING *));
 extern char *nullstr(THING *ignored);
 
 /* Test: inv_name() with weapon */

@@ -123,9 +123,21 @@ main(int argc, char **argv, char **envp)
     init_probs();			/* Set up prob tables for objects */
     init_player();			/* Set up initial player stats */
     init_names();			/* Set up names of scrolls */
+    init_rainbow();			/* Initialize rainbow with translated colors */
     init_colors();			/* Set up colors of potions */
+    init_stones_array();		/* Initialize stones with translated names */
     init_stones();			/* Set up stone settings of rings */
+    init_wood_array();			/* Initialize wood with translated names */
+    init_metal_array();			/* Initialize metal with translated names */
     init_materials();			/* Set up materials of wands */
+    init_monsters();			/* Initialize monster names */
+    init_potions();			/* Initialize potion effect names */
+    init_scrolls();			/* Initialize scroll effect names */
+    init_rings();			/* Initialize ring effect names */
+    init_sticks();			/* Initialize wand/staff effect names */
+    init_inv_t_name();			/* Initialize inventory type names */
+    init_traps();			/* Set up trap names */
+    init_help();			/* Set up help strings */
     setup();
 
     /*
@@ -169,7 +181,7 @@ void
 endit(int sig)
 {
     NOOP(sig);
-    fatal("Okay, bye bye!\n");
+    fatal(msg_get("MSG_MAIN_BYE"));
 }
 
 /*
@@ -355,7 +367,7 @@ shell()
      */
     md_shellescape();
 
-    printf("\n[Press return to continue]");
+    printf("\n%s", msg_get("MSG_MAIN_PRESS_RETURN"));
     fflush(stdout);
     noecho();
     raw();

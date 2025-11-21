@@ -16,6 +16,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * whatis:
@@ -29,22 +30,22 @@ whatis(bool insist, int type)
 
     if (pack == NULL)
     {
-	msg("you don't have anything in your pack to identify");
+	msg(msg_get("MSG_WIZARD_NO_PACK"));
 	return;
     }
 
     for (;;)
     {
-	obj = get_item("identify", type);
+	obj = get_item(msg_get("MSG_PURPOSE_IDENTIFY"), type);
 	if (insist)
 	{
 	    if (n_objs == 0)
 		return;
 	    else if (obj == NULL)
-		msg("you must identify something");
+		msg(msg_get("MSG_WIZARD_MUST_IDENTIFY"));
 	    else if (type && obj->o_type != type &&
 	       !(type == R_OR_S && (obj->o_type == RING || obj->o_type == STICK)) )
-		    msg("you must identify a %s", type_name(type));
+		    msg(msg_get("MSG_WIZARD_MUST_IDENTIFY_TYPE"), type_name(type));
 	    else
 		break;
 	}
@@ -99,23 +100,27 @@ set_know(THING *obj, struct obj_info *info)
 const char *
 type_name(int type)
 {
-    struct h_list *hp;
-    static struct h_list tlist[] = {
-	{POTION, "potion",		FALSE},
-	{SCROLL, "scroll",		FALSE},
-	{FOOD,	 "food",		FALSE},
-	{R_OR_S, "ring, wand or staff",	FALSE},
-	{RING,	 "ring",		FALSE},
-	{STICK,	 "wand or staff",	FALSE},
-	{WEAPON, "weapon",		FALSE},
-	{ARMOR,	 "suit of armor",	FALSE},
-    };
-
-    for (hp = tlist; hp->h_ch; hp++)
-	if (type == hp->h_ch)
-	    return hp->h_desc;
-    /* NOTREACHED */
-    return(0);
+    switch (type)
+    {
+	case POTION:
+	    return msg_get("MSG_TYPE_POTION");
+	case SCROLL:
+	    return msg_get("MSG_TYPE_SCROLL");
+	case FOOD:
+	    return msg_get("MSG_TYPE_FOOD");
+	case R_OR_S:
+	    return msg_get("MSG_TYPE_RING_OR_STAFF");
+	case RING:
+	    return msg_get("MSG_TYPE_RING");
+	case STICK:
+	    return msg_get("MSG_TYPE_WAND_OR_STAFF");
+	case WEAPON:
+	    return msg_get("MSG_TYPE_WEAPON");
+	case ARMOR:
+	    return msg_get("MSG_TYPE_ARMOR");
+	default:
+	    return NULL;
+    }
 }
 
 #ifdef MASTER
@@ -131,17 +136,17 @@ create_obj()
     char ch, bless;
 
     obj = new_item();
-    msg("type of item: ");
+    msg(msg_get("MSG_WIZARD_TYPE_ITEM"));
     obj->o_type = readchar();
     mpos = 0;
-    msg("which %c do you want? (0-f)", obj->o_type);
+    msg(msg_get("MSG_WIZARD_WHICH_WANT"), obj->o_type);
     obj->o_which = (isdigit((ch = readchar())) ? ch - '0' : ch - 'a' + 10);
     obj->o_group = 0;
     obj->o_count = 1;
     mpos = 0;
     if (obj->o_type == WEAPON || obj->o_type == ARMOR)
     {
-	msg("blessing? (+,-,n)");
+	msg(msg_get("MSG_WIZARD_BLESSING"));
 	bless = readchar();
 	mpos = 0;
 	if (bless == '-')
@@ -170,7 +175,7 @@ create_obj()
 	    case R_ADDSTR:
 	    case R_ADDHIT:
 	    case R_ADDDAM:
-		msg("blessing? (+,-,n)");
+		msg(msg_get("MSG_WIZARD_BLESSING"));
 		bless = readchar();
 		mpos = 0;
 		if (bless == '-')
@@ -184,7 +189,7 @@ create_obj()
 	fix_stick(obj);
     else if (obj->o_type == GOLD)
     {
-	msg("how much?");
+	msg(msg_get("MSG_WIZARD_HOW_MUCH"));
 	get_num(&obj->o_goldval, stdscr);
     }
     add_pack(obj, FALSE);
@@ -241,7 +246,7 @@ passwd()
     char *sp, c;
     static char buf[MAXSTR];
 
-    msg("wizard's Password:");
+    msg(msg_get("MSG_WIZARD_PASSWORD"));
     mpos = 0;
     sp = buf;
     while ((c = readchar()) != '\n' && c != '\r' && c != ESCAPE)
@@ -279,6 +284,6 @@ show_map()
 	    if (!real)
 		wstandend(hw);
 	}
-    show_win("---More (level map)---");
+    show_win(msg_get("MSG_WIZARD_MORE_LEVEL_MAP"));
 }
 #endif

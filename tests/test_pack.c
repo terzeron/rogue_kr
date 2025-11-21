@@ -24,7 +24,7 @@ extern bool inventory(THING *list, int type);
 extern void pick_up(char ch);
 extern void move_msg(THING *obj);
 extern void picky_inven(void);
-extern THING *get_item(char *purpose, int type);
+extern THING *get_item(const char *purpose, int type);
 extern void money(int value);
 extern char floor_ch(void);
 extern char floor_at(void);

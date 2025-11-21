@@ -33,7 +33,7 @@ read_scroll()
     THING *orig_obj;
     static coord mp;
 
-    obj = get_item("read", SCROLL);
+    obj = get_item(msg_get("MSG_PURPOSE_READ"), SCROLL);
     if (obj == NULL)
 	return;
     if (obj->o_type != SCROLL)

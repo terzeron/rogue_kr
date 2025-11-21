@@ -139,7 +139,7 @@ pr_optname(OPTION *op)
 void
 put_bool(void *b)
 {
-    waddstr(hw, *(bool *) b ? "True" : "False");
+    waddstr(hw, *(bool *) b ? msg_get("MSG_OPTIONS_TRUE") : msg_get("MSG_OPTIONS_FALSE"));
 }
 
 /*
@@ -177,8 +177,8 @@ get_bool(void *vp, WINDOW *win)
 
     op_bad = TRUE;
     getyx(win, oy, ox);
-    waddstr(win, *bp ? "True" : "False");
-    while (op_bad)	
+    waddstr(win, *bp ? msg_get("MSG_OPTIONS_TRUE") : msg_get("MSG_OPTIONS_FALSE"));
+    while (op_bad)
     {
 	wmove(win, oy, ox);
 	wrefresh(win);
@@ -204,11 +204,11 @@ get_bool(void *vp, WINDOW *win)
 		return MINUS;
 	    default:
 		wmove(win, oy, ox + 10);
-		waddstr(win, "(T or F)");
+		waddstr(win, msg_get("MSG_OPTIONS_T_OR_F"));
 	}
     }
     wmove(win, oy, ox);
-    waddstr(win, *bp ? "True" : "False");
+    waddstr(win, *bp ? msg_get("MSG_OPTIONS_TRUE") : msg_get("MSG_OPTIONS_FALSE"));
     waddch(win, '\n');
     return NORM;
 }
@@ -363,7 +363,7 @@ get_inv_t(void *vp, WINDOW *win)
 		return MINUS;
 	    default:
 		wmove(win, oy, ox + 15);
-		waddstr(win, "(O, S, or C)");
+		waddstr(win, msg_get("MSG_OPTIONS_INV_TYPE"));
 	}
     }
     mvwprintw(win, oy, ox, "%s\n", inv_t_name[*ip]);

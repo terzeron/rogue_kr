@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
 
 /*
  * do_passages:
@@ -262,7 +263,7 @@ conn(int r1, int r2)
     curr.x += del.x;
     curr.y += del.y;
     if (!ce(curr, epos))
-	msg("warning, connectivity problem on this level");
+	msg(msg_get("MSG_PASSAGES_CONNECTIVITY"));
 }
 
 /*

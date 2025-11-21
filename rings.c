@@ -25,7 +25,7 @@ ring_on()
     THING *obj;
     int ring;
 
-    obj = get_item("put on", RING);
+    obj = get_item(msg_get("MSG_PURPOSE_PUT_ON"), RING);
     /*
      * Make certain that it is somethings that we want to wear
      */
@@ -83,7 +83,7 @@ ring_on()
 
     if (!terse)
 	addmsg(msg_get("MSG_RING_NOW_WEARING"));
-    msg(" %s (%c)", inv_name(obj, TRUE), obj->o_packch);
+    msg(msg_get("MSG_RINGS_WEARING"), inv_name(obj, TRUE), obj->o_packch);
 }
 
 /*

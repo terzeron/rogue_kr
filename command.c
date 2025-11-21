@@ -385,7 +385,7 @@ over:
 			{
 			    THING *item;
 
-			    if ((item = get_item("charge", STICK)) != NULL)
+			    if ((item = get_item(msg_get("MSG_PURPOSE_CHARGE"), STICK)) != NULL)
 				item->o_charges = 10000;
 			}
 			when CTRL('I'):
@@ -831,7 +831,7 @@ call()
     register char **guess, *elsewise = NULL;
     register bool *know;
 
-    obj = get_item("call", CALLABLE);
+    obj = get_item(msg_get("MSG_PURPOSE_CALL"), CALLABLE);
     /*
      * Make certain that it is somethings that we want to wear
      */
@@ -909,13 +909,13 @@ current(THING *cur, const char *how, const char *where)
 	if (!terse)
 	{
 	    addmsg(msg_get("MSG_YOU_ARE"));
-	    addmsg(" %s (", how);
+	    addmsg(msg_get("MSG_FORMAT_SPACE_PAREN"), how);
 	}
 	inv_describe = FALSE;
-	addmsg("%c) %s", cur->o_packch, inv_name(cur, TRUE));
+	addmsg(msg_get("MSG_FORMAT_ITEM"), cur->o_packch, inv_name(cur, TRUE));
 	inv_describe = TRUE;
 	if (where)
-	    addmsg(" %s", where);
+	    addmsg(msg_get("MSG_FORMAT_SPACE_S"), where);
 	endmsg();
     }
     else
@@ -923,12 +923,12 @@ current(THING *cur, const char *how, const char *where)
 	if (!terse)
 	{
 	    addmsg(msg_get("MSG_YOU_ARE"));
-	    addmsg(" ");
+	    addmsg(msg_get("MSG_FORMAT_SPACE"));
 	}
-	addmsg("%s ", how);
+	addmsg(msg_get("MSG_FORMAT_S_SPACE"), how);
 	addmsg(msg_get("MSG_NOTHING"));
 	if (where)
-	    addmsg(" %s", where);
+	    addmsg(msg_get("MSG_FORMAT_SPACE_S"), where);
 	endmsg();
     }
 }

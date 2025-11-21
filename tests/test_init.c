@@ -13,24 +13,43 @@
 
 extern char *pick_color(char *col);
 extern void sumprobs(struct obj_info *info, int bound);
+extern void init_rainbow(void);
+extern char *rainbow[];
 
-/* Test: pick_color without hallucination returns original */
+/* Test: pick_color without hallucination returns translated color */
 static void test_pick_color_normal(void **state) {
     (void) state;
 
     player.t_flags &= ~ISHALU;
-    char sample[] = "blue";
-    assert_string_equal(sample, pick_color(sample));
+    const char *result = pick_color("blue");
+    /* pick_color now returns translated message */
+    assert_non_null(result);
+    /* In test environment, msg_get returns the key, so check for "BLUE" or "blue" */
+    assert_true(strstr(result, "BLUE") != NULL || strcmp(result, "blue") == 0);
 }
 
-/* Test: pick_color with ISHALU returns a non-empty string */
+/* Test: pick_color with ISHALU returns a random color from rainbow */
 static void test_pick_color_hallucinating(void **state) {
     (void) state;
+
+    /* Initialize rainbow array first */
+    init_rainbow();
 
     player.t_flags |= ISHALU;
     const char *result = pick_color("blue");
     assert_non_null(result);
     assert_true(strlen(result) > 0);
+
+    /* Result should be one of the rainbow colors */
+    bool found = false;
+    for (int i = 0; i < 27; i++) {
+        if (rainbow[i] && strcmp(result, rainbow[i]) == 0) {
+            found = true;
+            break;
+        }
+    }
+    assert_true(found);
+
     player.t_flags &= ~ISHALU;
 }
 

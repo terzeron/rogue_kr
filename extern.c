@@ -12,6 +12,7 @@
 
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
 
 bool after;				/* True if we want after daemons */
 bool again;				/* Repeating the last command */
@@ -65,25 +66,12 @@ int  orig_dsusp;			/* Original dsusp char */
 char fruit[MAXSTR] =			/* Favorite fruit */
 		{ 's', 'l', 'i', 'm', 'e', '-', 'm', 'o', 'l', 'd', '\0' };
 char home[MAXSTR] = { '\0' };		/* User's home directory */
-char *inv_t_name[] = {
-	"Overwrite",
-	"Slow",
-	"Clear"
-};
+char *inv_t_name[3];
 char l_last_comm = '\0';		/* Last last_comm */
 char l_last_dir = '\0';			/* Last last_dir */
 char last_comm = '\0';			/* Last command typed */
 char last_dir = '\0';			/* Last direction given */
-char *tr_name[] = {			/* Names of the traps */
-	"a trapdoor",
-	"an arrow trap",
-	"a sleeping gas trap",
-	"a beartrap",
-	"a teleport trap",
-	"a poison dart trap",
-	"a rust trap",
-        "a mysterious trap"
-};
+char *tr_name[8];			/* Names of the traps (initialized by init_traps()) */
 
 
 int n_objs;				/* # items listed in inventory() call */
@@ -322,70 +310,70 @@ struct obj_info ws_info[MAXSTICKS] = {
 };
 
 struct h_list helpstr[] = {
-    {'?',	"	prints help",				TRUE},
-    {'/',	"	identify object",			TRUE},
-    {'h',	"	left",					TRUE},
-    {'j',	"	down",					TRUE},
-    {'k',	"	up",					TRUE},
-    {'l',	"	right",					TRUE},
-    {'y',	"	up & left",				TRUE},
-    {'u',	"	up & right",				TRUE},
-    {'b',	"	down & left",				TRUE},
-    {'n',	"	down & right",				TRUE},
-    {'H',	"	run left",				FALSE},
-    {'J',	"	run down",				FALSE},
-    {'K',	"	run up",				FALSE},
-    {'L',	"	run right",				FALSE},
-    {'Y',	"	run up & left",				FALSE},
-    {'U',	"	run up & right",			FALSE},
-    {'B',	"	run down & left",			FALSE},
-    {'N',	"	run down & right",			FALSE},
-    {CTRL('H'),	"	run left until adjacent",		FALSE},
-    {CTRL('J'),	"	run down until adjacent",		FALSE},
-    {CTRL('K'),	"	run up until adjacent",			FALSE},
-    {CTRL('L'),	"	run right until adjacent",		FALSE},
-    {CTRL('Y'),	"	run up & left until adjacent",		FALSE},
-    {CTRL('U'),	"	run up & right until adjacent",		FALSE},
-    {CTRL('B'),	"	run down & left until adjacent",	FALSE},
-    {CTRL('N'),	"	run down & right until adjacent",	FALSE},
-    {'\0',	"	<SHIFT><dir>: run that way",		TRUE},
-    {'\0',	"	<CTRL><dir>: run till adjacent",	TRUE},
-    {'f',	"<dir>	fight till death or near death",	TRUE},
-    {'t',	"<dir>	throw something",			TRUE},
-    {'m',	"<dir>	move onto without picking up",		TRUE},
-    {'z',	"<dir>	zap a wand in a direction",		TRUE},
-    {'^',	"<dir>	identify trap type",			TRUE},
-    {'s',	"	search for trap/secret door",		TRUE},
-    {'>',	"	go down a staircase",			TRUE},
-    {'<',	"	go up a staircase",			TRUE},
-    {'.',	"	rest for a turn",			TRUE},
-    {',',	"	pick something up",			TRUE},
-    {'i',	"	inventory",				TRUE},
-    {'I',	"	inventory single item",			TRUE},
-    {'q',	"	quaff potion",				TRUE},
-    {'r',	"	read scroll",				TRUE},
-    {'e',	"	eat food",				TRUE},
-    {'w',	"	wield a weapon",			TRUE},
-    {'W',	"	wear armor",				TRUE},
-    {'T',	"	take armor off",			TRUE},
-    {'P',	"	put on ring",				TRUE},
-    {'R',	"	remove ring",				TRUE},
-    {'d',	"	drop object",				TRUE},
-    {'c',	"	call object",				TRUE},
-    {'a',	"	repeat last command",			TRUE},
-    {')',	"	print current weapon",			TRUE},
-    {']',	"	print current armor",			TRUE},
-    {'=',	"	print current rings",			TRUE},
-    {'@',	"	print current stats",			TRUE},
-    {'D',	"	recall what's been discovered",		TRUE},
-    {'o',	"	examine/set options",			TRUE},
-    {CTRL('R'),	"	redraw screen",				TRUE},
-    {CTRL('P'),	"	repeat last message",			TRUE},
-    {ESCAPE,	"	cancel command",			TRUE},
-    {'S',	"	save game",				TRUE},
-    {'Q',	"	quit",					TRUE},
-    {'!',	"	shell escape",				TRUE},
-    {'F',	"<dir>	fight till either of you dies",		TRUE},
-    {'v',	"	print version number",			TRUE},
-    {0,		NULL }
+    {'?',	NULL,	TRUE},
+    {'/',	NULL,	TRUE},
+    {'h',	NULL,	TRUE},
+    {'j',	NULL,	TRUE},
+    {'k',	NULL,	TRUE},
+    {'l',	NULL,	TRUE},
+    {'y',	NULL,	TRUE},
+    {'u',	NULL,	TRUE},
+    {'b',	NULL,	TRUE},
+    {'n',	NULL,	TRUE},
+    {'H',	NULL,	FALSE},
+    {'J',	NULL,	FALSE},
+    {'K',	NULL,	FALSE},
+    {'L',	NULL,	FALSE},
+    {'Y',	NULL,	FALSE},
+    {'U',	NULL,	FALSE},
+    {'B',	NULL,	FALSE},
+    {'N',	NULL,	FALSE},
+    {CTRL('H'),	NULL,	FALSE},
+    {CTRL('J'),	NULL,	FALSE},
+    {CTRL('K'),	NULL,	FALSE},
+    {CTRL('L'),	NULL,	FALSE},
+    {CTRL('Y'),	NULL,	FALSE},
+    {CTRL('U'),	NULL,	FALSE},
+    {CTRL('B'),	NULL,	FALSE},
+    {CTRL('N'),	NULL,	FALSE},
+    {'\0',	NULL,	TRUE},
+    {'\0',	NULL,	TRUE},
+    {'f',	NULL,	TRUE},
+    {'t',	NULL,	TRUE},
+    {'m',	NULL,	TRUE},
+    {'z',	NULL,	TRUE},
+    {'^',	NULL,	TRUE},
+    {'s',	NULL,	TRUE},
+    {'>',	NULL,	TRUE},
+    {'<',	NULL,	TRUE},
+    {'.',	NULL,	TRUE},
+    {',',	NULL,	TRUE},
+    {'i',	NULL,	TRUE},
+    {'I',	NULL,	TRUE},
+    {'q',	NULL,	TRUE},
+    {'r',	NULL,	TRUE},
+    {'e',	NULL,	TRUE},
+    {'w',	NULL,	TRUE},
+    {'W',	NULL,	TRUE},
+    {'T',	NULL,	TRUE},
+    {'P',	NULL,	TRUE},
+    {'R',	NULL,	TRUE},
+    {'d',	NULL,	TRUE},
+    {'c',	NULL,	TRUE},
+    {'a',	NULL,	TRUE},
+    {')',	NULL,	TRUE},
+    {']',	NULL,	TRUE},
+    {'=',	NULL,	TRUE},
+    {'@',	NULL,	TRUE},
+    {'D',	NULL,	TRUE},
+    {'o',	NULL,	TRUE},
+    {CTRL('R'),	NULL,	TRUE},
+    {CTRL('P'),	NULL,	TRUE},
+    {ESCAPE,	NULL,	TRUE},
+    {'S',	NULL,	TRUE},
+    {'Q',	NULL,	TRUE},
+    {'!',	NULL,	TRUE},
+    {'F',	NULL,	TRUE},
+    {'v',	NULL,	TRUE},
+    {0,		NULL, FALSE }
 };

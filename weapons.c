@@ -14,6 +14,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "rogue.h"
+#include "i18n.h"
 
 #define NO_WEAPON -1
 
@@ -49,7 +50,7 @@ missile(int ydelta, int xdelta)
     /*
      * Get which thing we are hurling
      */
-    if ((obj = get_item("throw", WEAPON)) == NULL)
+    if ((obj = get_item(msg_get("MSG_PURPOSE_THROW"), WEAPON)) == NULL)
 	return;
     if (!dropcheck(obj) || is_current(obj))
 	return;
@@ -146,7 +147,7 @@ fall(THING *obj, bool pr)
 	    endmsg();
 	    has_hit = FALSE;
 	}
-	msg("the %s vanishes as it hits the ground",
+	msg(msg_get("MSG_WEAPON_VANISHES"),
 	    weap_info[obj->o_which].oi_name);
     }
     discard(obj);
@@ -235,7 +236,7 @@ wield()
 	return;
     }
     cur_weapon = oweapon;
-    if ((obj = get_item("wield", WEAPON)) == NULL)
+    if ((obj = get_item(msg_get("MSG_PURPOSE_WIELD"), WEAPON)) == NULL)
     {
 bad:
 	after = FALSE;
@@ -244,7 +245,7 @@ bad:
 
     if (obj->o_type == ARMOR)
     {
-	msg("you can't wield armor");
+	msg(msg_get("MSG_WEAPON_CANT_WIELD_ARMOR"));
 	goto bad;
     }
     if (is_current(obj))
@@ -253,8 +254,8 @@ bad:
     sp = inv_name(obj, TRUE);
     cur_weapon = obj;
     if (!terse)
-	addmsg("you are now ");
-    msg("wielding %s (%c)", sp, obj->o_packch);
+	addmsg(msg_get("MSG_WEAPON_YOU_ARE_NOW"));
+    msg(msg_get("MSG_WEAPON_WIELDING"), sp, obj->o_packch);
 }
 
 /*

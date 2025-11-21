@@ -85,7 +85,7 @@ quaff()
     bool discardit = FALSE;
     bool show, trip;
 
-    obj = get_item("quaff", POTION);
+    obj = get_item(msg_get("MSG_PURPOSE_QUAFF"), POTION);
     /*
      * Make certain that it is somethings that we want to drink
      */
@@ -94,9 +94,9 @@ quaff()
     if (obj->o_type != POTION)
     {
 	if (!terse)
-	    msg("yuk! Why would you want to drink that?");
+	    msg(msg_get("MSG_POTION_YUK"));
 	else
-	    msg("that's undrinkable");
+	    msg(msg_get("MSG_POTION_UNDRINKABLE"));
 	return;
     }
     if (obj == cur_weapon)
@@ -115,11 +115,11 @@ quaff()
 	when P_POISON:
 	    pot_info[P_POISON].oi_know = TRUE;
 	    if (ISWEARING(R_SUSTSTR))
-		msg("you feel momentarily sick");
+		msg(msg_get("MSG_POTION_MOMENTARILY_SICK"));
 	    else
 	    {
 		chg_str(-(rnd(3) + 1));
-		msg("you feel very sick now");
+		msg(msg_get("MSG_POTION_VERY_SICK"));
 		come_down();
 	    }
 	when P_HEALING:
@@ -127,17 +127,17 @@ quaff()
 	    if ((pstats.s_hpt += roll(pstats.s_lvl, 4)) > max_hp)
 		pstats.s_hpt = ++max_hp;
 	    sight();
-	    msg("you begin to feel better");
+	    msg(msg_get("MSG_POTION_FEEL_BETTER"));
 	when P_STRENGTH:
 	    pot_info[P_STRENGTH].oi_know = TRUE;
 	    chg_str(1);
-	    msg("you feel stronger, now.  What bulging muscles!");
+	    msg(msg_get("MSG_POTION_STRONGER"));
 	when P_MFIND:
 	    player.t_flags |= SEEMONST;
 	    fuse((void(*)())turn_see, TRUE, HUHDURATION, AFTER);
 	    if (!turn_see(FALSE))
-		msg("you have a %s feeling for a moment, then it passes",
-		    choose_str("normal", "strange"));
+		msg(msg_get("MSG_POTION_FEELING_PASSES"),
+		    choose_str(msg_get("MSG_POTION_FEELING_NORMAL"), msg_get("MSG_POTION_FEELING_STRANGE")));
 	when P_TFIND:
 	    /*
 	     * Potion of magic detection.  Show the potions and scrolls
@@ -172,11 +172,11 @@ quaff()
 	    if (show)
 	    {
 		pot_info[P_TFIND].oi_know = TRUE;
-		show_win("You sense the presence of magic on this level.--More--");
+		show_win(msg_get("MSG_POTION_SENSE_MAGIC"));
 	    }
 	    else
-		msg("you have a %s feeling for a moment, then it passes",
-		    choose_str("normal", "strange"));
+		msg(msg_get("MSG_POTION_FEELING_PASSES"),
+		    choose_str(msg_get("MSG_POTION_FEELING_NORMAL"), msg_get("MSG_POTION_FEELING_STRANGE")));
 	when P_LSD:
 	    if (!trip)
 	    {
@@ -187,7 +187,7 @@ quaff()
 	    }
 	    do_pot(P_LSD, TRUE);
 	when P_SEEINVIS:
-	    sprintf(prbuf, "this potion tastes like %s juice", fruit);
+	    sprintf(prbuf, msg_get("MSG_POTION_TASTES_LIKE"), fruit);
 	    show = on(player, CANSEE);
 	    do_pot(P_SEEINVIS, FALSE);
 	    if (!show)
@@ -195,7 +195,7 @@ quaff()
 	    sight();
 	when P_RAISE:
 	    pot_info[P_RAISE].oi_know = TRUE;
-	    msg("you suddenly feel much more skillful");
+	    msg(msg_get("MSG_POTION_MORE_SKILLFUL"));
 	    raise_level();
 	when P_XHEAL:
 	    pot_info[P_XHEAL].oi_know = TRUE;
@@ -207,12 +207,12 @@ quaff()
 	    }
 	    sight();
 	    come_down();
-	    msg("you begin to feel much better");
+	    msg(msg_get("MSG_POTION_MUCH_BETTER"));
 	when P_HASTE:
 	    pot_info[P_HASTE].oi_know = TRUE;
 	    after = FALSE;
 	    if (add_haste(TRUE))
-		msg("you feel yourself moving much faster");
+		msg(msg_get("MSG_POTION_MOVING_FASTER"));
 	when P_RESTORE:
 	    if (ISRING(LEFT, R_ADDSTR))
 		add_str(&pstats.s_str, -cur_ring[LEFT]->o_arm);
@@ -224,14 +224,14 @@ quaff()
 		add_str(&pstats.s_str, cur_ring[LEFT]->o_arm);
 	    if (ISRING(RIGHT, R_ADDSTR))
 		add_str(&pstats.s_str, cur_ring[RIGHT]->o_arm);
-	    msg("hey, this tastes great.  It make you feel warm all over");
+	    msg(msg_get("MSG_POTION_TASTES_GREAT"));
 	when P_BLIND:
 	    do_pot(P_BLIND, TRUE);
 	when P_LEVIT:
 	    do_pot(P_LEVIT, TRUE);
 #ifdef MASTER
 	otherwise:
-	    msg("what an odd tasting potion!");
+	    msg(msg_get("MSG_POTION_ODD_TASTING"));
 	    return;
 #endif
     }
