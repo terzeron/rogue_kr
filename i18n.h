@@ -10,7 +10,7 @@
 /* Maximum message key and value lengths */
 #define MAX_MSG_KEY 64
 #define MAX_MSG_VALUE 256
-#define MAX_MESSAGES 512
+#define MAX_MESSAGES 1024
 
 /*
  * Initialize the message catalog system
