@@ -317,7 +317,7 @@ pick_up(char ch)
 		break;
 	    default:
 #ifdef MASTER
-		debug("Where did you pick a '%s' up???", unctrl(ch));
+		debug(msg_get("MSG_DEBUG_PICK_UP"), unctrl(ch));
 #endif
 	    case ARMOR:
 	    case POTION:

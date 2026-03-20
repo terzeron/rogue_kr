@@ -41,27 +41,46 @@ typedef struct optstruct	OPTION;
 void	pr_optname(OPTION *op);
 
 OPTION	optlist[] = {
-    {"terse",	 "Terse output",
+    {"terse",	 NULL,
 		 &terse,	put_bool,	get_bool	},
-    {"flush",	 "Flush typeahead during battle",
+    {"flush",	 NULL,
 		 &fight_flush,	put_bool,	get_bool	},
-    {"jump",	 "Show position only at end of run",
+    {"jump",	 NULL,
 		 &jump,		put_bool,	get_bool	},
-    {"seefloor", "Show the lamp-illuminated floor",
+    {"seefloor", NULL,
 		 &see_floor,	put_bool,	get_sf		},
-    {"passgo",	"Follow turnings in passageways",
+    {"passgo",	NULL,
 		 &passgo,	put_bool,	get_bool	},
-    {"tombstone", "Print out tombstone when killed",
+    {"tombstone", NULL,
 		 &tombstone,	put_bool,	get_bool	},
-    {"inven",	"Inventory style",
+    {"inven",	NULL,
 		 &inv_type,	put_inv_t,	get_inv_t	},
-    {"name",	 "Name",
+    {"name",	 NULL,
 		 whoami,	put_str,	get_str		},
-    {"fruit",	 "Fruit",
+    {"fruit",	 NULL,
 		 fruit,		put_str,	get_str		},
-    {"file",	 "Save file",
+    {"file",	 NULL,
 		 file_name,	put_str,	get_str		}
 };
+
+/*
+ * init_options:
+ *	Initialize option prompt strings with translated strings
+ */
+void
+init_options()
+{
+    optlist[0].o_prompt = (char *)msg_get("MSG_OPT_TERSE");
+    optlist[1].o_prompt = (char *)msg_get("MSG_OPT_FLUSH");
+    optlist[2].o_prompt = (char *)msg_get("MSG_OPT_JUMP");
+    optlist[3].o_prompt = (char *)msg_get("MSG_OPT_SEEFLOOR");
+    optlist[4].o_prompt = (char *)msg_get("MSG_OPT_PASSGO");
+    optlist[5].o_prompt = (char *)msg_get("MSG_OPT_TOMBSTONE");
+    optlist[6].o_prompt = (char *)msg_get("MSG_OPT_INVEN");
+    optlist[7].o_prompt = (char *)msg_get("MSG_OPT_NAME");
+    optlist[8].o_prompt = (char *)msg_get("MSG_OPT_FRUIT");
+    optlist[9].o_prompt = (char *)msg_get("MSG_OPT_FILE");
+}
 
 /*
  * option:
@@ -128,7 +147,7 @@ option()
 void
 pr_optname(OPTION *op)
 {
-    wprintw(hw, "%s (\"%s\"): ", op->o_prompt, op->o_name);
+    wprintw(hw, msg_get("MSG_OPT_FORMAT"), op->o_prompt, op->o_name);
 }
 
 /*

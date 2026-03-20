@@ -39,7 +39,8 @@ main(int argc, char **argv, char **envp)
      * Check to see if he is a wizard
      */
     if (argc >= 2 && argv[1][0] == '\0')
-	if (strcmp(PASSWD, md_crypt(md_getpass("wizard's password: "), "mT")) == 0)
+	if (strcmp(PASSWD, md_crypt(md_getpass(
+	    msg_get("MSG_PROMPT_WIZARD_PASSWORD")), "mT")) == 0)
 	{
 	    wizard = TRUE;
 	    player.t_flags |= SEEMONST;
@@ -135,7 +136,11 @@ main(int argc, char **argv, char **envp)
     init_scrolls();			/* Initialize scroll effect names */
     init_rings();			/* Initialize ring effect names */
     init_sticks();			/* Initialize wand/staff effect names */
+    init_armors();                      /* Initialize armor names */
+    init_weapons();                     /* Initialize weapon names */
     init_inv_t_name();			/* Initialize inventory type names */
+    init_options();			/* Initialize option prompt strings */
+    init_fruit();			/* Initialize default fruit name */
     init_traps();			/* Set up trap names */
     init_help();			/* Set up help strings */
     setup();
@@ -389,5 +394,4 @@ my_exit(int st)
     resetltchars();
     exit(st);
 }
-
 

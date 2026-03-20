@@ -219,14 +219,14 @@ struct obj_info things[NUMTHINGS] = {
 };
 
 struct obj_info arm_info[MAXARMORS] = {
-    { "leather armor",		 20,	 20, NULL, FALSE },
-    { "ring mail",		 15,	 25, NULL, FALSE },
-    { "studded leather armor",	 15,	 20, NULL, FALSE },
-    { "scale mail",		 13,	 30, NULL, FALSE },
-    { "chain mail",		 12,	 75, NULL, FALSE },
-    { "splint mail",		 10,	 80, NULL, FALSE },
-    { "banded mail",		 10,	 90, NULL, FALSE },
-    { "plate mail",		  5,	150, NULL, FALSE },
+    { NULL,		 20,	 20, NULL, FALSE },
+    { NULL,		 15,	 25, NULL, FALSE },
+    { NULL,	 15,	 20, NULL, FALSE },
+    { NULL,		 13,	 30, NULL, FALSE },
+    { NULL,		 12,	 75, NULL, FALSE },
+    { NULL,		 10,	 80, NULL, FALSE },
+    { NULL,		 10,	 90, NULL, FALSE },
+    { NULL,		  5,	150, NULL, FALSE },
 };
 struct obj_info pot_info[MAXPOTIONS] = {
     { "confusion",		 7,   5, NULL, FALSE },
@@ -281,15 +281,15 @@ struct obj_info scr_info[MAXSCROLLS] = {
     { "protect armor",			 2, 250, NULL, FALSE },
 };
 struct obj_info weap_info[MAXWEAPONS + 1] = {
-    { "mace",				11,   8, NULL, FALSE },
-    { "long sword",			11,  15, NULL, FALSE },
-    { "short bow",			12,  15, NULL, FALSE },
-    { "arrow",				12,   1, NULL, FALSE },
-    { "dagger",				 8,   3, NULL, FALSE },
-    { "two handed sword",		10,  75, NULL, FALSE },
-    { "dart",				12,   2, NULL, FALSE },
-    { "shuriken",			12,   5, NULL, FALSE },
-    { "spear",				12,   5, NULL, FALSE },
+    { NULL,				11,   8, NULL, FALSE },
+    { NULL,			11,  15, NULL, FALSE },
+    { NULL,			12,  15, NULL, FALSE },
+    { NULL,				12,   1, NULL, FALSE },
+    { NULL,				 8,   3, NULL, FALSE },
+    { NULL,		10,  75, NULL, FALSE },
+    { NULL,				12,   2, NULL, FALSE },
+    { NULL,			12,   5, NULL, FALSE },
+    { NULL,				12,   5, NULL, FALSE },
     { NULL, 0 },	/* DO NOT REMOVE: fake entry for dragon's breath */
 };
 struct obj_info ws_info[MAXSTICKS] = {

@@ -462,6 +462,7 @@ MSG_HELP_VERSION=	버전 번호 출력
 MSG_HELLO_WIZARD=%s님 안녕하세요, 던전 #%d에 오신 것을 환영합니다
 MSG_HELLO_DIGGING=%s님 안녕하세요, 잠시만 기다리시면 던전을 만들겠습니다...
 MSG_SCREEN_TOO_SMALL=\n죄송합니다. 화면은 최소 %dx%d 이상이어야 합니다\n
+MSG_PROMPT_WIZARD_PASSWORD=마법사의 비밀번호: 
 
 # rip.c messages - scoreboard and death
 MSG_NUMNAME=10
@@ -500,6 +501,7 @@ MSG_WEAPON_SPEAR=창
 # Item type names
 MSG_WAND=지팡이
 MSG_STAFF=막대기
+MSG_TYPE_ITEM=아이템
 
 # Armor types - armor.c arm_info[]
 MSG_ARMOR_LEATHER_ARMOR=가죽 갑옷
@@ -637,6 +639,7 @@ MSG_MISC_WELCOME_LEVEL=%d 레벨에 오신 것을 환영합니다
 MSG_MISC_FAINT_EXHAUSTION=탈진하여 기절했습니다
 MSG_MISC_IN_USE=사용 중
 MSG_MISC_WHICH_DIRECTION=어느 방향?
+MSG_MISC_DIRECTION_TERSE=방향: 
 MSG_MISC_CALL_IT_TERSE=이름:
 MSG_MISC_CALL_IT_VERBOSE=무엇이라고 부르시겠습니까?
 
@@ -1048,5 +1051,36 @@ MSG_INV_TYPE_OVERWRITE=덮어쓰기
 MSG_INV_TYPE_SLOW=느리게
 MSG_INV_TYPE_CLEAR=지우기
 
+# options.c 메시지 - 옵션 프롬프트
+MSG_OPT_TERSE=간략한 출력
+MSG_OPT_FLUSH=전투 중 입력 버퍼 비우기
+MSG_OPT_JUMP=이동 끝 위치만 표시
+MSG_OPT_SEEFLOOR=램프로 비춘 바닥 표시
+MSG_OPT_PASSGO=통로에서 자동 방향 전환
+MSG_OPT_TOMBSTONE=사망 시 묘비 표시
+MSG_OPT_INVEN=인벤토리 방식
+MSG_OPT_NAME=이름
+MSG_OPT_FRUIT=과일
+MSG_OPT_FILE=저장 파일
+MSG_OPT_FORMAT=%s ("%s"):
+
+# extern.c - 기본 과일 이름
+MSG_DEFAULT_FRUIT=점액질 곰팡이
+
 # 디버그 메시지
 MSG_DEBUG_NON_OBJECT=물체가 아님 %d,%d
+MSG_DEBUG_FUSE_SLOTS=퓨즈 슬롯이 부족합니다
+MSG_DEBUG_PICK_UP='%s'을(를) 어디서 주운 건가요???
+MSG_DEBUG_CONNECTION_ERROR=연결 테이블 오류
+MSG_DEBUG_FUNNY_PICKUP=이상한 것을 주웠습니다 %s
+MSG_DEBUG_BAD_OBJECT=잘못된 종류의 물체를 선택했습니다
+MSG_DEBUG_FIGHT_WHAT=무엇과 싸우나요 @ %d,%d
+MSG_DEBUG_DAMAGE=%dx%d 피해가 %d로 계산됨, dplus = %d, add_dam = %d, def_arm = %d
+MSG_DEBUG_BAD_PERCENTAGES=\n%s의 확률이 잘못되었습니다 (bound = %d):\n
+MSG_DEBUG_HIT_RETURN=[계속하려면 엔터를 누르세요]
+
+# mdport.c messages
+MSG_CANT_DROP_SETGID=setgid 권한을 버릴 수 없습니다. 중단합니다.
+MSG_CANT_DROP_SETUID=setuid 권한을 버릴 수 없습니다. 중단합니다.
+MSG_NO_SHELLY=쉘이 없습니다.
+MSG_DEFAULT_USERNAME=아무개

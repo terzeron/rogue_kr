@@ -299,6 +299,7 @@ init_game_resources(void)
     init_rings();
     init_sticks();
     init_inv_t_name();
+    init_options();
     init_traps();
     init_help();
 }

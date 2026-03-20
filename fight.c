@@ -74,7 +74,7 @@ fight(coord *mp, THING *weap, bool thrown)
      */
 #ifdef MASTER
     if ((tp = moat(mp->y, mp->x)) == NULL)
-	debug("Fight what @ %d,%d", mp->y, mp->x);
+	debug(msg_get("MSG_DEBUG_FIGHT_WHAT"), mp->y, mp->x);
 #else
     tp = moat(mp->y, mp->x);
 #endif
@@ -480,7 +480,7 @@ roll_em(THING *thatt, THING *thdef, THING *weap, bool hurl)
 	    proll = roll(ndice, nsides);
 #ifdef MASTER
 	    if (ndice + nsides > 0 && proll <= 0)
-		debug("Damage for %dx%d came out %d, dplus = %d, add_dam = %d, def_arm = %d", ndice, nsides, proll, dplus, add_dam[att->s_str], def_arm);
+		debug(msg_get("MSG_DEBUG_DAMAGE"), ndice, nsides, proll, dplus, add_dam[att->s_str], def_arm);
 #endif
 	    damage = dplus + proll + add_dam[att->s_str];
 	    def->s_hpt -= max(0, damage);

@@ -13,6 +13,7 @@
 
 #include <curses.h>
 #include "rogue.h"
+#include "i18n.h"
 
 #define EMPTY 0
 #define DAEMON -1
@@ -38,7 +39,7 @@ d_slot()
 	if (dev->d_type == EMPTY)
 	    return dev;
 #ifdef MASTER
-    debug("Ran out of fuse slots");
+    debug("%s", msg_get("MSG_DEBUG_FUSE_SLOTS"));
 #endif
     return NULL;
 }

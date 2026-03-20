@@ -46,6 +46,7 @@
 
 #include <curses.h>
 #include "extern.h"
+#include "i18n.h"
 
 #if defined(HAVE_SYS_TYPES)
 #include <sys/types.h>
@@ -377,7 +378,7 @@ md_normaluser()
 #else
 	if (0) {
 #endif
-		perror("Could not drop setgid privileges.  Aborting.");
+		perror(msg_get("MSG_CANT_DROP_SETGID"));
 		exit(1);
     }
 
@@ -390,7 +391,7 @@ md_normaluser()
 #else
 	if (0) {
 #endif
-	perror("Could not drop setuid privileges.  Aborting.");
+	perror(msg_get("MSG_CANT_DROP_SETUID"));
 	exit(1);
     }
 #endif
@@ -441,7 +442,7 @@ md_getusername()
         if ( (l = getenv("USERNAME")) == NULL )
             if ( (l = getenv("LOGNAME")) == NULL )
                 if ( (l = getenv("USER")) == NULL )
-                    l = "nobody";
+                    l = (char *)msg_get("MSG_DEFAULT_USERNAME");
 
     strncpy(login,l,80);
     login[79] = 0;
@@ -565,7 +566,7 @@ md_shellescape()
          */
         md_normaluser();
         execl(sh == NULL ? "/bin/sh" : sh, "shell", "-i", NULL);
-        perror("No shelly");
+        perror(msg_get("MSG_NO_SHELLY"));
         _exit(-1);
     }
     else /* Application */

@@ -199,7 +199,7 @@ inv_name(THING *obj, bool drop)
 	    sprintf(prbuf, msg_get("MSG_THING_GOLD_PIECES"), obj->o_goldval);
 #ifdef MASTER
 	otherwise:
-	    debug("Picked up something funny %s", unctrl(obj->o_type));
+	    debug(msg_get("MSG_DEBUG_FUNNY_PICKUP"), unctrl(obj->o_type));
 	    sprintf(pb, msg_get("MSG_THING_BIZARRE"), unctrl(obj->o_type));
 #endif
     }
@@ -380,7 +380,7 @@ new_thing()
 	    fix_stick(cur);
 #ifdef MASTER
 	otherwise:
-	    debug("Picked a bad kind of object");
+	    debug("%s", msg_get("MSG_DEBUG_BAD_OBJECT"));
 	    wait_for(' ');
 #endif
     }
@@ -680,18 +680,18 @@ nothing(char type)
     char *sp, *tystr = NULL;
 
     if (terse)
-	sprintf(prbuf, msg_get("MSG_THING_NOTHING"));
+	strcpy(prbuf, msg_get("MSG_THING_NOTHING"));
     else
-	sprintf(prbuf, msg_get("MSG_THING_HAVENT_DISCOVERED"));
+	strcpy(prbuf, msg_get("MSG_THING_HAVENT_DISCOVERED"));
     if (type != '*')
     {
 	sp = &prbuf[strlen(prbuf)];
 	switch (type)
 	{
-	    case POTION: tystr = msg_get("MSG_POTION");
-	    when SCROLL: tystr = msg_get("MSG_SCROLL");
-	    when RING: tystr = msg_get("MSG_RING");
-	    when STICK: tystr = msg_get("MSG_STICK");
+	    case POTION: tystr = (char *)msg_get("MSG_POTION");
+	    when SCROLL: tystr = (char *)msg_get("MSG_SCROLL");
+	    when RING: tystr = (char *)msg_get("MSG_RING");
+	    when STICK: tystr = (char *)msg_get("MSG_STICK");
 	}
 	sprintf(sp, msg_get("MSG_THING_ABOUT_ANY"), tystr);
     }
@@ -719,21 +719,21 @@ nameit(THING *obj, int type, char *which, struct obj_info *op,
     {
 	case POTION:
 	    type_msg_id = "MSG_POTION";
-	    type_en = "potion";
+	    type_en = msg_get("MSG_TYPE_POTION");
 	    break;
 	case RING:
 	    type_msg_id = "MSG_RING";
-	    type_en = "ring";
+	    type_en = msg_get("MSG_TYPE_RING");
 	    break;
 	case STICK:
 		/* For STICK, determine wand/staff based on ws_type entry */
 		is_wand = (strcmp(ws_type[obj->o_which], "wand") == 0);
 		type_msg_id = is_wand ? "MSG_WAND" : "MSG_STAFF";
-		type_en = is_wand ? "wand" : "staff";
+		type_en = is_wand ? msg_get("MSG_WAND") : msg_get("MSG_STAFF");
 	    break;
 	default:
 	    type_msg_id = NULL;
-	    type_en = "item";
+	    type_en = msg_get("MSG_TYPE_ITEM");
 	    break;
     }
 

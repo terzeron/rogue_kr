@@ -191,7 +191,7 @@ wake_monster(int y, int x)
 		player.t_flags |= ISHUH;
 		mname = set_mname(tp);
 		addmsg(msg_get("MSG_FORMAT_PERCENT_S"), mname);
-		if (strcmp(mname, "it") != 0)
+		if (strcmp(mname, msg_get("MSG_IT")) != 0)
 		    addmsg(msg_get("MSG_APOSTROPHE"));
 		msg(msg_get("MSG_MONSTER_GAZE_CONFUSED"));
 	    }

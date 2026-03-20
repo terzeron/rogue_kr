@@ -539,10 +539,10 @@ badcheck(char *name, struct obj_info *info, int bound)
 
     if (info[bound - 1].oi_prob == 100)
 	return;
-    printf("\nBad percentages for %s (bound = %d):\n", name, bound);
+    printf(msg_get("MSG_DEBUG_BAD_PERCENTAGES"), name, bound);
     for (end = &info[bound]; info < end; info++)
 	printf("%3d%% %s\n", info->oi_prob, info->oi_name);
-    printf("[hit RETURN to continue]");
+    printf("%s", msg_get("MSG_DEBUG_HIT_RETURN"));
     fflush(stdout);
     while (getchar() != '\n')
 	continue;
@@ -554,8 +554,8 @@ badcheck(char *name, struct obj_info *info, int bound)
  *	If he is halucinating, pick a random color name and return it,
  *	otherwise return the translated color name.
  */
-char *
-pick_color(char *col)
+const char *
+pick_color(const char *col)
 {
     if (on(player, ISHALU))
 	return rainbow[rnd(NCOLORS)];
@@ -620,48 +620,48 @@ init_help()
     helpstr[20].h_desc = msg_get("MSG_HELP_RUN_UP_ADJ");
     helpstr[21].h_desc = msg_get("MSG_HELP_RUN_RIGHT_ADJ");
     helpstr[22].h_desc = msg_get("MSG_HELP_RUN_UP_LEFT_ADJ");
-    helpstr[23].h_desc = msg_get("MSG_HELP_RUN_UP_RIGHT_ADJ");
-    helpstr[24].h_desc = msg_get("MSG_HELP_RUN_DOWN_LEFT_ADJ");
-    helpstr[25].h_desc = msg_get("MSG_HELP_RUN_DOWN_RIGHT_ADJ");
-    helpstr[26].h_desc = msg_get("MSG_HELP_SHIFT_DIR");
-    helpstr[27].h_desc = msg_get("MSG_HELP_CTRL_DIR");
-    helpstr[28].h_desc = msg_get("MSG_HELP_FIGHT");
-    helpstr[29].h_desc = msg_get("MSG_HELP_THROW");
-    helpstr[30].h_desc = msg_get("MSG_HELP_MOVE");
-    helpstr[31].h_desc = msg_get("MSG_HELP_ZAP");
-    helpstr[32].h_desc = msg_get("MSG_HELP_IDENTIFY_TRAP");
-    helpstr[33].h_desc = msg_get("MSG_HELP_SEARCH");
-    helpstr[34].h_desc = msg_get("MSG_HELP_DOWN_STAIR");
-    helpstr[35].h_desc = msg_get("MSG_HELP_UP_STAIR");
-    helpstr[36].h_desc = msg_get("MSG_HELP_REST");
-    helpstr[37].h_desc = msg_get("MSG_HELP_PICK_UP");
-    helpstr[38].h_desc = msg_get("MSG_HELP_INVENTORY");
-    helpstr[39].h_desc = msg_get("MSG_HELP_INVENTORY_SINGLE");
-    helpstr[40].h_desc = msg_get("MSG_HELP_QUAFF");
-    helpstr[41].h_desc = msg_get("MSG_HELP_READ");
-    helpstr[42].h_desc = msg_get("MSG_HELP_EAT");
-    helpstr[43].h_desc = msg_get("MSG_HELP_WIELD");
-    helpstr[44].h_desc = msg_get("MSG_HELP_WEAR");
-    helpstr[45].h_desc = msg_get("MSG_HELP_TAKE_OFF");
-    helpstr[46].h_desc = msg_get("MSG_HELP_PUT_ON");
-    helpstr[47].h_desc = msg_get("MSG_HELP_REMOVE");
-    helpstr[48].h_desc = msg_get("MSG_HELP_DROP");
-    helpstr[49].h_desc = msg_get("MSG_HELP_CALL");
-    helpstr[50].h_desc = msg_get("MSG_HELP_REPEAT");
-    helpstr[51].h_desc = msg_get("MSG_HELP_PRINT_WEAPON");
-    helpstr[52].h_desc = msg_get("MSG_HELP_PRINT_ARMOR");
-    helpstr[53].h_desc = msg_get("MSG_HELP_PRINT_RINGS");
-    helpstr[54].h_desc = msg_get("MSG_HELP_PRINT_STATS");
-    helpstr[55].h_desc = msg_get("MSG_HELP_DISCOVERED");
-    helpstr[56].h_desc = msg_get("MSG_HELP_OPTIONS");
-    helpstr[57].h_desc = msg_get("MSG_HELP_REDRAW");
-    helpstr[58].h_desc = msg_get("MSG_HELP_REPEAT_MSG");
-    helpstr[59].h_desc = msg_get("MSG_HELP_CANCEL");
-    helpstr[60].h_desc = msg_get("MSG_HELP_SAVE");
-    helpstr[61].h_desc = msg_get("MSG_HELP_QUIT");
-    helpstr[62].h_desc = msg_get("MSG_HELP_SHELL");
-    helpstr[63].h_desc = msg_get("MSG_HELP_FIGHT_DEATH");
-    helpstr[64].h_desc = msg_get("MSG_HELP_VERSION");
+helpstr[23].h_desc = msg_get("MSG_HELP_RUN_UP_RIGHT_ADJ");
+helpstr[24].h_desc = msg_get("MSG_HELP_RUN_DOWN_LEFT_ADJ");
+helpstr[25].h_desc = msg_get("MSG_HELP_RUN_DOWN_RIGHT_ADJ");
+helpstr[26].h_desc = msg_get("MSG_HELP_SHIFT_DIR");
+helpstr[27].h_desc = msg_get("MSG_HELP_CTRL_DIR");
+helpstr[28].h_desc = msg_get("MSG_HELP_FIGHT");
+helpstr[29].h_desc = msg_get("MSG_HELP_THROW");
+helpstr[30].h_desc = msg_get("MSG_HELP_MOVE");
+helpstr[31].h_desc = msg_get("MSG_HELP_ZAP");
+helpstr[32].h_desc = msg_get("MSG_HELP_IDENTIFY_TRAP");
+helpstr[33].h_desc = msg_get("MSG_HELP_SEARCH");
+helpstr[34].h_desc = msg_get("MSG_HELP_DOWN_STAIR");
+helpstr[35].h_desc = msg_get("MSG_HELP_UP_STAIR");
+helpstr[36].h_desc = msg_get("MSG_HELP_REST");
+helpstr[37].h_desc = msg_get("MSG_HELP_PICK_UP");
+helpstr[38].h_desc = msg_get("MSG_HELP_INVENTORY");
+helpstr[39].h_desc = msg_get("MSG_HELP_INVENTORY_SINGLE");
+helpstr[40].h_desc = msg_get("MSG_HELP_QUAFF");
+helpstr[41].h_desc = msg_get("MSG_HELP_READ");
+helpstr[42].h_desc = msg_get("MSG_HELP_EAT");
+helpstr[43].h_desc = msg_get("MSG_HELP_WIELD");
+helpstr[44].h_desc = msg_get("MSG_HELP_WEAR");
+helpstr[45].h_desc = msg_get("MSG_HELP_TAKE_OFF");
+helpstr[46].h_desc = msg_get("MSG_HELP_PUT_ON");
+helpstr[47].h_desc = msg_get("MSG_HELP_REMOVE");
+helpstr[48].h_desc = msg_get("MSG_HELP_DROP");
+helpstr[49].h_desc = msg_get("MSG_HELP_CALL");
+helpstr[50].h_desc = msg_get("MSG_HELP_REPEAT");
+helpstr[51].h_desc = msg_get("MSG_HELP_PRINT_WEAPON");
+helpstr[52].h_desc = msg_get("MSG_HELP_PRINT_ARMOR");
+helpstr[53].h_desc = msg_get("MSG_HELP_PRINT_RINGS");
+helpstr[54].h_desc = msg_get("MSG_HELP_PRINT_STATS");
+helpstr[55].h_desc = msg_get("MSG_HELP_DISCOVERED");
+helpstr[56].h_desc = msg_get("MSG_HELP_OPTIONS");
+helpstr[57].h_desc = msg_get("MSG_HELP_REDRAW");
+helpstr[58].h_desc = msg_get("MSG_HELP_REPEAT_MSG");
+helpstr[59].h_desc = msg_get("MSG_HELP_CANCEL");
+helpstr[60].h_desc = msg_get("MSG_HELP_SAVE");
+helpstr[61].h_desc = msg_get("MSG_HELP_QUIT");
+helpstr[62].h_desc = msg_get("MSG_HELP_SHELL");
+helpstr[63].h_desc = msg_get("MSG_HELP_FIGHT_DEATH");
+helpstr[64].h_desc = msg_get("MSG_HELP_VERSION");
 }
 
 /*
@@ -714,12 +714,12 @@ init_potions()
     pot_info[5].oi_name = (char *)msg_get("MSG_POTION_HEALING");
     pot_info[6].oi_name = (char *)msg_get("MSG_POTION_MONSTER_DETECTION");
     pot_info[7].oi_name = (char *)msg_get("MSG_POTION_MAGIC_DETECTION");
-    pot_info[8].oi_name = (char *)msg_get("MSG_POTION_RAISE_LEVEL");
-    pot_info[9].oi_name = (char *)msg_get("MSG_POTION_EXTRA_HEALING");
-    pot_info[10].oi_name = (char *)msg_get("MSG_POTION_HASTE_SELF");
-    pot_info[11].oi_name = (char *)msg_get("MSG_POTION_RESTORE_STRENGTH");
-    pot_info[12].oi_name = (char *)msg_get("MSG_POTION_BLINDNESS");
-    pot_info[13].oi_name = (char *)msg_get("MSG_POTION_LEVITATION");
+pot_info[8].oi_name = (char *)msg_get("MSG_POTION_RAISE_LEVEL");
+pot_info[9].oi_name = (char *)msg_get("MSG_POTION_EXTRA_HEALING");
+pot_info[10].oi_name = (char *)msg_get("MSG_POTION_HASTE_SELF");
+pot_info[11].oi_name = (char *)msg_get("MSG_POTION_RESTORE_STRENGTH");
+pot_info[12].oi_name = (char *)msg_get("MSG_POTION_BLINDNESS");
+pot_info[13].oi_name = (char *)msg_get("MSG_POTION_LEVITATION");
 }
 
 /*
@@ -805,4 +805,50 @@ init_inv_t_name()
     inv_t_name[0] = (char *)msg_get("MSG_INV_TYPE_OVERWRITE");
     inv_t_name[1] = (char *)msg_get("MSG_INV_TYPE_SLOW");
     inv_t_name[2] = (char *)msg_get("MSG_INV_TYPE_CLEAR");
+}
+
+/*
+ * init_fruit:
+ *	Initialize default fruit name with translated string
+ */
+void
+init_fruit()
+{
+    strncpy(fruit, msg_get("MSG_DEFAULT_FRUIT"), MAXSTR - 1);
+    fruit[MAXSTR - 1] = '\0';
+}
+
+/*
+ * init_armors:
+ *	Initialize armor names with translated strings
+ */
+void
+init_armors()
+{
+    arm_info[0].oi_name = (char *)msg_get("MSG_ARMOR_LEATHER_ARMOR");
+    arm_info[1].oi_name = (char *)msg_get("MSG_ARMOR_RING_MAIL");
+    arm_info[2].oi_name = (char *)msg_get("MSG_ARMOR_STUDDED_LEATHER_ARMOR");
+    arm_info[3].oi_name = (char *)msg_get("MSG_ARMOR_SCALE_MAIL");
+    arm_info[4].oi_name = (char *)msg_get("MSG_ARMOR_CHAIN_MAIL");
+    arm_info[5].oi_name = (char *)msg_get("MSG_ARMOR_SPLINT_MAIL");
+    arm_info[6].oi_name = (char *)msg_get("MSG_ARMOR_BANDED_MAIL");
+    arm_info[7].oi_name = (char *)msg_get("MSG_ARMOR_PLATE_MAIL");
+}
+
+/*
+ * init_weapons:
+ *	Initialize weapon names with translated strings
+ */
+void
+init_weapons()
+{
+    weap_info[0].oi_name = (char *)msg_get("MSG_WEAPON_MACE");
+    weap_info[1].oi_name = (char *)msg_get("MSG_WEAPON_LONG_SWORD");
+    weap_info[2].oi_name = (char *)msg_get("MSG_WEAPON_SHORT_BOW");
+    weap_info[3].oi_name = (char *)msg_get("MSG_WEAPON_ARROW");
+    weap_info[4].oi_name = (char *)msg_get("MSG_WEAPON_DAGGER");
+    weap_info[5].oi_name = (char *)msg_get("MSG_WEAPON_TWO_HANDED_SWORD");
+    weap_info[6].oi_name = (char *)msg_get("MSG_WEAPON_DART");
+    weap_info[7].oi_name = (char *)msg_get("MSG_WEAPON_SHURIKEN");
+    weap_info[8].oi_name = (char *)msg_get("MSG_WEAPON_SPEAR");
 }

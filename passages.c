@@ -215,7 +215,7 @@ conn(int r1, int r2)
     }
 #ifdef MASTER
     else
-	debug("error in connection tables");
+	debug("%s", msg_get("MSG_DEBUG_CONNECTION_ERROR"));
 #endif
 
     turn_spot = rnd(distance - 1) + 1;		/* where turn starts */

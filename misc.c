@@ -17,6 +17,7 @@
 #include "rogue.h"
 #include "utils.h"
 #include "i18n.h"
+#include "i18n_korean.h"
 
 /*
  * look:
@@ -422,6 +423,9 @@ aggravate()
 char *
 vowelstr(const char *str)
 {
+    if (is_korean_locale())
+        return "";
+
     switch (*str)
     {
 	case 'a': case 'A':
@@ -463,7 +467,7 @@ is_current(THING *obj)
 bool
 get_dir()
 {
-    char *prompt;
+    const char *prompt;
     bool gotit;
     static coord last_delt= {0,0};
 
@@ -478,7 +482,7 @@ get_dir()
 	if (!terse)
 	    msg(prompt = msg_get("MSG_MISC_WHICH_DIRECTION"));
 	else
-	    prompt = "direction: ";
+	    prompt = msg_get("MSG_MISC_DIRECTION_TERSE");
 	do
 	{
 	    gotit = TRUE;

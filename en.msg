@@ -392,76 +392,77 @@ MSG_ARMOR_USED_TO_BE=you used to be
 MSG_ARMOR_WEARING_ITEM= wearing %c) %s
 
 # help screen messages - extern.c
-MSG_HELP_PRINTS_HELP=\tprint help
-MSG_HELP_IDENTIFY_OBJECT=\tidentify object
-MSG_HELP_LEFT=\tleft
-MSG_HELP_DOWN=\tdown
-MSG_HELP_UP=\tup
-MSG_HELP_RIGHT=\tright
-MSG_HELP_UP_LEFT=\tup left
-MSG_HELP_UP_RIGHT=\tup right
-MSG_HELP_DOWN_LEFT=\tdown left
-MSG_HELP_DOWN_RIGHT=\tdown right
-MSG_HELP_RUN_LEFT=\trun left
-MSG_HELP_RUN_DOWN=\trun down
-MSG_HELP_RUN_UP=\trun up
-MSG_HELP_RUN_RIGHT=\trun right
-MSG_HELP_RUN_UP_LEFT=\trun up-left
-MSG_HELP_RUN_UP_RIGHT=\trun up-right
-MSG_HELP_RUN_DOWN_LEFT=\trun down-left
-MSG_HELP_RUN_DOWN_RIGHT=\trun down-right
-MSG_HELP_RUN_LEFT_UNTIL_ADJ=\trun left until adjacent
-MSG_HELP_RUN_DOWN_UNTIL_ADJ=\trun down until adjacent
-MSG_HELP_RUN_UP_UNTIL_ADJ=\trun up until adjacent
-MSG_HELP_RUN_RIGHT_UNTIL_ADJ=\trun right until adjacent
-MSG_HELP_RUN_UP_LEFT_UNTIL_ADJ=\trun up-left until adjacent
-MSG_HELP_RUN_UP_RIGHT_UNTIL_ADJ=\trun up-right until adjacent
-MSG_HELP_RUN_DOWN_LEFT_UNTIL_ADJ=\trun down-left until adjacent
-MSG_HELP_RUN_DOWN_RIGHT_UNTIL_ADJ=\trun down-right until adjacent
-MSG_HELP_SHIFT_DIR=\t<SHIFT><dir>: run that way
-MSG_HELP_CTRL_DIR=\t<CTRL><dir>: run until adjacent
-MSG_HELP_FIGHT_DIR=<dir>\tfight to the death or near death
-MSG_HELP_THROW=<dir>\tthrow something
-MSG_HELP_MOVE_ONTO=<dir>\tmove without picking up
-MSG_HELP_ZAP_DIR=<dir>\tzap in a direction
-MSG_HELP_IDENTIFY_TRAP=<dir>\tidentify trap type
-MSG_HELP_SEARCH=\tsearch for traps/secret doors
-MSG_HELP_GO_DOWN=\tgo down a staircase
-MSG_HELP_GO_UP=\tgo up a staircase
-MSG_HELP_REST=\trest for a turn
-MSG_HELP_PICK_UP=\tpick something up
-MSG_HELP_INVENTORY=\tinventory
-MSG_HELP_INVENTORY_SINGLE=\tsingle item inventory
-MSG_HELP_QUAFF=\tquaff a potion
-MSG_HELP_READ=\tread a scroll
-MSG_HELP_EAT=\teat food
-MSG_HELP_WIELD=\twield a weapon
-MSG_HELP_WEAR_ARMOR=\twear armor
-MSG_HELP_TAKE_OFF=\ttake armor off
-MSG_HELP_PUT_ON_RING=\tput on a ring
-MSG_HELP_REMOVE_RING=\tremove a ring
-MSG_HELP_DROP=\tdrop an object
-MSG_HELP_CALL=\tcall an object
-MSG_HELP_REPEAT=\trepeat last command
-MSG_HELP_PRINT_WEAPON=\tprint current weapon
-MSG_HELP_PRINT_ARMOR=\tprint current armor
-MSG_HELP_PRINT_RINGS=\tprint current rings
-MSG_HELP_PRINT_STATS=\tprint current stats
-MSG_HELP_DISCOVERED=\trecall discovered items
-MSG_HELP_OPTIONS=\tcheck/set options
-MSG_HELP_REDRAW=\tredraw screen
-MSG_HELP_REPEAT_MSG=\trepeat last message
-MSG_HELP_CANCEL=\tcancel command
-MSG_HELP_SAVE=\tsave game
-MSG_HELP_QUIT=\tquit
-MSG_HELP_SHELL=\tshell escape
-MSG_HELP_FIGHT_DEATH=<dir>\tfight until someone dies
-MSG_HELP_VERSION=\tprint version number
+MSG_HELP_PRINTS_HELP=	print help
+MSG_HELP_IDENTIFY_OBJECT=	identify object
+MSG_HELP_LEFT=	left
+MSG_HELP_DOWN=	down
+MSG_HELP_UP=	up
+MSG_HELP_RIGHT=	right
+MSG_HELP_UP_LEFT=	up left
+MSG_HELP_UP_RIGHT=	up right
+MSG_HELP_DOWN_LEFT=	down left
+MSG_HELP_DOWN_RIGHT=	down right
+MSG_HELP_RUN_LEFT=	run left
+MSG_HELP_RUN_DOWN=	run down
+MSG_HELP_RUN_UP=	run up
+MSG_HELP_RUN_RIGHT=	run right
+MSG_HELP_RUN_UP_LEFT=	run up-left
+MSG_HELP_RUN_UP_RIGHT=	run up-right
+MSG_HELP_RUN_DOWN_LEFT=	run down-left
+MSG_HELP_RUN_DOWN_RIGHT=	run down-right
+MSG_HELP_RUN_LEFT_UNTIL_ADJ=	run left until adjacent
+MSG_HELP_RUN_DOWN_UNTIL_ADJ=	run down until adjacent
+MSG_HELP_RUN_UP_UNTIL_ADJ=	run up until adjacent
+MSG_HELP_RUN_RIGHT_UNTIL_ADJ=	run right until adjacent
+MSG_HELP_RUN_UP_LEFT_UNTIL_ADJ=	run up-left until adjacent
+MSG_HELP_RUN_UP_RIGHT_UNTIL_ADJ=	run up-right until adjacent
+MSG_HELP_RUN_DOWN_LEFT_UNTIL_ADJ=	run down-left until adjacent
+MSG_HELP_RUN_DOWN_RIGHT_UNTIL_ADJ=	run down-right until adjacent
+MSG_HELP_SHIFT_DIR=	<SHIFT><dir>: run that way
+MSG_HELP_CTRL_DIR=	<CTRL><dir>: run until adjacent
+MSG_HELP_FIGHT_DIR=<dir>	fight to the death or near death
+MSG_HELP_THROW=<dir>	throw something
+MSG_HELP_MOVE_ONTO=<dir>	move without picking up
+MSG_HELP_ZAP_DIR=<dir>	zap in a direction
+MSG_HELP_IDENTIFY_TRAP=<dir>	identify trap type
+MSG_HELP_SEARCH=	search for traps/secret doors
+MSG_HELP_GO_DOWN=	go down a staircase
+MSG_HELP_GO_UP=	go up a staircase
+MSG_HELP_REST=	rest for a turn
+MSG_HELP_PICK_UP=	pick something up
+MSG_HELP_INVENTORY=	inventory
+MSG_HELP_INVENTORY_SINGLE=	single item inventory
+MSG_HELP_QUAFF=	quaff a potion
+MSG_HELP_READ=	read a scroll
+MSG_HELP_EAT=	eat food
+MSG_HELP_WIELD=	wield a weapon
+MSG_HELP_WEAR_ARMOR=	wear armor
+MSG_HELP_TAKE_OFF=	take armor off
+MSG_HELP_PUT_ON_RING=	put on a ring
+MSG_HELP_REMOVE_RING=	remove a ring
+MSG_HELP_DROP=	drop an object
+MSG_HELP_CALL=	call an object
+MSG_HELP_REPEAT=	repeat last command
+MSG_HELP_PRINT_WEAPON=	print current weapon
+MSG_HELP_PRINT_ARMOR=	print current armor
+MSG_HELP_PRINT_RINGS=	print current rings
+MSG_HELP_PRINT_STATS=	print current stats
+MSG_HELP_DISCOVERED=	recall discovered items
+MSG_HELP_OPTIONS=	check/set options
+MSG_HELP_REDRAW=	redraw screen
+MSG_HELP_REPEAT_MSG=	repeat last message
+MSG_HELP_CANCEL=	cancel command
+MSG_HELP_SAVE=	save game
+MSG_HELP_QUIT=	quit
+MSG_HELP_SHELL=	shell escape
+MSG_HELP_FIGHT_DEATH=<dir>	fight until someone dies
+MSG_HELP_VERSION=	print version number
 
 # main.c messages - startup
 MSG_HELLO_WIZARD=Hello %s, welcome to dungeon #%d
 MSG_HELLO_DIGGING=Hello %s, please wait while I dig the dungeon...
 MSG_SCREEN_TOO_SMALL=\nSorry. The screen must be at least %dx%d\n
+MSG_PROMPT_WIZARD_PASSWORD=wizard's password: 
 
 # rip.c messages - scoreboard and death
 MSG_NUMNAME=Ten
@@ -500,6 +501,7 @@ MSG_WEAPON_SPEAR=spear
 # Item type names
 MSG_WAND=wand
 MSG_STAFF=staff
+MSG_TYPE_ITEM=item
 
 # Armor types - armor.c arm_info[]
 MSG_ARMOR_LEATHER_ARMOR=leather armor
@@ -637,6 +639,7 @@ MSG_MISC_WELCOME_LEVEL=welcome to level %d
 MSG_MISC_FAINT_EXHAUSTION=you faint from exhaustion
 MSG_MISC_IN_USE=in use
 MSG_MISC_WHICH_DIRECTION=which direction?
+MSG_MISC_DIRECTION_TERSE=direction: 
 MSG_MISC_CALL_IT_TERSE=call it:
 MSG_MISC_CALL_IT_VERBOSE=what do you want to call it?
 
@@ -1048,5 +1051,36 @@ MSG_INV_TYPE_OVERWRITE=Overwrite
 MSG_INV_TYPE_SLOW=Slow
 MSG_INV_TYPE_CLEAR=Clear
 
+# options.c messages - option prompts
+MSG_OPT_TERSE=Terse output
+MSG_OPT_FLUSH=Flush typeahead during battle
+MSG_OPT_JUMP=Show position only at end of run
+MSG_OPT_SEEFLOOR=Show the lamp-illuminated floor
+MSG_OPT_PASSGO=Follow turnings in passageways
+MSG_OPT_TOMBSTONE=Print out tombstone when killed
+MSG_OPT_INVEN=Inventory style
+MSG_OPT_NAME=Name
+MSG_OPT_FRUIT=Fruit
+MSG_OPT_FILE=Save file
+MSG_OPT_FORMAT=%s ("%s"):
+
+# extern.c - default fruit name
+MSG_DEFAULT_FRUIT=slime-mold
+
 # Debug messages
 MSG_DEBUG_NON_OBJECT=Non-object %d,%d
+MSG_DEBUG_FUSE_SLOTS=Ran out of fuse slots
+MSG_DEBUG_PICK_UP=Where did you pick a '%s' up???
+MSG_DEBUG_CONNECTION_ERROR=error in connection tables
+MSG_DEBUG_FUNNY_PICKUP=Picked up something funny %s
+MSG_DEBUG_BAD_OBJECT=Picked a bad kind of object
+MSG_DEBUG_FIGHT_WHAT=Fight what @ %d,%d
+MSG_DEBUG_DAMAGE=Damage for %dx%d came out %d, dplus = %d, add_dam = %d, def_arm = %d
+MSG_DEBUG_BAD_PERCENTAGES=\nBad percentages for %s (bound = %d):\n
+MSG_DEBUG_HIT_RETURN=[hit RETURN to continue]
+
+# mdport.c messages
+MSG_CANT_DROP_SETGID=Could not drop setgid privileges.  Aborting.
+MSG_CANT_DROP_SETUID=Could not drop setuid privileges.  Aborting.
+MSG_NO_SHELLY=No shelly
+MSG_DEFAULT_USERNAME=nobody
